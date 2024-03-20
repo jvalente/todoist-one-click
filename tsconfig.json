@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "lib": ["es5", "es6", "dom"],
+        "target": "esnext",
+        "module": "esnext",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false,
+        "moduleResolution": "bundler",
+        "strict": true
+    },
+    "include": ["src"]
+}
