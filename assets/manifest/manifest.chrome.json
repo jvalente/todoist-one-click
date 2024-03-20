@@ -1,0 +1,23 @@
+{
+    "name": "Todoist One-Click",
+    "description": "Capture tasks with one click",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": ["storage", "unlimitedStorage", "contextMenus", "tabs"],
+    "action": {
+        "default_icon": "icons/icon.png"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "options_page": "settings.html",
+    "commands": {
+        "add-task": {
+            "suggested_key": {
+                "default": "Ctrl+MacCtrl+E"
+            },
+            "description": "Add tab as task"
+        }
+    }
+}
