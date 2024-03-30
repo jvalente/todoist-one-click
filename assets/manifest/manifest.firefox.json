@@ -24,5 +24,10 @@
             },
             "description": "Add tab as task"
         }
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "todoist@oneclick"
+        }
     }
 }
