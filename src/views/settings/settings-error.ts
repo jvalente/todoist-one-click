@@ -2,7 +2,7 @@ import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './reset'
-import { settingsSection } from './styles/section'
+import { settingsSection } from '../common/styles/section'
 
 @customElement('tc-settings-error')
 export class SettingsErrorElement extends LitElement {

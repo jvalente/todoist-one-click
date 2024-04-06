@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
-import { settingsSection } from './styles/section'
+import { settingsSection } from '../common/styles/section'
 import { setAPIKey } from '../../controllers/api-key'
 
 @customElement('tc-api-key')

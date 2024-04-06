@@ -19,7 +19,6 @@ export const settingsSection = css`
     }
 
     section small {
-        display: block;
         color: var(--secondary-color);
     }
 

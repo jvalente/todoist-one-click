@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
-import { settingsSection } from './styles/section'
+import { settingsSection } from '../common/styles/section'
 import TargetProjectId from '../../models/target-project-id'
 import { setTargetProjectId } from '../../controllers/target-project-id'
 import Projects from '../../models/projects'
