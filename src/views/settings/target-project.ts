@@ -4,6 +4,7 @@ import { repeat } from 'lit/directives/repeat.js'
 import { settingsSection } from './styles/section'
 import TargetProjectId from '../../models/target-project-id'
 import { setTargetProjectId } from '../../controllers/target-project-id'
+import Projects from '../../models/projects'
 
 @customElement('tc-target-project')
 export class TargetProjectElement extends LitElement {
@@ -42,8 +43,10 @@ export class TargetProjectElement extends LitElement {
 
     private refreshProjects(event: any) {
         event.preventDefault()
-        console.log('TODO')
-        // Projects.hydrate()
+        Projects.delete()
+
+        // TODO: improve this (model API)
+        setTimeout(() => Projects.hydrate(), 200)
     }
 
     private formatedDate() {
