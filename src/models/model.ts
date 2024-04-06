@@ -10,8 +10,6 @@ type ModalData<T> = {
 
 class Model<T> extends Subject<ModalData<T>> {
     private name: string
-    private lastUpdated?: number
-    private data?: T = undefined
     private fetchResource?: { url: string }
 
     constructor(name: string, fetchResource?: { url: string }) {
@@ -72,13 +70,10 @@ class Model<T> extends Subject<ModalData<T>> {
     }
 
     delete() {
-        this.data = undefined
-        this.lastUpdated = undefined
-
         Storage.remove(this.name).then(() => {
             this.notify({
-                data: this.data,
-                lastUpdated: this.lastUpdated,
+                data: undefined,
+                lastUpdated: undefined,
                 error: undefined,
             })
         })
