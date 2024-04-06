@@ -13,7 +13,6 @@ class Model<T> extends Subject<ModalData<T>> {
     private lastUpdated?: number
     private data?: T = undefined
     private fetchResource?: { url: string }
-    private error?: Error
 
     constructor(name: string, fetchResource?: { url: string }) {
         super()
@@ -50,7 +49,9 @@ class Model<T> extends Subject<ModalData<T>> {
                     this.notify(value || { data: undefined })
                 }
             })
-            .catch((e) => console.log(e))
+            .catch((error) => {
+                this.notify({ data: undefined, error, lastUpdated: undefined })
+            })
     }
 
     get() {
@@ -73,13 +74,12 @@ class Model<T> extends Subject<ModalData<T>> {
     delete() {
         this.data = undefined
         this.lastUpdated = undefined
-        this.error = undefined
 
         Storage.remove(this.name).then(() => {
             this.notify({
                 data: this.data,
                 lastUpdated: this.lastUpdated,
-                error: this.error,
+                error: undefined,
             })
         })
     }

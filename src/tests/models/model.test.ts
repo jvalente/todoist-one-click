@@ -5,6 +5,7 @@ import Storage from '../../storage/storage'
 import API from '../../api/api'
 
 vi.mock('../../storage/storage.ts')
+const mockListener = vi.fn()
 
 const mockStorageData = () => ({
     data: { source: 'storage' },
@@ -13,9 +14,9 @@ const mockStorageData = () => ({
 
 const mockApiData = () => ({ source: 'api' })
 
-describe('model hydration', () => {
+describe.only('model hydration', () => {
     beforeEach(() => {
-        vi.resetAllMocks()
+        vi.clearAllMocks()
         vi.useFakeTimers()
     })
 
@@ -24,8 +25,6 @@ describe('model hydration', () => {
     })
 
     it('hydrates from storage if the key exists', async () => {
-        const mockListener = vi.fn()
-
         vi.spyOn(Storage, 'get').mockResolvedValue(mockStorageData())
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
 
@@ -41,8 +40,6 @@ describe('model hydration', () => {
     })
 
     it('hydrates with undefined if the key does not exist in storage and no API strategy exists', async () => {
-        const mockListener = vi.fn()
-
         vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
         const mockAPI = vi.spyOn(API, 'fetchTodoistApi').mockResolvedValue({})
@@ -66,8 +63,6 @@ describe('model hydration', () => {
     })
 
     it('hydrates from API if the key does not exist in storage and fetch information is provided', async () => {
-        const mockListener = vi.fn()
-
         vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
         vi.spyOn(API, 'fetchTodoistApi').mockResolvedValue(mockApiData())
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
@@ -86,6 +81,25 @@ describe('model hydration', () => {
         expect(mockStorageSet).toHaveBeenCalledWith('model', {
             data: mockApiData(),
             lastUpdated: expect.any(Number),
+        })
+    })
+
+    describe('error', () => {
+        it.only('populates the error state if the API call fails', async () => {
+            vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
+            const mockAPI = vi
+                .spyOn(API, 'fetchTodoistApi')
+                .mockRejectedValue(new Error('API error'))
+
+            const model = new Model('model', { url: 'test' })
+            model.attach(mockListener)
+            model.hydrate()
+
+            await vi.runAllTimersAsync()
+
+            expect(mockListener).toHaveBeenCalledWith({
+                error: new Error('API error'),
+            })
         })
     })
 })
