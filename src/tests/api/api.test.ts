@@ -15,6 +15,11 @@ import APIKey from '../../api/api-key'
 const unmockedFetch = global.fetch
 const mockFetch = vi.fn()
 global.fetch = mockFetch
+global.chrome = {
+    action: {
+        setIcon: vi.fn(),
+    },
+} as any
 
 describe('API', () => {
     beforeAll(() => {

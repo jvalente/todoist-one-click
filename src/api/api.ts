@@ -7,12 +7,13 @@ function fetchTodoistApi<T>(
     path: string,
     { method, body }: any = { method: 'GET', body: undefined }
 ): Promise<T> {
-    // chrome.action.setIcon({
-    //     path: {
-    //         '48': 'icons/loading.png',
-    //         '96': 'icons/loading@2x.png',
-    //     },
-    // })
+    // TODO move into API
+    chrome.action.setIcon({
+        path: {
+            '48': 'icons/loading.png',
+            '96': 'icons/loading@2x.png',
+        },
+    })
 
     return APIKey.get().then((apiKey) => {
         if (!apiKey) {
@@ -29,28 +30,27 @@ function fetchTodoistApi<T>(
             .then((response) => {
                 if (!response.ok) throw response
                 return response.json().then((data) => {
-                    // chrome.action.setIcon({
-                    //     path: {
-                    //         '48': 'icons/success.png',
-                    //         '96': 'icons/success@2x.png',
-                    //     },
-                    // })
+                    chrome.action.setIcon({
+                        path: {
+                            '48': 'icons/success.png',
+                            '96': 'icons/success@2x.png',
+                        },
+                    })
 
-                    // setTimeout(() => {
-                    //     chrome.action.setIcon({
-                    //         path: {
-                    //             '48': 'icons/icon.png',
-                    //             '96': 'icons/icon@2x.png',
-                    //         },
-                    //     })
-                    // }, 2000)
+                    setTimeout(() => {
+                        chrome.action.setIcon({
+                            path: {
+                                '48': 'icons/icon.png',
+                                '96': 'icons/icon@2x.png',
+                            },
+                        })
+                    }, 2000)
 
                     return data
                 })
             })
             .catch((error) => {
-                // chrome.action.setBadgeText({ text: 'X' })
-
+                // TODO introduce an error icon
                 throw new TodoistApiError(error)
             })
     })
