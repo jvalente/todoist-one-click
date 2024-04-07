@@ -4,6 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import './settings-error'
 import './target-project'
 import './target-labels'
+import './loading'
 
 import Projects from '../../models/projects'
 import { settingsSection } from '../common/styles/section'
@@ -64,6 +65,6 @@ export class SettingsDataElement extends LitElement {
             return html`${this.renderTargetProject()}${this.renderTargetLabels()}${this.renderReset()}`
         }
 
-        return html`<p>Loading...</p>`
+        return html`<tc-loading></tc-loading>`
     }
 }

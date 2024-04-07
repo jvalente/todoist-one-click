@@ -54,21 +54,32 @@ export class TargetLabelsElement extends LitElement {
         removeLabel(this.targetLabels, label)
     }
 
+    private renderTargetLabelsList() {
+        if (!this.targetLabels.length) {
+            return html`<small>No target labels added yet.</small>`
+        }
+
+        return html` <tc-target-labels-list
+            .labels=${this.targetLabels}
+            .onRemove=${(label: string) => this.handleRemoveLabel(label)}
+        ></tc-target-labels-list>`
+    }
+
+    private renderTargeLabelsInput() {
+        return html`<input
+            id="targetLabel"
+            placeholder="Type and press Enter to add a label..."
+            @input=${this.handleInputChange}
+            @keyup=${this.handleAddLabel}
+            .value=${this.value}
+            type="text"
+        />`
+    }
+
     render() {
         return html`<section>
             <label>Target Labels</label>
-            <tc-target-labels-list
-                .labels=${this.targetLabels}
-                .onRemove=${(label: string) => this.handleRemoveLabel(label)}
-            ></tc-target-labels-list>
-            <input
-                id="targetLabel"
-                placeholder="Type and press Enter to add a label..."
-                @input=${this.handleInputChange}
-                @keyup=${this.handleAddLabel}
-                .value=${this.value}
-                type="text"
-            />
+            ${this.renderTargetLabelsList()}${this.renderTargeLabelsInput()}
         </section>`
     }
 }
