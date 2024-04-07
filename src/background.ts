@@ -27,3 +27,10 @@ chrome.commands.onCommand.addListener((command) => {
         addTask()
     }
 })
+
+// open settings after installation
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details?.reason === 'install') {
+        chrome.runtime.openOptionsPage()
+    }
+})
