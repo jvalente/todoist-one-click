@@ -9,8 +9,8 @@ import {
     afterAll,
 } from 'vitest'
 
-import API from '../../api/api'
-import APIKey from '../../api/api-key'
+import API from '../../src/api/api'
+import APIKey from '../../src/api/api-key'
 
 const unmockedFetch = global.fetch
 const mockFetch = vi.fn()
