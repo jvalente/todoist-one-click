@@ -14,10 +14,8 @@ export function addTask() {
             }
         })
 
-    Promise.all([TargetProjectId.get(), getTabInfo])
-        .then(([projectId, { title, url }]) => {
-            console.log(projectId)
-
+    Promise.all([TargetProjectId.get(), TargetLabels.get(), getTabInfo])
+        .then(([projectId, labels, { title, url }]) => {
             const content = `[${title}](${url})`
 
             return API.fetchTodoistApi('tasks', {
@@ -25,7 +23,7 @@ export function addTask() {
                 body: {
                     content,
                     project_id: projectId,
-                    labels: ['lorem'],
+                    labels,
                 },
             })
         })
