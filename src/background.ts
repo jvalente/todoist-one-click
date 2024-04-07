@@ -1,4 +1,4 @@
-import { addTask } from './controllers/task.js'
+import { addTask } from './controllers/task'
 
 // context menu settings entry
 chrome.runtime.onInstalled.addListener(async () => {

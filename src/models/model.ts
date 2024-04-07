@@ -1,6 +1,6 @@
-import API from '../api/api.js'
-import Subject from '../observer/subject.js'
-import Storage from '../storage/storage.js'
+import API from '../api/api'
+import Subject from '../observer/subject'
+import Storage from '../storage/storage'
 
 type ModalData<T> = {
     data: T | undefined

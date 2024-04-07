@@ -1,7 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { settingsSection } from '../common/styles/section'
-import Storage from '../../storage/storage.js'
+import Storage from '../../storage/storage'
 import { deleteAPIKey } from '../../controllers/api-key'
 import { clearAllData } from '../../controllers/data'
 

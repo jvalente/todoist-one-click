@@ -1,5 +1,5 @@
-import Subject from '../observer/subject.js'
-import Storage from '../storage/storage.js'
+import Subject from '../observer/subject'
+import Storage from '../storage/storage'
 
 const STORAGE_KEY = 'apiKey'
 

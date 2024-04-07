@@ -1,5 +1,5 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { html, LitElement } from 'lit'
+import { customElement, query } from 'lit/decorators.js'
 import { settingsSection } from '../common/styles/section'
 import { setAPIKey } from '../../controllers/api-key'
 

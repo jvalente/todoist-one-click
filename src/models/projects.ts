@@ -1,6 +1,4 @@
-import Storage from '../storage/storage.js'
-import API from '../api/api.js'
-import Model from './model.js'
+import Model from './model'
 
 class ProjectModel extends Model<any> {
     constructor() {

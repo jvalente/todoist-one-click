@@ -1,10 +1,10 @@
-vi.mock('../../models/api-key.ts')
+vi.mock('../../models/api-key')
 import { expect, it, vi, describe, beforeEach, afterEach } from 'vitest'
 import Model from '../../src/models/model'
 import Storage from '../../src/storage/storage'
 import API from '../../src/api/api'
 
-vi.mock('../../storage/storage.ts')
+vi.mock('../../storage/storage')
 const mockListener = vi.fn()
 
 const mockStorageData = () => ({

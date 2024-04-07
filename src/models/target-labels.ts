@@ -1,4 +1,4 @@
-import Model from './model.js'
+import Model from './model'
 
 class TargetLabelsModel extends Model<any> {
     constructor() {
