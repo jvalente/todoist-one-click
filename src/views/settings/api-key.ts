@@ -21,12 +21,14 @@ export class ApiKeyElement extends LitElement {
     render() {
         return html`<section>
                 <p>
-                    Get started with Todoist One-Click by grabbing your API key
-                    from Todoist <a href="https://app.todoist.com/app/settings/integrations/developer" target="_blank">'Settings > Integrations > Developer'</a>. It's the
-                    key to connecting the extension with your Todoist!</p>
+                    Get started with Todoist One-Click by grabbing your API token
+                    from Todoist <a href="https://app.todoist.com/app/settings/integrations/developer" target="_blank">'Settings > Integrations > Developer'</a>.
+                </p>
+                    <p>Without it, the extension won't be able to add tasks to your Todoist account.</p>
+
                     <input
                         autofocus
-                        placeholder="Paste the API key here..."
+                        placeholder="Paste the API token here..."
                         id="apiKey"
                         type="text"
                     />
