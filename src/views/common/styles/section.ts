@@ -7,7 +7,7 @@ export const settingsSection = css`
         margin-bottom: 20px;
         padding: 10px 20px;
         background-color: var(--bg-color-1);
-        border-radius: 5px;
+        border-radius: var(--default-border-radius);
     }
 
     section > * {
