@@ -3,9 +3,10 @@ import { customElement, property } from 'lit/decorators.js'
 
 import './settings-error'
 import './target-project'
+import './target-labels'
 
 import Projects from '../../models/projects'
-import { settingsSection } from './styles/section'
+import { settingsSection } from '../common/styles/section'
 
 @customElement('tc-settings-data')
 export class SettingsDataElement extends LitElement {
@@ -43,6 +44,10 @@ export class SettingsDataElement extends LitElement {
         ></tc-target-project>`
     }
 
+    private renderTargetLabels() {
+        return html`<tc-target-labels></tc-target-labels>`
+    }
+
     private renderReset() {
         return html`<tc-reset></tc-reset>`
     }
@@ -56,7 +61,7 @@ export class SettingsDataElement extends LitElement {
         }
 
         if (this.projects) {
-            return html`${this.renderTargetProject()}${this.renderReset()}`
+            return html`${this.renderTargetProject()}${this.renderTargetLabels()}${this.renderReset()}`
         }
 
         return html`<p>Loading...</p>`

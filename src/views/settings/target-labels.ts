@@ -1,9 +1,10 @@
 import { html, LitElement } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { repeat } from 'lit/directives/repeat.js'
-import Projects from '../../models/projects'
-import { settingsSection } from './styles/section'
+import { customElement, property, query, state } from 'lit/decorators.js'
+import { settingsSection } from '../common/styles/section'
 import TargetLabels from '../../models/target-labels'
+import { removeLabel, setLabels } from '../../controllers/labels'
+
+import './target-labels-list'
 
 @customElement('tc-target-labels')
 export class TargetLabelsElement extends LitElement {
@@ -15,53 +16,59 @@ export class TargetLabelsElement extends LitElement {
     @query('#targetLabel')
     targetLabelInput?: HTMLInputElement
 
+    @property()
+    value = ''
+
     connectedCallback() {
         super.connectedCallback()
 
-        TargetLabels.get().then(this.onTargetLabelsUpdate)
-        TargetLabels.addChangeListener(this.onTargetLabelsUpdate)
+        TargetLabels.attach(this.onTargetLabelsUpdate)
+        TargetLabels.hydrate()
     }
 
-    private onTargetLabelsUpdate = (targetLabels?: string[]) => {
-        this.targetLabels = targetLabels || []
+    private onTargetLabelsUpdate = ({ data }: any) => {
+        this.targetLabels = data || []
     }
 
-    private handleOnAddClick(event: KeyboardEvent) {
+    private handleInputChange(event: InputEvent) {
         event.preventDefault()
 
-        const value = (this.targetLabelInput?.value || '').trim()
+        // TODO: find type solution
+        this.value = ((event?.target as HTMLInputElement)?.value || '').trim()
+        ;(event?.target as HTMLInputElement).value = this.value
+    }
 
-        if (value && !this.targetLabels.includes(value)) {
-            TargetLabels.set([...this.targetLabels, value])
+    // TODO: handle paste event
+
+    private handleAddLabel(event: InputEvent) {
+        event.preventDefault()
+
+        // TODO: find type solution
+        if ((event as any).key === 'Enter') {
+            setLabels(this.targetLabels, this.value)
+            this.value = ''
         }
     }
 
-    private handleOnRemoveClick(event: Event, label: string) {
-        event.preventDefault()
-
-        TargetLabels.set(this.targetLabels.filter((l) => l !== label))
+    private handleRemoveLabel(label: string) {
+        removeLabel(this.targetLabels, label)
     }
 
     render() {
         return html`<section>
             <label>Target Labels</label>
-            <ul>
-                ${repeat(
-                    this.targetLabels,
-                    (label) => label,
-                    (label) =>
-                        html`<li>
-                            ${label} (<a
-                                href=""
-                                @click=${(event: Event) =>
-                                    this.handleOnRemoveClick(event, label)}
-                                >remove</a
-                            >)
-                        </li>`
-                )}
-            </ul>
-            <input id="targetLabel" type="text" />
-            <button @click=${this.handleOnAddClick}>Add label</button>
+            <tc-target-labels-list
+                .labels=${this.targetLabels}
+                .onRemove=${(label: string) => this.handleRemoveLabel(label)}
+            ></tc-target-labels-list>
+            <input
+                id="targetLabel"
+                placeholder="Type and press Enter to add a label..."
+                @input=${this.handleInputChange}
+                @keyup=${this.handleAddLabel}
+                .value=${this.value}
+                type="text"
+            />
         </section>`
     }
 }
