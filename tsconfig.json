@@ -1,8 +1,7 @@
 // https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
 {
     "compilerOptions": {
-        "lib": ["es5", "es6", "dom"],
-        "target": "esnext",
+        "target": "es6",
         "module": "esnext",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
