@@ -1,12 +1,12 @@
 import { html, LitElement } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 
 import './settings-error'
 import './target-project'
 import './target-labels'
 import './loading'
 
-import Projects from '../../models/projects'
+import Projects, { ProjectState } from '../../models/projects'
 import { settingsSection } from '../common/styles/section'
 
 @customElement('tc-settings-data')
@@ -16,14 +16,14 @@ export class SettingsDataElement extends LitElement {
     @property()
     apiKey?: string
 
-    @property()
-    projects: any = []
+    @state()
+    projects: ProjectState['data'] = []
 
-    @property()
-    error: any = undefined
+    @state()
+    error: ProjectState['error'] = undefined
 
-    @property()
-    lastUpdated?: number = 0
+    @state()
+    projectsLastUpdated?: ProjectState['lastUpdated'] = 0
 
     connectedCallback() {
         super.connectedCallback()
@@ -34,14 +34,14 @@ export class SettingsDataElement extends LitElement {
 
     private onProjectsUpdate = ({ data, lastUpdated, error }: any) => {
         this.projects = data
-        this.lastUpdated = lastUpdated
+        this.projectsLastUpdated = lastUpdated
         this.error = error
     }
 
     private renderTargetProject() {
         return html`<tc-target-project
             .projects=${this.projects}
-            .lastUpdated=${this.lastUpdated}
+            .lastUpdated=${this.projectsLastUpdated}
         ></tc-target-project>`
     }
 
@@ -61,7 +61,7 @@ export class SettingsDataElement extends LitElement {
                 >${this.renderReset()}`
         }
 
-        if (this.projects) {
+        if (this.projects && this.projectsLastUpdated) {
             return html`${this.renderTargetProject()}${this.renderTargetLabels()}${this.renderReset()}`
         }
 

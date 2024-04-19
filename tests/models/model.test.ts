@@ -39,7 +39,7 @@ describe.only('model hydration', () => {
         expect(mockStorageSet).not.toHaveBeenCalled()
     })
 
-    it('hydrates with undefined if the key does not exist in storage and no API strategy exists', async () => {
+    it('hydrates with undefined if the key does not exist in storage and no fetchResource exists', async () => {
         vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
         const mockAPI = vi.spyOn(API, 'fetchTodoistApi').mockResolvedValue({})

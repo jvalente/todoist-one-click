@@ -2,13 +2,13 @@ import API from '../api/api'
 import Subject from '../observer/subject'
 import Storage from '../storage/storage'
 
-type ModalData<T> = {
+export type ModelState<T> = {
     data: T | undefined
     lastUpdated?: number
     error?: unknown
 }
 
-class Model<T> extends Subject<ModalData<T>> {
+class Model<T> extends Subject<ModelState<T>> {
     private name: string
     private fetchResource?: { url: string }
 
@@ -20,7 +20,7 @@ class Model<T> extends Subject<ModalData<T>> {
     }
 
     private hydrateFromStorage() {
-        return Storage.get<ModalData<T>>(this.name)
+        return Storage.get<ModelState<T>>(this.name)
     }
 
     private hydrateFromAPI() {
@@ -35,9 +35,10 @@ class Model<T> extends Subject<ModalData<T>> {
                 if (storageData) {
                     return { value: storageData, persist: false }
                 } else {
-                    return this.hydrateFromAPI().then((apiData) => {
-                        return { value: { data: apiData }, persist: true }
-                    })
+                    return this.hydrateFromAPI().then((apiData) => ({
+                        value: { data: apiData },
+                        persist: true,
+                    }))
                 }
             })
             .then(({ value, persist }) => {

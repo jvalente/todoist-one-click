@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import APIKey from '../../api/api-key'
 
 import './api-key'
@@ -7,7 +7,7 @@ import './settings-data'
 
 @customElement('tc-settings')
 export class SettingsElement extends LitElement {
-    @property()
+    @state()
     apiKey?: string
 
     connectedCallback() {
