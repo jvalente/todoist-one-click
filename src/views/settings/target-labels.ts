@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
+import { customElement, query, state } from 'lit/decorators.js'
 import { settingsSection } from '../common/styles/section'
 import TargetLabels from '../../models/target-labels'
 import { removeLabel, setLabels } from '../../controllers/labels'
@@ -10,14 +10,14 @@ import './target-labels-list'
 export class TargetLabelsElement extends LitElement {
     static styles = [settingsSection]
 
-    @property({ type: Array })
+    @state()
     targetLabels: Array<string> = []
+
+    @state()
+    value = ''
 
     @query('#targetLabel')
     targetLabelInput?: HTMLInputElement
-
-    @property()
-    value = ''
 
     connectedCallback() {
         super.connectedCallback()
@@ -33,9 +33,10 @@ export class TargetLabelsElement extends LitElement {
     private handleInputChange(event: InputEvent) {
         event.preventDefault()
 
-        // TODO: find type solution
-        this.value = ((event?.target as HTMLInputElement)?.value || '').trim()
-        ;(event?.target as HTMLInputElement).value = this.value
+        if (this.targetLabelInput) {
+            this.value = (this.targetLabelInput.value || '').trim()
+            this.targetLabelInput.value = this.value
+        }
     }
 
     // TODO: handle paste event
@@ -78,7 +79,7 @@ export class TargetLabelsElement extends LitElement {
 
     render() {
         return html`<section>
-            <label>Target Labels</label>
+            <label>Target labels</label>
             ${this.renderTargetLabelsList()}${this.renderTargeLabelsInput()}
         </section>`
     }
