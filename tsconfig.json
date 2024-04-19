@@ -1,3 +1,4 @@
+// https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
 {
     "compilerOptions": {
         "lib": ["es5", "es6", "dom"],
@@ -9,5 +10,5 @@
         "moduleResolution": "bundler",
         "strict": true
     },
-    "include": ["src"]
+    "include": ["src", "e2e"]
 }
