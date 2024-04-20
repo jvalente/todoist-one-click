@@ -1,4 +1,4 @@
-import Subject from '../../observer/subject'
+import { Subject } from '../../lib/observer'
 import { Storage } from '../extension'
 
 const STORAGE_KEY = 'apiKey'

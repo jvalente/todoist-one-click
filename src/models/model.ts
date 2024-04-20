@@ -1,5 +1,5 @@
 import { TodoistAPI } from '../api/todoist'
-import Subject from '../observer/subject'
+import { Subject } from '../lib/observer'
 import { Storage } from '../api/extension'
 
 export type ModelState<T> = {

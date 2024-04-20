@@ -1,6 +1,6 @@
 type Observer<T> = (data: T) => void
 
-export default class Subject<T> {
+export class Subject<T> {
     observers: Observer<T>[] = []
 
     attach(observer: Observer<T>) {
