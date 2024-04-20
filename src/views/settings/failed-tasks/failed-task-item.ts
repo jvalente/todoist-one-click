@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { errorCard } from '../../common/styles/error-card'
-import { getErrorDescription } from '../../common/error'
+import { getErrorDescription } from '../../common/error-details'
 
 @customElement('tc-failed-task-item')
 export class FailedTaskItemElement extends LitElement {
