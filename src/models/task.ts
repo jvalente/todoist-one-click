@@ -1,6 +1,7 @@
 import API from '../api/api'
 
 type TaskParams = {
+    title: string
     content: string
     projectId?: string
     labels?: string[]
@@ -8,12 +9,14 @@ type TaskParams = {
 }
 
 export class Task {
+    title: string
     content: string
     projectId?: string
     labels?: string[]
     dueDate?: string
 
-    constructor({ content, projectId, labels, dueDate }: TaskParams) {
+    constructor({ title, content, projectId, labels, dueDate }: TaskParams) {
+        this.title = title
         this.content = content
         this.projectId = projectId
         this.labels = labels

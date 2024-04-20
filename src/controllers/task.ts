@@ -23,9 +23,17 @@ export function addTask() {
         getTabInfo,
     ])
         .then(([projectId, labels, dueDate, { title, url }]) => {
-            // TODO: Validate the content
+            // TODO: Improve validation
+            if (!title) throw new Error('Title is required')
             const content = `[${title}](${url})`
-            const task = new Task({ content, projectId, labels, dueDate })
+
+            const task = new Task({
+                title,
+                content,
+                projectId,
+                labels,
+                dueDate,
+            })
 
             task.flush().catch((error) => {
                 FailedTasks.add(task, error)
