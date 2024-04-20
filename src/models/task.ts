@@ -2,7 +2,7 @@ import { TodoistAPI } from '../api/todoist'
 
 type TaskParams = {
     title: string
-    content: string
+    url?: string
     projectId?: string
     labels?: string[]
     dueDate?: string
@@ -10,14 +10,14 @@ type TaskParams = {
 
 export class Task {
     title: string
-    content: string
+    url?: string
     projectId?: string
     labels?: string[]
     dueDate?: string
 
-    constructor({ title, content, projectId, labels, dueDate }: TaskParams) {
+    constructor({ title, url, projectId, labels, dueDate }: TaskParams) {
         this.title = title
-        this.content = content
+        this.url = url
         this.projectId = projectId
         this.labels = labels
         this.dueDate = dueDate
@@ -27,7 +27,8 @@ export class Task {
         return TodoistAPI.request('tasks', {
             method: 'POST',
             body: {
-                content: this.content,
+                // TODO: Add validation
+                content: `[${this.title}](${this.url})`,
                 ...(this.projectId ? { project_id: this.projectId } : {}),
                 ...(this.labels ? { labels: this.labels } : {}),
                 ...(this.dueDate ? { due_string: this.dueDate } : {}),

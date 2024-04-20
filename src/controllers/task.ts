@@ -17,12 +17,12 @@ export function addTask(taskProps?: any) {
     })
 
     prepareTask
-        .then(({ title, content, projectId, labels, dueDate }: any) => {
+        .then(({ title, url, projectId, labels, dueDate }: any) => {
             if (!title) throw new Error('Title is required')
 
             const task = new Task({
                 title,
-                content,
+                url,
                 projectId,
                 labels,
                 dueDate,
@@ -58,7 +58,7 @@ function getTaskProps() {
 
         return {
             title,
-            content: `[${title}](${url})`,
+            url,
             projectId,
             labels,
             dueDate,
