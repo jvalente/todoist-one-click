@@ -1,8 +1,8 @@
 import { html, LitElement } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
-import { settingsSection } from '../common/styles/section'
-import TargetLabels from '../../models/target-labels'
-import { removeLabel, setLabels } from '../../controllers/labels'
+import { settingsSection } from '../../common/styles/section'
+import TargetLabels from '../../../models/target-labels'
+import { removeLabel, setLabels } from '../../../controllers/labels'
 
 import './target-labels-list'
 
