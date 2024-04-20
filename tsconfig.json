@@ -9,5 +9,6 @@
         "moduleResolution": "bundler",
         "strict": true
     },
-    "include": ["src", "e2e"]
+    "include": ["src", "e2e"],
+    "exclude": ["node_modules"]
 }

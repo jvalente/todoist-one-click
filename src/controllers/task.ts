@@ -2,6 +2,7 @@ import API from '../api/api'
 import DueDate from '../models/due-date'
 import TargetLabels from '../models/target-labels'
 import TargetProjectId from '../models/target-project-id'
+import { Task } from '../models/task'
 
 export function addTask() {
     const getTabInfo = chrome.tabs
@@ -22,17 +23,11 @@ export function addTask() {
         getTabInfo,
     ])
         .then(([projectId, labels, dueDate, { title, url }]) => {
+            // TODO: Validate the content
             const content = `[${title}](${url})`
+            const task = new Task({ content, projectId, labels, dueDate })
 
-            return API.fetchTodoistApi('tasks', {
-                method: 'POST',
-                body: {
-                    content,
-                    project_id: projectId,
-                    labels,
-                    ...(dueDate ? { due_string: dueDate } : {}),
-                },
-            })
+            return task.flush()
         })
         .catch((error) => {
             chrome.runtime.openOptionsPage()

@@ -1,6 +1,6 @@
 import Model from './model'
 
-class TargetProjectIdModel extends Model<any> {
+class TargetProjectIdModel extends Model<string> {
     constructor() {
         super('targetProjectId')
     }

@@ -54,7 +54,7 @@ class Model<T> extends Subject<ModelState<T>> {
     }
 
     get() {
-        return Storage.get<Record<string, unknown>>(this.name).then(
+        return Storage.get<Record<string, T>>(this.name).then(
             (value) => value?.data
         )
     }
