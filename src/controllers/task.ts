@@ -31,6 +31,7 @@ export function addTask(taskProps?: any) {
             task.flush()
                 .then(() => Icon.setSuccess())
                 .catch((error) => {
+                    Icon.setError()
                     FailedTasks.add(task, error)
 
                     // TODO introduce an error icon?
@@ -39,6 +40,8 @@ export function addTask(taskProps?: any) {
                 })
         })
         .catch(() => {
+            Icon.setError()
+
             // TODO: Handle validation error?
             // global error handler?
         })
