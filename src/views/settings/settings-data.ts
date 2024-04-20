@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js'
 import './settings-error'
 import './target-project'
 import './target-labels'
+import './failed-tasks'
 import './due-date'
 import './loading'
 
@@ -46,30 +47,37 @@ export class SettingsDataElement extends LitElement {
         ></tc-target-project>`
     }
 
-    private renderTargetLabels() {
-        return html`<tc-target-labels></tc-target-labels>`
-    }
-
-    private renderReset() {
-        return html`<tc-reset></tc-reset>`
-    }
-
-    private renderDueDate() {
-        return html`<tc-due-date></tc-due-date>`
-    }
-
     render() {
         if (this.error) {
             return html`<tc-settings-error
                     .error=${this.error}
                 ></tc-settings-error
-                >${this.renderReset()}`
+                >${renderReset()}`
         }
 
         if (this.projects && this.projectsLastUpdated) {
-            return html`${this.renderTargetProject()}${this.renderTargetLabels()}${this.renderDueDate()}${this.renderReset()}`
+            return html`
+                ${renderFailedTasks()} ${this.renderTargetProject()}
+                ${renderTargetLabels()} ${renderDueDate()} ${renderReset()}
+            `
         }
 
         return html`<tc-loading></tc-loading>`
     }
+}
+
+function renderFailedTasks() {
+    return html`<tc-failed-tasks></tc-failed-tasks>`
+}
+
+function renderTargetLabels() {
+    return html`<tc-target-labels></tc-target-labels>`
+}
+
+function renderDueDate() {
+    return html`<tc-due-date></tc-due-date>`
+}
+
+function renderReset() {
+    return html`<tc-reset></tc-reset>`
 }
