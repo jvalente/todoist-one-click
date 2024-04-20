@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js'
 import './settings-error'
 import './target-project'
 import './target-labels'
+import './due-date'
 import './loading'
 
 import Projects, { ProjectState } from '../../models/projects'
@@ -53,6 +54,10 @@ export class SettingsDataElement extends LitElement {
         return html`<tc-reset></tc-reset>`
     }
 
+    private renderDueDate() {
+        return html`<tc-due-date></tc-due-date>`
+    }
+
     render() {
         if (this.error) {
             return html`<tc-settings-error
@@ -62,7 +67,7 @@ export class SettingsDataElement extends LitElement {
         }
 
         if (this.projects && this.projectsLastUpdated) {
-            return html`${this.renderTargetProject()}${this.renderTargetLabels()}${this.renderReset()}`
+            return html`${this.renderTargetProject()}${this.renderTargetLabels()}${this.renderDueDate()}${this.renderReset()}`
         }
 
         return html`<tc-loading></tc-loading>`

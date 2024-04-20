@@ -32,7 +32,7 @@ export const settingsSection = css`
     section input,
     section select {
         border: none;
-        border-radius: 5px;
+        border-radius: var(--default-border-radius);
         padding: 10px;
         color: var(--primary-color);
         font-size: var(--global-font-size);
@@ -45,7 +45,7 @@ export const settingsSection = css`
 
     section button {
         border: none;
-        border-radius: 5px;
+        border-radius: var(--default-border-radius);
         padding: 10px;
         font-size: var(--global-font-size);
         color: var(--primary-color-inverted);
@@ -54,5 +54,11 @@ export const settingsSection = css`
 
     section button:hover {
         background-color: var(--accent-color-1);
+    }
+
+    section code {
+        background-color: var(--bg-color-4);
+        padding: 3px;
+        border-radius: var(--default-border-radius);
     }
 `
