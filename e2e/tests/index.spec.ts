@@ -55,6 +55,10 @@ test.describe('extension settings', () => {
          */
         await page.getByRole('combobox').selectOption('Lorem')
 
+        await page.getByRole('link', { name: 'Refresh' }).click()
+
+        await expect(page.locator('.loader')).toBeVisible()
+
         /*
          * Add a label
          */
@@ -64,7 +68,7 @@ test.describe('extension settings', () => {
         /*
          * Remove a label
          */
-        await page.getByText('labelIpsum').locator('a').click()
+        await page.getByText('labelIpsum').locator('tc-al').click()
 
         /**
          * Add a due date
@@ -85,5 +89,11 @@ test.describe('extension settings', () => {
         await expect(
             page.getByText('The tasks you add will have no due date.')
         ).toBeVisible()
+
+        /**
+         * Test add task errors
+         */
+
+        // TODO (add test task)
     })
 })
