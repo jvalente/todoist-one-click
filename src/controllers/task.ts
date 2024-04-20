@@ -1,5 +1,5 @@
-import API from '../api/api'
 import DueDate from '../models/due-date'
+import FailedTasks from '../models/failed-tasks'
 import TargetLabels from '../models/target-labels'
 import TargetProjectId from '../models/target-project-id'
 import { Task } from '../models/task'
@@ -27,10 +27,14 @@ export function addTask() {
             const content = `[${title}](${url})`
             const task = new Task({ content, projectId, labels, dueDate })
 
-            return task.flush()
+            task.flush().catch((error) => {
+                FailedTasks.add(task, error)
+
+                // TODO: does this belong here?
+                chrome.runtime.openOptionsPage()
+            })
         })
-        .catch((error) => {
-            chrome.runtime.openOptionsPage()
-            console.log(error)
+        .catch(() => {
+            // TODO: Handle validation error?
         })
 }
