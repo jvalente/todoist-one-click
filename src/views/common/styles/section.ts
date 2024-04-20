@@ -57,4 +57,13 @@ export const settingsSection = css`
         padding: 3px;
         border-radius: var(--default-border-radius);
     }
+
+    section ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    section ul li {
+        list-style: none;
+    }
 `
