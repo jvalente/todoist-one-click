@@ -20,7 +20,7 @@ class Model<T> extends Subject<ModelState<T>> {
 
         Storage.addListener((changes) => {
             if (changes[this.name]) {
-                this.notify(changes[this.name].newValue)
+                this.notify(changes[this.name].newValue || { data: undefined })
             }
         })
     }
