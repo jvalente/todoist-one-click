@@ -1,8 +1,8 @@
 vi.mock('../../models/api-key')
 import { expect, it, vi, describe, beforeEach, afterEach } from 'vitest'
 import Model from '../../src/models/model'
-import Storage from '../../src/storage/storage'
-import API from '../../src/api/api'
+import { Storage } from '../api/extension'
+import { TodoistAPI } from '../api/todoist'
 
 vi.mock('../../storage/storage')
 const mockListener = vi.fn()
@@ -43,7 +43,7 @@ describe('model hydration', () => {
     it('hydrates with undefined if the key does not exist in storage and no fetchResource exists', async () => {
         vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
-        const mockAPI = vi.spyOn(API, 'fetchTodoistApi').mockResolvedValue({})
+        const mockAPI = vi.spyOn(TodoistAPI, 'request').mockResolvedValue({})
 
         const model = new Model('model')
         model.hydrate()
@@ -59,7 +59,7 @@ describe('model hydration', () => {
 
     it('hydrates from API if the key does not exist in storage and fetch information is provided', async () => {
         vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
-        vi.spyOn(API, 'fetchTodoistApi').mockResolvedValue(mockApiData())
+        vi.spyOn(TodoistAPI, 'request').mockResolvedValue(mockApiData())
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
 
         const model = new Model('model', { url: 'test' })
@@ -79,7 +79,7 @@ describe('model hydration', () => {
         it('populates the error state if the API call fails', async () => {
             vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
             const mockAPI = vi
-                .spyOn(API, 'fetchTodoistApi')
+                .spyOn(TodoistAPI, 'request')
                 .mockRejectedValue(new Error('API error'))
 
             const model = new Model('model', { url: 'test' })

@@ -1,9 +1,9 @@
-import APIKey from './api-key'
+import { TodoistAPIKey } from './api-key'
 
 const API_URL = 'https://api.todoist.com/rest'
 const API_VERSION = 'v2'
 
-function fetchTodoistApi<T>(
+function request<T>(
     path: string,
     { method, body }: any = { method: 'GET', body: undefined }
 ): Promise<T> {
@@ -15,7 +15,7 @@ function fetchTodoistApi<T>(
         },
     })
 
-    return APIKey.get().then((apiKey) => {
+    return TodoistAPIKey.get().then((apiKey) => {
         if (!apiKey) {
             throw new Error('API key not found')
         }
@@ -91,6 +91,4 @@ class TodoistApiError extends Error {
     }
 }
 
-const API = { fetchTodoistApi }
-
-export default API
+export const TodoistAPI = { request }

@@ -1,4 +1,4 @@
-import API from '../api/api'
+import { TodoistAPI } from '../api/todoist'
 
 type TaskParams = {
     title: string
@@ -24,7 +24,7 @@ export class Task {
     }
 
     flush() {
-        return API.fetchTodoistApi('tasks', {
+        return TodoistAPI.request('tasks', {
             method: 'POST',
             body: {
                 content: this.content,

@@ -4,13 +4,12 @@ import {
     vi,
     describe,
     beforeAll,
-    beforeEach,
     afterEach,
     afterAll,
 } from 'vitest'
 
-import API from '../../src/api/api'
-import APIKey from '../../src/api/api-key'
+import { TodoistAPI } from './api'
+import { TodoistAPIKey } from './api-key'
 
 const unmockedFetch = global.fetch
 const mockFetch = vi.fn()
@@ -23,7 +22,7 @@ global.chrome = {
 
 describe('API', () => {
     beforeAll(() => {
-        vi.spyOn(APIKey, 'get').mockResolvedValue('apikey')
+        vi.spyOn(TodoistAPIKey, 'get').mockResolvedValue('apikey')
         mockFetch.mockResolvedValue({
             ok: true,
             json: () => Promise.resolve({ status: 'ok' }),
@@ -41,7 +40,7 @@ describe('API', () => {
     it('calls fetch with the correct GET parameters', async () => {
         expect.assertions(2)
 
-        return API.fetchTodoistApi('path').then(() => {
+        return TodoistAPI.request('path').then(() => {
             expect(mockFetch).toHaveBeenCalledOnce()
             expect(mockFetch).toHaveBeenCalledWith(
                 expect.stringMatching(/\/path$/),
@@ -60,25 +59,23 @@ describe('API', () => {
         const body = { labels: ['lorem', 'ipsum'] }
         expect.assertions(1)
 
-        return API.fetchTodoistApi('path', { method: 'POST', body }).then(
-            () => {
-                expect(mockFetch).toHaveBeenCalledWith(expect.any(String), {
-                    headers: expect.any(Object),
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                })
-            }
-        )
+        return TodoistAPI.request('path', { method: 'POST', body }).then(() => {
+            expect(mockFetch).toHaveBeenCalledWith(expect.any(String), {
+                headers: expect.any(Object),
+                method: 'POST',
+                body: JSON.stringify(body),
+            })
+        })
     })
 
     it('throws if API key does not exist', async () => {
         expect.assertions(1)
 
-        vi.spyOn(APIKey, 'get').mockRejectedValueOnce(
+        vi.spyOn(TodoistAPIKey, 'get').mockRejectedValueOnce(
             new Error('API key not found')
         )
 
-        return API.fetchTodoistApi('path').catch((error) => {
+        return TodoistAPI.request('path').catch((error) => {
             expect(error.message).toBe('API key not found')
         })
     })
@@ -93,7 +90,7 @@ describe('API', () => {
             })
         )
 
-        return API.fetchTodoistApi('path').catch((error) => {
+        return TodoistAPI.request('path').catch((error) => {
             expect(error.message).toEqual('Bad response (404)')
             expect(error.status).toEqual(404)
         })
@@ -109,7 +106,7 @@ describe('API', () => {
             },
         })
 
-        return API.fetchTodoistApi('path').catch((error) => {
+        return TodoistAPI.request('path').catch((error) => {
             expect(error.message).toEqual('Invalid JSON')
         })
     })

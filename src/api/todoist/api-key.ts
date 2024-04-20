@@ -1,5 +1,5 @@
-import Subject from '../observer/subject'
-import Storage from '../storage/storage'
+import Subject from '../../observer/subject'
+import { Storage } from '../extension'
 
 const STORAGE_KEY = 'apiKey'
 
@@ -19,7 +19,7 @@ function remove() {
     apiKeyObservable.notify(undefined)
 }
 
-export default {
+export const TodoistAPIKey = {
     get,
     set,
     remove,

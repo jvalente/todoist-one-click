@@ -1,6 +1,6 @@
-import API from '../api/api'
+import { TodoistAPI } from '../api/todoist'
 import Subject from '../observer/subject'
-import Storage from '../storage/storage'
+import { Storage } from '../api/extension'
 
 export type ModelState<T> = {
     data: T | undefined
@@ -32,7 +32,7 @@ class Model<T> extends Subject<ModelState<T>> {
     private hydrateFromAPI() {
         if (!this.fetchResource) return Promise.resolve(undefined)
 
-        return API.fetchTodoistApi<T>(this.fetchResource.url)
+        return TodoistAPI.request<T>(this.fetchResource.url)
     }
 
     hydrate() {

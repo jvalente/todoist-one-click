@@ -1,9 +1,9 @@
-import APIKey from '../api/api-key'
+import { TodoistAPIKey } from '../api/todoist'
 
 export function setAPIKey(value: string) {
-    return APIKey.set(value)
+    return TodoistAPIKey.set(value)
 }
 
 export function deleteAPIKey() {
-    return APIKey.remove()
+    return TodoistAPIKey.remove()
 }

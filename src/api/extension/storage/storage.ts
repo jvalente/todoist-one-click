@@ -39,4 +39,4 @@ function addListener(callback: (changes: any) => void) {
     chrome.storage.onChanged.addListener(callback)
 }
 
-export default { get, set, remove, reset, addListener }
+export const Storage = { get, set, remove, reset, addListener }

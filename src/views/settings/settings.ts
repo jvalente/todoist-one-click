@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import APIKey from '../../api/api-key'
+import { TodoistAPIKey } from '../../api/todoist'
 
 import './api-key'
 import './settings-data'
@@ -14,8 +14,8 @@ export class SettingsElement extends LitElement {
     connectedCallback() {
         super.connectedCallback()
 
-        APIKey.attach(this.onApiKeyUpdate)
-        APIKey.get().then(this.onApiKeyUpdate)
+        TodoistAPIKey.attach(this.onApiKeyUpdate)
+        TodoistAPIKey.get().then(this.onApiKeyUpdate)
     }
 
     private onApiKeyUpdate = (apiKey?: string) => {

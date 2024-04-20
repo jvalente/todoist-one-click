@@ -44,5 +44,6 @@ export function addTask() {
         })
         .catch(() => {
             // TODO: Handle validation error?
+            // global error handler?
         })
 }
