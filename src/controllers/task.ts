@@ -1,4 +1,5 @@
 import API from '../api/api'
+import DueDate from '../models/due-date'
 import TargetLabels from '../models/target-labels'
 import TargetProjectId from '../models/target-project-id'
 
@@ -14,8 +15,13 @@ export function addTask() {
             }
         })
 
-    Promise.all([TargetProjectId.get(), TargetLabels.get(), getTabInfo])
-        .then(([projectId, labels, { title, url }]) => {
+    Promise.all([
+        TargetProjectId.get(),
+        TargetLabels.get(),
+        DueDate.get(),
+        getTabInfo,
+    ])
+        .then(([projectId, labels, dueDate, { title, url }]) => {
             const content = `[${title}](${url})`
 
             return API.fetchTodoistApi('tasks', {
@@ -24,6 +30,7 @@ export function addTask() {
                     content,
                     project_id: projectId,
                     labels,
+                    ...(dueDate ? { due_string: dueDate } : {}),
                 },
             })
         })
