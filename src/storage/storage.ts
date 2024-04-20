@@ -34,4 +34,9 @@ function reset() {
     return chrome.storage.local.clear()
 }
 
-export default { get, set, remove, reset }
+// TODO refine
+function addListener(callback: (changes: any) => void) {
+    chrome.storage.onChanged.addListener(callback)
+}
+
+export default { get, set, remove, reset, addListener }

@@ -6,7 +6,7 @@
     "scripts": {
         "dev:chrome": "npm run clear && DEV_BROWSER=chrome rollup -c --watch",
         "dev:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c --watch",
-        "test": "vitest tests/*",
+        "test": "vitest --exclude ./e2e",
         "e2e": "npx playwright test -c ./e2e",
         "e2e:ui": "npx playwright test -c ./e2e --ui",
         "clear": "rimraf dist",

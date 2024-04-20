@@ -14,8 +14,9 @@ const mockStorageData = () => ({
 
 const mockApiData = () => ({ source: 'api' })
 
-describe.only('model hydration', () => {
+describe('model hydration', () => {
     beforeEach(() => {
+        vi.spyOn(Storage, 'addListener').mockImplementation(vi.fn())
         vi.clearAllMocks()
         vi.useFakeTimers()
     })
@@ -45,16 +46,10 @@ describe.only('model hydration', () => {
         const mockAPI = vi.spyOn(API, 'fetchTodoistApi').mockResolvedValue({})
 
         const model = new Model('model')
-        model.attach(mockListener)
         model.hydrate()
 
         await vi.runAllTimersAsync()
 
-        expect(mockListener).toHaveBeenCalledOnce()
-        expect(mockListener).toHaveBeenCalledWith({
-            data: undefined,
-            lastUpdated: expect.any(Number),
-        })
         expect(mockStorageSet).toHaveBeenCalledWith('model', {
             data: undefined,
             lastUpdated: expect.any(Number),
@@ -68,15 +63,9 @@ describe.only('model hydration', () => {
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
 
         const model = new Model('model', { url: 'test' })
-        model.attach(mockListener)
         model.hydrate()
 
         await vi.runAllTimersAsync()
-
-        expect(mockListener).toHaveBeenCalledWith({
-            data: mockApiData(),
-            lastUpdated: expect.any(Number),
-        })
 
         expect(mockStorageSet).toHaveBeenCalledWith('model', {
             data: mockApiData(),
@@ -84,8 +73,10 @@ describe.only('model hydration', () => {
         })
     })
 
+    describe.todo('storage changes subscription', () => {})
+
     describe('error', () => {
-        it.only('populates the error state if the API call fails', async () => {
+        it('populates the error state if the API call fails', async () => {
             vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
             const mockAPI = vi
                 .spyOn(API, 'fetchTodoistApi')

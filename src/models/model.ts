@@ -17,6 +17,12 @@ class Model<T> extends Subject<ModelState<T>> {
 
         this.name = name
         this.fetchResource = fetchResource
+
+        Storage.addListener((changes) => {
+            if (changes[this.name]) {
+                this.notify(changes[this.name].newValue)
+            }
+        })
     }
 
     private hydrateFromStorage() {
@@ -65,19 +71,11 @@ class Model<T> extends Subject<ModelState<T>> {
         Storage.set(this.name, {
             data,
             lastUpdated,
-        }).then(() => {
-            this.notify({ data, lastUpdated })
         })
     }
 
     delete() {
-        Storage.remove(this.name).then(() => {
-            this.notify({
-                data: undefined,
-                lastUpdated: undefined,
-                error: undefined,
-            })
-        })
+        Storage.remove(this.name)
     }
 }
 
