@@ -1,7 +1,7 @@
 import { test as base, chromium, type BrowserContext } from '@playwright/test'
 import path from 'path'
 
-const EXTENSION_PATH = path.join(import.meta.dirname, '../dist')
+const EXTENSION_PATH = path.join(import.meta.dirname, '../../dist')
 
 export const test = base.extend<{
     context: BrowserContext

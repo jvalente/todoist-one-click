@@ -7,8 +7,8 @@
         "dev:chrome": "npm run clear && DEV_BROWSER=chrome rollup -c --watch",
         "dev:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c --watch",
         "test": "vitest tests/*",
-        "e2e": "npx playwright test",
-        "e2e:ui": "npx playwright test --ui",
+        "e2e": "npx playwright test -c ./e2e",
+        "e2e:ui": "npx playwright test -c ./e2e --ui",
         "clear": "rimraf dist",
         "build:chrome": "npm run clear && DEV_BROWSER=chrome rollup -c",
         "build:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c"
