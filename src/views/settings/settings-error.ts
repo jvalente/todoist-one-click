@@ -16,7 +16,7 @@ export class SettingsErrorElement extends LitElement {
         if (this.error) {
             return html`<section>
                 <label>Something went wrong...</label>
-                ${getErrorDescription(this.error)}
+                <small>${getErrorDescription(this.error)}</small>
                 <small style="font-family: monospace;font-style: italic;"
                     >${this.error?.message}</small
                 >

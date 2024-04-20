@@ -25,7 +25,9 @@ export class FailedTaskItemElement extends LitElement {
     render() {
         return html`<div>
             <header>${this.failedTask.task.title}</header>
-            <div>${getErrorDescription(this.failedTask.error)}</div>
+            <div>
+                <small>${getErrorDescription(this.failedTask.error)}</small>
+            </div>
             <footer>
                 <small><tc-al @click=${this.handleRetry}>Retry</tc-al></small>
                 <small>

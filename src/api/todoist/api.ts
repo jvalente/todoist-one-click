@@ -24,7 +24,7 @@ function request<T>(
                 return response.json().then((data) => data)
             })
             .catch((error) => {
-                throw new TodoistApiError(error)
+                throw new TodoistAPIError(error)
             })
     })
 }
@@ -49,19 +49,33 @@ function getURL(path: string) {
 /**
  *
  */
-class TodoistApiError extends Error {
+class TodoistAPIError extends Error {
     readonly status?: number
+    readonly online?: boolean
 
     constructor(error: unknown) {
         if (error instanceof Response) {
             super(`Bad response (${error.status})`)
             this.status = error.status
         } else {
-            super(error instanceof Error ? error?.message : 'Unknown error')
+            super(error instanceof Error ? error?.message : 'Unknown error', {
+                cause: error,
+            })
         }
 
-        this.name = 'TodoistApiError'
+        this.online = navigator.onLine
+        this.name = 'TodoistAPIError'
+    }
+
+    serialize() {
+        return {
+            name: this.name,
+            message: this.message,
+            status: this.status,
+            online: this.online,
+        }
     }
 }
 
 export const TodoistAPI = { request }
+export { TodoistAPIError }
