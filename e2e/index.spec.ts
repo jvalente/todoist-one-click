@@ -22,7 +22,7 @@ test.describe('extension settings', () => {
 
         // TODO: save button should be disabled
 
-        /**
+        /*
          * Wrong API token
          */
         await page
@@ -35,7 +35,7 @@ test.describe('extension settings', () => {
 
         await expect(page.getByText('Something went wrong...')).toBeVisible()
 
-        /**
+        /*
          * Update API token
          */
         await page.getByRole('link', { name: 'Update API Token' }).click()
@@ -50,20 +50,40 @@ test.describe('extension settings', () => {
             page.getByText('Target project', { exact: true })
         ).toBeVisible()
 
-        /**
+        /*
          * Select a project
          */
         await page.getByRole('combobox').selectOption('Lorem')
 
-        /**
+        /*
          * Add a label
          */
         await page.getByPlaceholder(/add a label/).fill('labelIpsum')
         await page.keyboard.press('Enter')
 
-        /**
+        /*
          * Remove a label
          */
         await page.getByText('labelIpsum').locator('a').click()
+
+        /**
+         * Add a due date
+         */
+        await page.getByPlaceholder(/set a due date/).fill('tomorrow')
+        await page.keyboard.press('Enter')
+
+        await expect(
+            page.getByText('Your tasks will have a tomorrow due date.')
+        ).toBeVisible()
+
+        /*
+         * Remove a due date
+         */
+        await page.getByPlaceholder(/\/delete the due date/).fill('')
+        await page.keyboard.press('Enter')
+
+        await expect(
+            page.getByText('The tasks you add will have no due date.')
+        ).toBeVisible()
     })
 })
