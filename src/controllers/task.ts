@@ -5,17 +5,18 @@ import TargetLabels from '../models/target-labels'
 import TargetProjectId from '../models/target-project-id'
 import { Task } from '../models/task'
 
-export function addTask() {
-    Promise.all([
-        TargetProjectId.get(),
-        TargetLabels.get(),
-        DueDate.get(),
-        Tabs.getActiveTab(),
-    ])
-        .then(([projectId, labels, dueDate, { title, url }]) => {
-            // TODO: Improve validation
+export function addTask(taskProps?: any) {
+    const prepareTask = new Promise((resolve) => {
+        if (taskProps) {
+            resolve(taskProps)
+        } else {
+            resolve(getTaskProps())
+        }
+    })
+
+    prepareTask
+        .then(({ title, content, projectId, labels, dueDate }: any) => {
             if (!title) throw new Error('Title is required')
-            const content = `[${title}](${url})`
 
             const task = new Task({
                 title,
@@ -36,4 +37,23 @@ export function addTask() {
             // TODO: Handle validation error?
             // global error handler?
         })
+}
+
+function getTaskProps() {
+    return Promise.all([
+        TargetProjectId.get(),
+        TargetLabels.get(),
+        DueDate.get(),
+        Tabs.getActiveTab(),
+    ]).then(([projectId, labels, dueDate, { title, url }]) => {
+        // TODO: Improve content validation
+
+        return {
+            title,
+            content: `[${title}](${url})`,
+            projectId,
+            labels,
+            dueDate,
+        }
+    })
 }

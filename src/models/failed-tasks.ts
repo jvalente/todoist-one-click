@@ -18,6 +18,12 @@ class FailedTasksModel extends Model<any> {
                 // we need some kind of "global" error handling entity?
             })
     }
+
+    discard(id: string): void {
+        this.get().then((failedTasks) => {
+            this.set(failedTasks?.filter((task: any) => task.id !== id))
+        })
+    }
 }
 
 const FailedTasks = new FailedTasksModel()
