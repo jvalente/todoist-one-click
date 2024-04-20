@@ -1,4 +1,4 @@
-import { Tabs } from '../api/extension'
+import { Icon, Tabs } from '../api/extension'
 import DueDate from '../models/due-date'
 import FailedTasks from '../models/failed-tasks'
 import TargetLabels from '../models/target-labels'
@@ -6,6 +6,8 @@ import TargetProjectId from '../models/target-project-id'
 import { Task } from '../models/task'
 
 export function addTask(taskProps?: any) {
+    Icon.setLoading()
+
     const prepareTask = new Promise((resolve) => {
         if (taskProps) {
             resolve(taskProps)
@@ -26,12 +28,15 @@ export function addTask(taskProps?: any) {
                 dueDate,
             })
 
-            task.flush().catch((error) => {
-                FailedTasks.add(task, error)
+            task.flush()
+                .then(() => Icon.setSuccess())
+                .catch((error) => {
+                    FailedTasks.add(task, error)
 
-                // TODO: does this belong here?
-                chrome.runtime.openOptionsPage()
-            })
+                    // TODO introduce an error icon?
+                    // TODO: does this belong here?
+                    chrome.runtime.openOptionsPage()
+                })
         })
         .catch(() => {
             // TODO: Handle validation error?

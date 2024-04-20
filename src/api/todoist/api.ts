@@ -7,14 +7,6 @@ function request<T>(
     path: string,
     { method, body }: any = { method: 'GET', body: undefined }
 ): Promise<T> {
-    // TODO move into API
-    chrome.action.setIcon({
-        path: {
-            '48': 'icons/loading.png',
-            '96': 'icons/loading@2x.png',
-        },
-    })
-
     return TodoistAPIKey.get().then((apiKey) => {
         if (!apiKey) {
             throw new Error('API key not found')
@@ -29,28 +21,9 @@ function request<T>(
         })
             .then((response) => {
                 if (!response.ok) throw response
-                return response.json().then((data) => {
-                    chrome.action.setIcon({
-                        path: {
-                            '48': 'icons/success.png',
-                            '96': 'icons/success@2x.png',
-                        },
-                    })
-
-                    setTimeout(() => {
-                        chrome.action.setIcon({
-                            path: {
-                                '48': 'icons/icon.png',
-                                '96': 'icons/icon@2x.png',
-                            },
-                        })
-                    }, 2000)
-
-                    return data
-                })
+                return response.json().then((data) => data)
             })
             .catch((error) => {
-                // TODO introduce an error icon
                 throw new TodoistApiError(error)
             })
     })
