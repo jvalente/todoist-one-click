@@ -7,9 +7,11 @@ class FailedTasksModel extends Model<any> {
     }
 
     add(task: Task, error: unknown) {
+        const id = crypto.randomUUID()
+
         this.get()
             .then((failedTasks) => {
-                this.set([...(failedTasks || []), { task, error }])
+                this.set([...(failedTasks || []), { id, task, error }])
             })
             .catch(() => {
                 // TODO: Model/Storage error handling
