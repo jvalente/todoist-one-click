@@ -41,8 +41,7 @@ export class TargetProjectElement extends LitElement {
         )
     }
 
-    private refreshProjects(event: any) {
-        event.preventDefault()
+    private refreshProjects() {
         Projects.delete()
 
         // TODO: improve this (model API)
@@ -63,7 +62,7 @@ export class TargetProjectElement extends LitElement {
                 <small
                     >The project list was last updated on
                     ${this.formatedDate()}.
-                    <a href="#" @click=${this.refreshProjects}>Refresh</a>
+                    <tc-al @click=${this.refreshProjects}>Refresh</tc-al>
                 </small>
             </div>
 

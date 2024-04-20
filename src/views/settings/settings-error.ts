@@ -42,7 +42,7 @@ export class SettingsErrorElement extends LitElement {
                 <small style="font-family: monospace;font-style: italic;"
                     >${this.error?.message}</small
                 >
-                <a href="#" @click=${() => window.location.reload()}>Retry</a>
+                <tc-al @click=${() => window.location.reload()}>Retry</tc-al>
             </section>`
         }
     }

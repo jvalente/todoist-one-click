@@ -1,7 +1,6 @@
-import { html, LitElement, css } from 'lit'
+import { html, LitElement } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { settingsSection } from '../common/styles/section'
-import Storage from '../../storage/storage'
 import { deleteAPIKey } from '../../controllers/api-key'
 import { clearAllData } from '../../controllers/data'
 
@@ -9,18 +8,11 @@ import { clearAllData } from '../../controllers/data'
 export class ApiKeyElement extends LitElement {
     static styles = [settingsSection]
 
-    private handleReset(event: KeyboardEvent) {
-        event.preventDefault()
-        Storage.reset()
-            .then(() => window.location.reload())
-            .catch((error) => console.log(error))
-    }
-
     render() {
         return html`<section>
             <label>Local data management & troubleshooting</label>
             <div>
-                <a href="#" @click=${deleteAPIKey}>Update API Token</a>
+                <tc-al @click=${deleteAPIKey}>Update API Token</tc-al>
             </div>
             <div>
                 <small
@@ -28,7 +20,7 @@ export class ApiKeyElement extends LitElement {
                     API token, target project, and labels. This won't affect
                     your Todoist account data.
                 </small>
-                <a href="#" @click=${clearAllData}>Clear all local data</a>
+                <tc-al @click=${clearAllData}>Clear all local data</tc-al>
             </div>
         </section>`
     }

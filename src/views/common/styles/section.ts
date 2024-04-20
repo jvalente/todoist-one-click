@@ -14,10 +14,6 @@ export const settingsSection = css`
         margin: 10px 0;
     }
 
-    section a {
-        color: var(--accent-color-0);
-    }
-
     section small {
         display: block;
         color: var(--secondary-color);

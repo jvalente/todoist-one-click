@@ -4,6 +4,7 @@ import APIKey from '../../api/api-key'
 
 import './api-key'
 import './settings-data'
+import '../common/system'
 
 @customElement('tc-settings')
 export class SettingsElement extends LitElement {

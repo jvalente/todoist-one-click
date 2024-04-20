@@ -16,8 +16,7 @@ export class TargetLabelsListElement extends LitElement {
     @property()
     onRemove = (label: string) => undefined
 
-    private handleOnRemove(event: PointerEvent, label: string) {
-        event.preventDefault()
+    private handleOnRemove(label: string) {
         this.onRemove(label)
     }
 
@@ -28,11 +27,9 @@ export class TargetLabelsListElement extends LitElement {
                 (label) => label,
                 (label) =>
                     html`<li>
-                        ${label}<a
-                            href="#"
-                            @click=${(event: PointerEvent) =>
-                                this.handleOnRemove(event, label)}
-                            >${deleteIcon}</a
+                        ${label}<tc-al
+                            @click=${() => this.handleOnRemove(label)}
+                            >${deleteIcon}</tc-al
                         >
                     </li>`
             )}
