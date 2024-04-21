@@ -1,7 +1,7 @@
 {
     "name": "Todoist One-Click",
     "description": "Capture tasks with one click",
-    "version": "1.1.1",
+    "version": "__VERSION__",
     "manifest_version": 3,
     "permissions": ["storage", "unlimitedStorage", "contextMenus", "tabs"],
     "action": {

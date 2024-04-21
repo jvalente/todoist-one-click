@@ -6,18 +6,25 @@
     "scripts": {
         "dev:chrome": "npm run clear && DEV_BROWSER=chrome rollup -c --watch",
         "dev:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c --watch",
-        "test": "vitest --exclude ./e2e",
-        "e2e": "npx playwright test -c ./e2e",
+        "test": "vitest run --exclude ./e2e",
+        "test:watch": "vitest --exclude ./e2e",
+        "e2e": "npm run build:chrome && npx playwright test -c ./e2e",
         "e2e:ui": "npx playwright test -c ./e2e --ui",
+        "test:all": "npm run test && npm run e2e && npm run clear:all",
         "clear": "rimraf dist",
+        "clear:all": "rimraf dist && rimraf packages",
         "build:chrome": "npm run clear && DEV_BROWSER=chrome rollup -c",
-        "build:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c"
+        "build:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c",
+        "build:all": "npm run clear && DEV_BROWSER=chrome rollup -c && DEV_BROWSER=firefox rollup -c",
+        "release:minor": "npm run test:all && npm version minor -m 'Release minor v%s' && npm run build:all",
+        "release:patch": "npm run test:all && npm version patch -m 'Release patch v%s' && npm run build:all"
     },
     "devDependencies": {
         "@playwright/test": "1.43.0",
         "@rollup/plugin-node-resolve": "15.2.3",
         "@rollup/plugin-typescript": "11.1.6",
         "@types/chrome": "0.0.263",
+        "archiver": "7.0.1",
         "rimraf": "5.0.5",
         "rollup": "4.13.0",
         "rollup-plugin-copy": "3.5.0",

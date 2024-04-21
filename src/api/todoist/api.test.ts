@@ -12,6 +12,7 @@ import { TodoistAPI } from './api'
 import { TodoistAPIKey } from './api-key'
 
 const unmockedFetch = global.fetch
+const unmockedNavigator = global.navigator
 const mockFetch = vi.fn()
 global.fetch = mockFetch
 global.chrome = {
@@ -19,6 +20,7 @@ global.chrome = {
         setIcon: vi.fn(),
     },
 } as any
+global.navigator = { online: true } as any
 
 describe('API', () => {
     beforeAll(() => {
@@ -35,6 +37,7 @@ describe('API', () => {
 
     afterAll(() => {
         global.fetch = unmockedFetch
+        global.navigator = unmockedNavigator
     })
 
     it('calls fetch with the correct GET parameters', async () => {
