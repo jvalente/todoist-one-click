@@ -7,7 +7,7 @@ class FailedTasksModel extends Model<any> {
         super('failedTasks')
     }
 
-    add(task: Task, error: unknown) {
+    add(task: { title: string; url?: string }, error: unknown) {
         const id = crypto.randomUUID()
 
         const serializedError =
@@ -15,8 +15,6 @@ class FailedTasksModel extends Model<any> {
 
         this.get()
             .then((failedTasks) => {
-                console.log(error)
-
                 this.set([
                     ...(failedTasks || []),
                     { id, task, error: serializedError },

@@ -5,18 +5,10 @@ import TargetLabels from '../models/target-labels'
 import TargetProjectId from '../models/target-project-id'
 import { Task } from '../models/task'
 
-export function addTask(taskProps?: any) {
+export function addTask(title?: string, url?: string) {
     Icon.setLoading()
 
-    const prepareTask = new Promise((resolve) => {
-        if (taskProps) {
-            resolve(taskProps)
-        } else {
-            resolve(getTaskProps())
-        }
-    })
-
-    prepareTask
+    getTaskProps(title, url)
         .then(({ title, url, projectId, labels, dueDate }: any) => {
             if (!title) throw new Error('Title is required')
 
@@ -32,7 +24,8 @@ export function addTask(taskProps?: any) {
                 .then(() => Icon.setSuccess())
                 .catch((error) => {
                     Icon.setError()
-                    FailedTasks.add(task, error)
+                    const { title, url } = task
+                    FailedTasks.add({ title, url }, error)
 
                     // TODO introduce an error icon?
                     // TODO: does this belong here?
@@ -47,12 +40,12 @@ export function addTask(taskProps?: any) {
         })
 }
 
-function getTaskProps() {
+function getTaskProps(title?: string, url?: string) {
     return Promise.all([
         TargetProjectId.get(),
         TargetLabels.get(),
         DueDate.get(),
-        Tabs.getActiveTab(),
+        title && url ? Promise.resolve({ title, url }) : Tabs.getActiveTab(),
     ]).then(([projectId, labels, dueDate, { title, url }]) => {
         // TODO: Improve content validation
 
