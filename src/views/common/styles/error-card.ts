@@ -4,7 +4,7 @@ export const errorCard = css`
     :host > div {
         margin-bottom: 10px;
         padding: 5px;
-        background-color: rgb(40, 0, 15); <!-- TODO: experimental color -->
+        background-color: var(--bg-color-error);
         border-radius: var(--default-border-radius);
     }
 
@@ -27,7 +27,6 @@ export const errorCard = css`
     :host > div > small:nth-child(2) > a {
         color: var(--accent-color-0);
     }
-
 
     :host > div > small:nth-child(3) {
         margin: 20px 0;
