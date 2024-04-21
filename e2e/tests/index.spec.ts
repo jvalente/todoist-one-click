@@ -18,6 +18,10 @@ test.describe('extension settings', () => {
             }
         })
 
+        await page.route('**/rest/v2/tasks', async (route) => {
+            await route.fulfill({ status: 401 })
+        })
+
         await expect(page.getByText('Todoist One-Click Settings')).toBeVisible()
 
         // TODO: save button should be disabled
@@ -91,9 +95,48 @@ test.describe('extension settings', () => {
         ).toBeVisible()
 
         /**
-         * Test add task errors
+         * Setup due date and label again
          */
+        await page.getByPlaceholder(/set a due date/).fill('monday')
+        await page.keyboard.press('Enter')
+        await page.getByPlaceholder(/add a label/).fill('labelIpsum')
+        await page.keyboard.press('Enter')
 
-        // TODO (add test task)
+        /**
+         * Add a test task (failure)
+         */
+        await page.getByRole('link', { name: 'Add test task' }).click()
+        await expect(page.getByText('Failed tasks (1)')).toBeVisible()
+        await expect(page.getByText(/the API token is invalid/)).toBeVisible()
+        await page.getByRole('link', { name: 'Discard' }).click()
+
+        await expect(page.getByText('Failed tasks (1)')).not.toBeVisible()
+
+        /**
+         * Add a test task (success)
+         */
+        await page.route('**/rest/v2/tasks', async (route) => {
+            await route.fulfill({ status: 200 })
+        })
+
+        const addTaskAPIRequest = page.waitForRequest((request) => {
+            const postData = request.postData()
+            const expectedPostData = JSON.stringify({
+                content: '[Todoist One-Click test task](https://doist.com)',
+                project_id: '100',
+                labels: ['labelIpsum'],
+                due_string: 'monday',
+            })
+
+            return (
+                request.url().includes('rest/v2/tasks') &&
+                request.method() === 'POST' &&
+                postData === expectedPostData
+            )
+        })
+
+        page.getByRole('link', { name: 'Add test task' }).click()
+
+        await addTaskAPIRequest
     })
 })

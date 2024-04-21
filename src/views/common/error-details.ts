@@ -1,8 +1,6 @@
 import { html } from 'lit'
 
 export function getErrorDescription(error: any) {
-    console.log(error)
-
     if (error && error.status === 401) {
         return 'This error usually happens when the API token is invalid or expired. Try to update it using the option below.'
     }
