@@ -1,23 +1,24 @@
 import { html, LitElement } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
 import { settingsSection } from '../common/styles/section'
 import TargetProjectId from '../../models/target-project-id'
 import { setTargetProjectId } from '../../controllers/target-project-id'
 import Projects from '../../models/projects'
+import type { Project, ProjectsState } from '../../types/projects.types'
 
 @customElement('tc-target-project')
 export class TargetProjectElement extends LitElement {
     static styles = [settingsSection]
 
-    @property()
-    projects: any = []
+    @property({ type: Array })
+    projects: ProjectsState['data'] = []
 
-    @property()
-    lastUpdated: any = []
+    @property({ type: Number })
+    lastUpdated: ProjectsState['lastUpdated']
 
-    @property()
-    targetProjectId?: number = 0
+    @state()
+    private targetProjectId?: string
 
     connectedCallback() {
         super.connectedCallback()
@@ -26,15 +27,16 @@ export class TargetProjectElement extends LitElement {
         TargetProjectId.hydrate()
     }
 
-    private onTargetProjectIdUpdate = ({ data }: any) => {
+    private onTargetProjectIdUpdate = ({ data }: { data?: string }) => {
         this.targetProjectId = data
     }
 
+    // TODO: find type solution
     private handleSelectionChange(event: any) {
         setTargetProjectId(event.target.value)
     }
 
-    private isSelected(project: any) {
+    private isSelected(project: Project) {
         return (
             project.id === this.targetProjectId ||
             (!this.targetProjectId && project.is_inbox_project)
@@ -49,7 +51,9 @@ export class TargetProjectElement extends LitElement {
     }
 
     private formatedDate() {
-        return new Date(this.lastUpdated).toLocaleString()
+        return this.lastUpdated
+            ? new Date(this.lastUpdated).toLocaleString()
+            : 'never'
     }
 
     render() {
@@ -69,8 +73,8 @@ export class TargetProjectElement extends LitElement {
             <select id="dropdown" @change=${this.handleSelectionChange}>
                 <option value="" disabled selected>Select your option</option>
                 ${repeat(
-                    this.projects,
-                    (project: any) => project.id,
+                    this.projects || [],
+                    (project) => project.id,
                     (project) =>
                         html`<option
                             value=${project.id}

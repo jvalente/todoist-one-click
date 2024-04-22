@@ -1,6 +1,6 @@
 import Model from './model'
 
-class TargetLabelsModel extends Model<any> {
+class TargetLabelsModel extends Model<Array<string>> {
     constructor() {
         super('targetLabels')
     }

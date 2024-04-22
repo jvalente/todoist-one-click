@@ -11,10 +11,10 @@ export class TargetLabelsElement extends LitElement {
     static styles = [settingsSection]
 
     @state()
-    targetLabels: Array<string> = []
+    private targetLabels: Array<string> = []
 
     @state()
-    value = ''
+    private value = ''
 
     @query('#targetLabel')
     targetLabelInput?: HTMLInputElement
@@ -26,7 +26,7 @@ export class TargetLabelsElement extends LitElement {
         TargetLabels.hydrate()
     }
 
-    private onTargetLabelsUpdate = ({ data }: any) => {
+    private onTargetLabelsUpdate = ({ data }: { data?: Array<string> }) => {
         this.targetLabels = data || []
     }
 

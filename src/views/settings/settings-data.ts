@@ -8,24 +8,25 @@ import './failed-tasks'
 import './due-date'
 import './loading'
 
-import Projects, { ProjectState } from '../../models/projects'
+import Projects from '../../models/projects'
 import { settingsSection } from '../common/styles/section'
+import type { ProjectsState } from '../../types/projects.types'
 
 @customElement('tc-settings-data')
 export class SettingsDataElement extends LitElement {
     static styles = [settingsSection]
 
-    @property()
+    @property({ type: String })
     apiKey?: string
 
     @state()
-    projects: ProjectState['data'] = []
+    private projects: ProjectsState['data'] = []
 
     @state()
-    error: ProjectState['error'] = undefined
+    private error: ProjectsState['error'] = undefined
 
     @state()
-    projectsLastUpdated?: ProjectState['lastUpdated'] = 0
+    private projectsLastUpdated?: ProjectsState['lastUpdated'] = 0
 
     connectedCallback() {
         super.connectedCallback()
@@ -34,7 +35,11 @@ export class SettingsDataElement extends LitElement {
         Projects.hydrate()
     }
 
-    private onProjectsUpdate = ({ data, lastUpdated, error }: any) => {
+    private onProjectsUpdate = ({
+        data,
+        lastUpdated,
+        error,
+    }: ProjectsState) => {
         this.projects = data
         this.projectsLastUpdated = lastUpdated
         this.error = error

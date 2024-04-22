@@ -6,16 +6,17 @@ import {
     discardFailedTask,
     retryFailedTask,
 } from '../../../controllers/failed-tasks'
+import { FailedTask } from '../../../types/tasks.type'
 
 @customElement('tc-failed-task-item')
 export class FailedTaskItemElement extends LitElement {
     static styles = [errorCard]
 
-    @property()
-    failedTask?: any
+    @property({ type: Object })
+    failedTask?: FailedTask
 
     private handleDiscard() {
-        discardFailedTask(this.failedTask.id)
+        discardFailedTask(this.failedTask)
     }
 
     private handleRetry() {
@@ -23,6 +24,8 @@ export class FailedTaskItemElement extends LitElement {
     }
 
     render() {
+        if (!this.failedTask) return null
+
         return html`<div>
             <small>${this.failedTask.task.title}</small>
             <small

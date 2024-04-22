@@ -1,13 +1,13 @@
-import { TodoistAPI, TodoistAPIError } from '../api/todoist'
+import { TodoistAPIError } from '../api/todoist'
+import { FailedTask } from '../types/tasks.type'
 import Model from './model'
-import { Task } from './task'
 
-class FailedTasksModel extends Model<any> {
+class FailedTasksModel extends Model<Array<FailedTask>> {
     constructor() {
         super('failedTasks')
     }
 
-    add(task: { title: string; url?: string }, error: unknown) {
+    add(task: FailedTask['task'], error: FailedTask['error']) {
         const id = crypto.randomUUID()
 
         const serializedError =
@@ -26,9 +26,9 @@ class FailedTasksModel extends Model<any> {
             })
     }
 
-    discard(id: string): void {
+    discard(id: FailedTask['id']): void {
         this.get().then((failedTasks) => {
-            this.set(failedTasks?.filter((task: any) => task.id !== id))
+            this.set(failedTasks?.filter((failedTask) => failedTask.id !== id))
         })
     }
 }

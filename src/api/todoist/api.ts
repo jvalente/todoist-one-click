@@ -3,9 +3,14 @@ import { TodoistAPIKey } from './api-key'
 const API_URL = 'https://api.todoist.com/rest'
 const API_VERSION = 'v2'
 
+type RequestOptions = {
+    method: 'GET' | 'POST'
+    body: Record<string, unknown> | undefined
+}
+
 function request<T>(
     path: string,
-    { method, body }: any = { method: 'GET', body: undefined }
+    { method, body }: RequestOptions = { method: 'GET', body: undefined }
 ): Promise<T> {
     return TodoistAPIKey.get().then((apiKey) => {
         if (!apiKey) {
@@ -16,7 +21,7 @@ function request<T>(
             method,
             headers: getHeaders(apiKey),
             ...(method === 'POST' && body
-                ? { body: JSON.stringify(body || '') }
+                ? { body: JSON.stringify(body) }
                 : {}),
         })
             .then((response) => {
