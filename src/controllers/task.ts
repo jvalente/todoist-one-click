@@ -1,8 +1,6 @@
 import { Icon, Tabs } from '../api/extension'
-import DueDate from '../models/due-date'
 import FailedTasks from '../models/failed-tasks'
-import TargetLabels from '../models/target-labels'
-import TargetProjectId from '../models/target-project-id'
+import Rules from '../models/rules'
 import { Task } from '../models/task'
 
 export function addTask(title?: string, url?: string) {
@@ -42,11 +40,9 @@ export function addTask(title?: string, url?: string) {
 
 function getTaskProps(title?: string, url?: string) {
     return Promise.all([
-        TargetProjectId.get(),
-        TargetLabels.get(),
-        DueDate.get(),
+        Rules.getDefault(),
         title && url ? Promise.resolve({ title, url }) : Tabs.getActiveTab(),
-    ]).then(([projectId, labels, dueDate, { title, url }]) => {
+    ]).then(([{ projectId, labels, dueDate }, { title, url }]) => {
         // TODO: Improve content validation
 
         return {
