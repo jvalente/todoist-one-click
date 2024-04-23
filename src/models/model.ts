@@ -11,12 +11,20 @@ export type ModelState<T> = {
 class Model<T> extends Subject<ModelState<T>> {
     private name: string
     private fetchResource?: { url: string }
+    private defaultState?: T
 
-    constructor(name: string, fetchResource?: { url: string }) {
+    constructor(
+        name: string,
+        {
+            fetchResource,
+            defaultState,
+        }: { fetchResource?: { url: string }; defaultState?: T } = {}
+    ) {
         super()
 
         this.name = name
         this.fetchResource = fetchResource
+        this.defaultState = defaultState
 
         Storage.addListener((changes) => {
             if (changes[this.name]) {
@@ -41,10 +49,12 @@ class Model<T> extends Subject<ModelState<T>> {
                 if (storageData) {
                     return { value: storageData, persist: false }
                 } else {
-                    return this.hydrateFromAPI().then((apiData) => ({
-                        value: { data: apiData },
-                        persist: true,
-                    }))
+                    return this.hydrateFromAPI().then((apiData) => {
+                        return {
+                            value: { data: apiData || this.defaultState },
+                            persist: true,
+                        }
+                    })
                 }
             })
             .then(({ value, persist }) => {

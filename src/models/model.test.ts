@@ -40,7 +40,40 @@ describe('model hydration', () => {
         expect(mockStorageSet).not.toHaveBeenCalled()
     })
 
-    it('hydrates with undefined if the key does not exist in storage and no fetchResource exists', async () => {
+    it('hydrates from API if the key does not exist in storage and fetch information is provided', async () => {
+        vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
+        vi.spyOn(TodoistAPI, 'request').mockResolvedValue(mockApiData())
+        const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
+
+        const model = new Model('model', { fetchResource: { url: 'test' } })
+        model.hydrate()
+
+        await vi.runAllTimersAsync()
+
+        expect(mockStorageSet).toHaveBeenCalledWith('model', {
+            data: mockApiData(),
+            lastUpdated: expect.any(Number),
+        })
+    })
+
+    it('hydrates with default state if the key does not exist in storage and no fetchResource exists', async () => {
+        vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
+        const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
+        const mockAPI = vi.spyOn(TodoistAPI, 'request').mockResolvedValue({})
+
+        const model = new Model('model', { defaultState: { lorem: 'ipsum' } })
+        model.hydrate()
+
+        await vi.runAllTimersAsync()
+
+        expect(mockStorageSet).toHaveBeenCalledWith('model', {
+            data: { lorem: 'ipsum' },
+            lastUpdated: expect.any(Number),
+        })
+        expect(mockAPI).not.toHaveBeenCalled()
+    })
+
+    it('hydrates with undefined if the no storage, fetchResource or defaultState exists', async () => {
         vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
         const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
         const mockAPI = vi.spyOn(TodoistAPI, 'request').mockResolvedValue({})
@@ -57,22 +90,6 @@ describe('model hydration', () => {
         expect(mockAPI).not.toHaveBeenCalled()
     })
 
-    it('hydrates from API if the key does not exist in storage and fetch information is provided', async () => {
-        vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
-        vi.spyOn(TodoistAPI, 'request').mockResolvedValue(mockApiData())
-        const mockStorageSet = vi.spyOn(Storage, 'set').mockResolvedValue()
-
-        const model = new Model('model', { url: 'test' })
-        model.hydrate()
-
-        await vi.runAllTimersAsync()
-
-        expect(mockStorageSet).toHaveBeenCalledWith('model', {
-            data: mockApiData(),
-            lastUpdated: expect.any(Number),
-        })
-    })
-
     describe.todo('storage changes subscription', () => {})
 
     describe('error', () => {
@@ -82,7 +99,7 @@ describe('model hydration', () => {
                 .spyOn(TodoistAPI, 'request')
                 .mockRejectedValue(new Error('API error'))
 
-            const model = new Model('model', { url: 'test' })
+            const model = new Model('model', { fetchResource: { url: 'test' } })
             model.attach(mockListener)
             model.hydrate()
 
