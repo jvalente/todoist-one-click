@@ -1,49 +1,37 @@
 import { html, LitElement } from 'lit'
-import { customElement, query, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { settingsSection } from '../common/styles/section'
-import DueDate from '../../models/due-date'
-import { setDueDate } from '../../controllers/due-date'
+import { updateDefaultRule } from '../../controllers/rules'
 
 @customElement('tc-due-date')
 export class DueDateElement extends LitElement {
     static styles = [settingsSection]
 
-    @state()
-    value = ''
+    @property()
+    dueDate?: string
 
     @query('#dueDate')
     dueDateInput?: HTMLInputElement
-
-    connectedCallback() {
-        super.connectedCallback()
-
-        DueDate.attach(this.onDueDateUpdate)
-        DueDate.hydrate()
-    }
 
     private handleKeyUp(event: InputEvent) {
         event.preventDefault()
 
         // TODO: find type solution
         if (this.dueDateInput && (event as any).key === 'Enter') {
-            setDueDate(this.dueDateInput.value)
+            updateDefaultRule({ dueDate: this.dueDateInput.value })
             this.dueDateInput.value = ''
         }
-    }
-
-    private onDueDateUpdate = ({ data }: any) => {
-        this.value = data || ''
     }
 
     render() {
         return html`<section>
             <label>Due date</label>
-            ${this.value
-                ? renderDueDate(this.value)
+            ${this.dueDate
+                ? renderDueDate(this.dueDate)
                 : renderNoDueDatePlaceholder()}
             <input
                 id="dueDate"
-                placeholder=${getInputPlaceholder(this.value)}
+                placeholder=${getInputPlaceholder(this.dueDate)}
                 @keyup=${this.handleKeyUp}
                 type="text"
             />
@@ -67,7 +55,7 @@ function renderNoDueDatePlaceholder() {
     >`
 }
 
-function getInputPlaceholder(value: string) {
+function getInputPlaceholder(value?: string) {
     return `Type and press Enter to ${
         value ? 'change/delete the' : 'set a'
     } due date...`

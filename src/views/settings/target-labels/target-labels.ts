@@ -1,34 +1,22 @@
 import { html, LitElement } from 'lit'
-import { customElement, query, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { settingsSection } from '../../common/styles/section'
-import TargetLabels from '../../../models/target-labels'
-import { removeLabel, setLabels } from '../../../controllers/labels'
 
 import './target-labels-list'
+import { updateDefaultRule } from '../../../controllers/rules'
 
 @customElement('tc-target-labels')
 export class TargetLabelsElement extends LitElement {
     static styles = [settingsSection]
 
-    @state()
-    private targetLabels: Array<string> = []
+    @property()
+    private labels?: Array<string>
 
     @state()
     private value = ''
 
     @query('#targetLabel')
     targetLabelInput?: HTMLInputElement
-
-    connectedCallback() {
-        super.connectedCallback()
-
-        TargetLabels.attach(this.onTargetLabelsUpdate)
-        TargetLabels.hydrate()
-    }
-
-    private onTargetLabelsUpdate = ({ data }: { data?: Array<string> }) => {
-        this.targetLabels = data || []
-    }
 
     private handleInputChange(event: InputEvent) {
         event.preventDefault()
@@ -46,22 +34,24 @@ export class TargetLabelsElement extends LitElement {
 
         // TODO: find type solution
         if ((event as any).key === 'Enter') {
-            setLabels(this.targetLabels, this.value)
+            updateDefaultRule({ labels: [...(this.labels || []), this.value] })
             this.value = ''
         }
     }
 
     private handleRemoveLabel(label: string) {
-        removeLabel(this.targetLabels, label)
+        updateDefaultRule({
+            labels: this.labels?.filter((l: string) => l !== label),
+        })
     }
 
     private renderTargetLabelsList() {
-        if (!this.targetLabels.length) {
+        if (!this.labels?.length) {
             return html`<small>No target labels added yet.</small>`
         }
 
         return html` <tc-target-labels-list
-            .labels=${this.targetLabels}
+            .labels=${this.labels}
             .onRemove=${(label: string) => this.handleRemoveLabel(label)}
         ></tc-target-labels-list>`
     }

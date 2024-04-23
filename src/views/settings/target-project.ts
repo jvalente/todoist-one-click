@@ -2,10 +2,9 @@ import { html, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
 import { settingsSection } from '../common/styles/section'
-import TargetProjectId from '../../models/target-project-id'
-import { setTargetProjectId } from '../../controllers/target-project-id'
 import Projects from '../../models/projects'
 import type { Project, ProjectsState } from '../../types/projects.types'
+import { updateDefaultRule } from '../../controllers/rules'
 
 @customElement('tc-target-project')
 export class TargetProjectElement extends LitElement {
@@ -17,29 +16,18 @@ export class TargetProjectElement extends LitElement {
     @property({ type: Number })
     lastUpdated: ProjectsState['lastUpdated']
 
-    @state()
-    private targetProjectId?: string
-
-    connectedCallback() {
-        super.connectedCallback()
-
-        TargetProjectId.attach(this.onTargetProjectIdUpdate)
-        TargetProjectId.hydrate()
-    }
-
-    private onTargetProjectIdUpdate = ({ data }: { data?: string }) => {
-        this.targetProjectId = data
-    }
+    @property()
+    private projectId?: string
 
     // TODO: find type solution
     private handleSelectionChange(event: any) {
-        setTargetProjectId(event.target.value)
+        updateDefaultRule({ projectId: event.target.value })
     }
 
     private isSelected(project: Project) {
         return (
-            project.id === this.targetProjectId ||
-            (!this.targetProjectId && project.is_inbox_project)
+            project.id === this.projectId ||
+            (!this.projectId && project.is_inbox_project)
         )
     }
 

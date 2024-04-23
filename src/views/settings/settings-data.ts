@@ -11,13 +11,15 @@ import './loading'
 import Projects from '../../models/projects'
 import { settingsSection } from '../common/styles/section'
 import type { ProjectsState } from '../../types/projects.types'
+import { Rule, RulesState } from '../../types/rules.types'
+import Rules from '../../models/rules'
 
 @customElement('tc-settings-data')
 export class SettingsDataElement extends LitElement {
     static styles = [settingsSection]
 
     @property({ type: String })
-    apiKey?: string
+    apiKey!: string
 
     @state()
     private projects: ProjectsState['data'] = []
@@ -28,9 +30,14 @@ export class SettingsDataElement extends LitElement {
     @state()
     private projectsLastUpdated?: ProjectsState['lastUpdated'] = 0
 
+    @state()
+    private defaultRule?: Rule
+
     connectedCallback() {
         super.connectedCallback()
 
+        Rules.attach(this.onRulesUpdate)
+        Rules.hydrate()
         Projects.attach(this.onProjectsUpdate)
         Projects.hydrate()
     }
@@ -45,11 +52,21 @@ export class SettingsDataElement extends LitElement {
         this.error = error
     }
 
-    private renderTargetProject() {
+    private onRulesUpdate = ({ data }: RulesState) => {
+        this.defaultRule = data?.find((rule) => rule.default)
+    }
+
+    // TODO: Move into separate component
+    private renderDefaultRule() {
         return html`<tc-target-project
-            .projects=${this.projects}
-            .lastUpdated=${this.projectsLastUpdated}
-        ></tc-target-project>`
+                .projectId=${this.defaultRule?.projectId}
+                .projects=${this.projects}
+                .lastUpdated=${this.projectsLastUpdated}
+            ></tc-target-project
+            ><tc-target-labels
+                .labels=${this.defaultRule?.labels}
+            ></tc-target-labels
+            ><tc-due-date .dueDate=${this.defaultRule?.dueDate}></tc-due-date>`
     }
 
     render() {
@@ -62,8 +79,8 @@ export class SettingsDataElement extends LitElement {
 
         if (this.projects && this.projectsLastUpdated) {
             return html`
-                ${renderFailedTasks()} ${this.renderTargetProject()}
-                ${renderTargetLabels()} ${renderDueDate()} ${renderReset()}
+                ${renderFailedTasks()}
+                ${this.renderDefaultRule()}${renderReset()}
             `
         }
 
@@ -73,14 +90,6 @@ export class SettingsDataElement extends LitElement {
 
 function renderFailedTasks() {
     return html`<tc-failed-tasks></tc-failed-tasks>`
-}
-
-function renderTargetLabels() {
-    return html`<tc-target-labels></tc-target-labels>`
-}
-
-function renderDueDate() {
-    return html`<tc-due-date></tc-due-date>`
 }
 
 function renderReset() {
