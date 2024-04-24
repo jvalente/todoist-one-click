@@ -1,11 +1,22 @@
 function get<T>(key: string) {
-    // chrome.storage.local.get(null).then((data) => console.log(data))
-
     return new Promise<T | undefined>((resolve, reject) => {
         chrome.storage.local
             .get(key)
             .then((data) => {
                 resolve(data[key])
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
+function getAll() {
+    return new Promise<any>((resolve, reject) => {
+        chrome.storage.local
+            .get(null)
+            .then((data) => {
+                resolve(data)
             })
             .catch((error) => {
                 reject(error)
@@ -39,4 +50,4 @@ function addListener(callback: (changes: any) => void) {
     chrome.storage.onChanged.addListener(callback)
 }
 
-export const Storage = { get, set, remove, reset, addListener }
+export const Storage = { get, getAll, set, remove, reset, addListener }

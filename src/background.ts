@@ -1,4 +1,5 @@
 import { addTask } from './controllers/task'
+import { v120 } from './migrations/v120'
 
 // context menu settings entry
 chrome.runtime.onInstalled.addListener(async () => {
@@ -30,7 +31,11 @@ chrome.commands.onCommand.addListener((command) => {
 
 // open settings after installation
 chrome.runtime.onInstalled.addListener((details) => {
-    if (details?.reason === 'install') {
+    if (details.reason === 'install') {
         chrome.runtime.openOptionsPage()
+    } else if (details.reason === 'update') {
+        if (details.previousVersion === '1.2.0') {
+            v120()
+        }
     }
 })
