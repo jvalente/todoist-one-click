@@ -77,7 +77,13 @@ test.describe('extension settings', () => {
         /**
          * Add a due date
          */
-        await page.getByPlaceholder(/set a due date/).fill('tomorrow')
+        await expect(
+            page.getByText('Your tasks will have a today due date.')
+        ).toBeVisible()
+
+        await page
+            .getByPlaceholder(/change\/delete the due date/)
+            .fill('tomorrow')
         await page.keyboard.press('Enter')
 
         await expect(
@@ -138,5 +144,13 @@ test.describe('extension settings', () => {
         page.getByRole('link', { name: 'Add test task' }).click()
 
         await addTaskAPIRequest
+
+        /**
+         * Clear all data
+         */
+        await page.getByRole('link', { name: 'Clear all local data' }).click()
+        await expect(
+            page.getByPlaceholder('Paste the API token here...')
+        ).toBeVisible()
     })
 })
