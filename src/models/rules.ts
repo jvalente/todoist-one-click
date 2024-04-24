@@ -25,13 +25,24 @@ class RulesModel extends Model<Array<Rule>> {
 
     updateDefault(ruleParams: Partial<Rule>): void {
         this.get().then((rules) => {
+            let updated = false
+
             const updatedRules = rules?.map((rule) => {
                 if (rule.default) {
+                    updated = true
                     return { ...rule, ...ruleParams }
                 }
                 return rule
             })
-            this.set(updatedRules)
+
+            if (updated) {
+                this.set(updatedRules)
+            } else {
+                this.set([
+                    ...(updatedRules || []),
+                    { ...DEFAULT_RULE, ...ruleParams },
+                ])
+            }
         })
     }
 
