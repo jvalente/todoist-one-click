@@ -9,6 +9,10 @@ export function getErrorDescription(error: any) {
         return 'This error usually happens when Todoist could not process the request.'
     }
 
+    if (error && error.status >= 500) {
+        return 'The Todoist servers may be currently unavailable.'
+    }
+
     if (error && !error.status) {
         return 'We were not able to reach the Todoist servers. Please check your internet connection and try again.'
     }
