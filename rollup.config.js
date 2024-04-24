@@ -75,7 +75,7 @@ function makePackage() {
                 )
                 output.on('finish', resolve)
 
-                const archive = archiver('zip', { store: true })
+                const archive = archiver('zip', { zlib: { level: 1 } })
                 archive.on('warning', console.log)
                 archive.on('error', console.log)
 
