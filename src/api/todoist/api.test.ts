@@ -84,18 +84,18 @@ describe('API', () => {
     })
 
     it('throws if response is not ok', async () => {
-        expect.assertions(2)
+        expect.assertions(3)
 
         mockFetch.mockResolvedValueOnce(
             new Response('Resource not found', {
                 status: 404,
-                statusText: 'Not Found',
             })
         )
 
         return TodoistAPI.request('path').catch((error) => {
             expect(error.message).toEqual('Bad response (404)')
             expect(error.status).toEqual(404)
+            expect(error.responseText).toEqual('Resource not found')
         })
     })
 
@@ -111,6 +111,20 @@ describe('API', () => {
 
         return TodoistAPI.request('path').catch((error) => {
             expect(error.message).toEqual('Invalid JSON')
+        })
+    })
+
+    it.only('throws if response error has no valid text', async () => {
+        const response = new Response()
+        expect.assertions(4)
+
+        mockFetch.mockResolvedValueOnce(response)
+
+        return TodoistAPI.request('path').catch((error) => {
+            expect(error.cause.message).toEqual('Unexpected end of JSON input')
+            expect(error.message).toEqual('Unexpected end of JSON input')
+            expect(error.status).toBeUndefined()
+            expect(error.responseText).toBeUndefined()
         })
     })
 })

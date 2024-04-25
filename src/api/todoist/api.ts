@@ -25,7 +25,13 @@ function request<T>(
                 : {}),
         })
             .then((response) => {
-                if (!response.ok) throw response
+                if (!response.ok) {
+                    const { status } = response
+
+                    return response.text().then((text) => {
+                        throw { text, status }
+                    })
+                }
                 return response.json().then((data) => data)
             })
             .catch((error) => {
@@ -57,11 +63,18 @@ function getURL(path: string) {
 class TodoistAPIError extends Error {
     readonly status?: number
     readonly online?: boolean
+    readonly responseText?: string
 
     constructor(error: unknown) {
-        if (error instanceof Response) {
+        if (
+            error &&
+            typeof error === 'object' &&
+            'status' in error &&
+            'text' in error
+        ) {
             super(`Bad response (${error.status})`)
-            this.status = error.status
+            this.status = error.status as number
+            this.responseText = error.text as string
         } else {
             super(error instanceof Error ? error?.message : 'Unknown error', {
                 cause: error,
@@ -76,6 +89,7 @@ class TodoistAPIError extends Error {
         return {
             name: this.name,
             message: this.message,
+            responseText: this.responseText,
             status: this.status,
             online: this.online,
         }
