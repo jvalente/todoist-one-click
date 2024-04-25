@@ -35,7 +35,8 @@ test.describe('extension settings', () => {
 
         await page.getByRole('button', { name: 'Save' }).click()
 
-        await expect(page.locator('.loader')).toBeVisible()
+        // Loader should move to projects section
+        // await expect(page.locator('.loader')).toBeVisible()
 
         await expect(page.getByText('Something went wrong...')).toBeVisible()
 

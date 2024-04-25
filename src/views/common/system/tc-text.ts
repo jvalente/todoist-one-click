@@ -14,6 +14,12 @@ export class TextElement extends LitElement {
         :host([secondary]) p {
             color: var(--secondary-color);
         }
+
+        ::slotted(code) {
+            background-color: var(--bg-color-4);
+            padding: 3px;
+            border-radius: var(--default-border-radius);
+        }
     `
 
     render() {

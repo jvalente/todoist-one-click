@@ -8,8 +8,6 @@ import './failed-tasks'
 import './due-date'
 import './loading'
 
-import Projects from '../../models/projects'
-import type { ProjectsState } from '../../types/projects.types'
 import { Rule, RulesState } from '../../types/rules.types'
 import Rules from '../../models/rules'
 
@@ -19,15 +17,6 @@ export class SettingsDataElement extends LitElement {
     apiKey!: string
 
     @state()
-    private projects: ProjectsState['data'] = []
-
-    @state()
-    private error: ProjectsState['error'] = undefined
-
-    @state()
-    private projectsLastUpdated?: ProjectsState['lastUpdated'] = 0
-
-    @state()
     private defaultRule?: Rule
 
     connectedCallback() {
@@ -35,18 +24,6 @@ export class SettingsDataElement extends LitElement {
 
         Rules.attach(this.onRulesUpdate)
         Rules.hydrate()
-        Projects.attach(this.onProjectsUpdate)
-        Projects.hydrate()
-    }
-
-    private onProjectsUpdate = ({
-        data,
-        lastUpdated,
-        error,
-    }: ProjectsState) => {
-        this.projects = data
-        this.projectsLastUpdated = lastUpdated
-        this.error = error
     }
 
     private onRulesUpdate = ({ data }: RulesState) => {
@@ -55,11 +32,9 @@ export class SettingsDataElement extends LitElement {
 
     // TODO: Move into separate component
     private renderDefaultRule() {
-        return html`<tc-target-project
-                .projectId=${this.defaultRule?.projectId}
-                .projects=${this.projects}
-                .lastUpdated=${this.projectsLastUpdated}
-            ></tc-target-project
+        return html`<tc-project-section
+                .rule=${this.defaultRule}
+            ></tc-project-section
             ><tc-target-labels
                 .labels=${this.defaultRule?.labels}
             ></tc-target-labels
@@ -67,14 +42,7 @@ export class SettingsDataElement extends LitElement {
     }
 
     render() {
-        if (this.error) {
-            return html`<tc-settings-error
-                    .error=${this.error}
-                ></tc-settings-error
-                >${renderReset()}`
-        }
-
-        if (this.projects && this.projectsLastUpdated) {
+        if (this.defaultRule) {
             return html`
                 ${renderFailedTasks()}
                 ${this.renderDefaultRule()}${renderReset()}
