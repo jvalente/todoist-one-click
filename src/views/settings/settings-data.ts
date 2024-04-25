@@ -1,12 +1,12 @@
 import { html, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
-import './settings-error'
 import './target-project'
 import './target-labels'
 import './failed-tasks'
 import './due-date'
 import './loading'
+import './reset'
 
 import { Rule, RulesState } from '../../types/rules.types'
 import Rules from '../../models/rules'

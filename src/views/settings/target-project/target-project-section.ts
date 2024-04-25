@@ -13,7 +13,10 @@ export class ProjectSectionElement extends LitElement {
     private projects: ProjectsState['data'] = []
 
     @state()
-    private projectsLastUpdated?: ProjectsState['lastUpdated'] = 0
+    private lastUpdated?: ProjectsState['lastUpdated'] = 0
+
+    @state()
+    private error?: ProjectsState['error']
 
     connectedCallback() {
         super.connectedCallback()
@@ -22,9 +25,14 @@ export class ProjectSectionElement extends LitElement {
         Projects.hydrate()
     }
 
-    private onProjectsUpdate = ({ data, lastUpdated }: ProjectsState) => {
+    private onProjectsUpdate = ({
+        data,
+        lastUpdated,
+        error,
+    }: ProjectsState) => {
         this.projects = data
-        this.projectsLastUpdated = lastUpdated
+        this.lastUpdated = lastUpdated
+        this.error = error
     }
 
     private refreshProjects() {
@@ -35,13 +43,17 @@ export class ProjectSectionElement extends LitElement {
     }
 
     private formatedDate() {
-        return this.projectsLastUpdated
-            ? new Date(this.projectsLastUpdated).toLocaleString()
+        return this.lastUpdated
+            ? new Date(this.lastUpdated).toLocaleString()
             : 'never'
     }
 
     render() {
         return html`<tc-section title="Target project">
+            <tc-error-card
+                title="Error while loading projects"
+                .error=${this.error}
+            ></tc-error-card>
             <div>
                 <tc-text small secondary
                     >Tasks will be added to the selected project below.</tc-text
@@ -52,7 +64,6 @@ export class ProjectSectionElement extends LitElement {
                     <tc-link @click=${this.refreshProjects}>Refresh</tc-link>
                 </tc-text>
             </div>
-
             <tc-project-select
                 .rule=${this.rule}
                 .projects=${this.projects}

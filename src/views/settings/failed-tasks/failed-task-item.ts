@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { errorCard } from '../../common/styles/error-card'
-import { getErrorDescription } from '../../common/error-details'
+
 import {
     discardFailedTask,
     retryFailedTask,
@@ -33,7 +33,6 @@ export class FailedTaskItemElement extends LitElement {
                     >${this.failedTask.task.url}</a
                 ></small
             >
-            <small>${getErrorDescription(this.failedTask.error)}</small>
             <footer>
                 <small><tc-al @click=${this.handleRetry}>Retry</tc-al></small>
                 <small>

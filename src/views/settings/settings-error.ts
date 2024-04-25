@@ -2,7 +2,6 @@ import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './reset'
-import { getErrorDescription } from '../common/error-details'
 
 @customElement('tc-settings-error')
 export class SettingsErrorElement extends LitElement {
@@ -14,7 +13,6 @@ export class SettingsErrorElement extends LitElement {
     render() {
         if (this.error) {
             return html`<tc-section title="Something went wrong...">
-                <small>${getErrorDescription(this.error)}</small>
                 <small style="font-family: monospace;font-style: italic;"
                     >${this.error?.message}</small
                 >
