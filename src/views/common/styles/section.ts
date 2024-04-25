@@ -10,12 +10,15 @@ export const settingsSection = css`
         border-radius: var(--default-border-radius);
     }
 
-    section > * {
-        margin: 10px 0;
+    section h1 {
+        font-size: var(--title-font-size);
+        font-weight: 600;
+        border-bottom: 1px solid var(--bg-color-3);
+        margin: 10px 0 5px 0;
     }
 
-    section a {
-        color: var(--accent-color-0);
+    ::slotted(*) {
+        margin: 10px 0;
     }
 
     section small {
@@ -23,14 +26,8 @@ export const settingsSection = css`
         color: var(--secondary-color);
     }
 
-    section label {
-        font-size: var(--title-font-size);
-        border-bottom: 1px solid var(--bg-color-3);
-        margin-bottom: 5px;
-    }
-
-    section input,
-    section select {
+    section ::slotted(input),
+    section ::slotted(select) {
         border: none;
         border-radius: var(--default-border-radius);
         padding: 10px;
@@ -39,11 +36,11 @@ export const settingsSection = css`
         background-color: var(--bg-color-3);
     }
 
-    section select {
+    section ::slotted(select) {
         border-right: 8px solid transparent;
     }
 
-    section button {
+    section ::slotted(button) {
         border: none;
         border-radius: var(--default-border-radius);
         padding: 10px;
@@ -52,7 +49,7 @@ export const settingsSection = css`
         background-color: var(--accent-color-0);
     }
 
-    section button:hover {
+    section ::slotted(button:hover) {
         background-color: var(--accent-color-1);
     }
 

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
 
@@ -17,19 +17,18 @@ export class ApiKeyElement extends LitElement {
 
     render() {
         return html`<tc-section title="Enter your API token">
-                <p>
+                <p> 
                     Get started with Todoist One-Click by grabbing your API token
-                    from Todoist <a href="https://app.todoist.com/app/settings/integrations/developer" target="_blank">'Settings > Integrations > Developer'</a>.
+                    from Todoist <tc-link href="https://app.todoist.com/app/settings/integrations/developer">'Settings > Integrations > Developer'</tc-link>.
                 </p>
-                    <p>Without it, the extension won't be able to add tasks to your Todoist account.</p>
-
-                    <input
-                        autofocus
-                        placeholder="Paste the API token here..."
-                        id="apiKey"
-                        type="text"
-                    />
-                    <button @click=${this.handleOnClick}>Save</button>
+                <p>Without it, the extension won't be able to add tasks to your Todoist account.</p>
+                <input
+                    autofocus
+                    placeholder="Paste the API token here..."
+                    id="apiKey"
+                    type="text"
+                />
+                <button @click=${this.handleOnClick}>Save</button>
                 </p>
             </tc-section>`
     }

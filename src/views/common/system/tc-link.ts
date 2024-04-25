@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-@customElement('tc-al')
+@customElement('tc-link')
 export class ActionLinkElement extends LitElement {
     static styles = css`
         a {
@@ -9,11 +9,20 @@ export class ActionLinkElement extends LitElement {
         }
     `
 
+    @property({ type: String })
+    href?: string
+
     private _onClick(event: Event) {
         event.preventDefault()
     }
 
     render() {
-        return html`<a href="#" @click=${this._onClick}><slot></slot></a>`
+        if (this.href) {
+            return html`<a href="${this.href}" target="_blank"
+                ><slot></slot
+            ></a>`
+        } else {
+            return html`<a href="#" @click=${this._onClick}><slot></slot></a>`
+        }
     }
 }
