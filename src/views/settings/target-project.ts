@@ -1,15 +1,12 @@
 import { html, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
-import { settingsSection } from '../common/styles/section'
 import Projects from '../../models/projects'
 import type { Project, ProjectsState } from '../../types/projects.types'
 import { updateDefaultRule } from '../../controllers/rules'
 
 @customElement('tc-target-project')
 export class TargetProjectElement extends LitElement {
-    static styles = [settingsSection]
-
     @property({ type: Array })
     projects: ProjectsState['data'] = []
 
@@ -45,8 +42,7 @@ export class TargetProjectElement extends LitElement {
     }
 
     render() {
-        return html`<section>
-            <label>Target project</label>
+        return html`<tc-section title="Target project">
             <div>
                 <small
                     >Tasks will be added to the selected project below.</small
@@ -72,6 +68,6 @@ export class TargetProjectElement extends LitElement {
                         </option>`
                 )}
             </select>
-        </section>`
+        </tc-section>`
     }
 }

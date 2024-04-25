@@ -1,12 +1,9 @@
 import { html, LitElement } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
-import { settingsSection } from '../common/styles/section'
 import { updateDefaultRule } from '../../controllers/rules'
 
 @customElement('tc-due-date')
 export class DueDateElement extends LitElement {
-    static styles = [settingsSection]
-
     @property()
     dueDate?: string
 
@@ -24,8 +21,7 @@ export class DueDateElement extends LitElement {
     }
 
     render() {
-        return html`<section>
-            <label>Due date</label>
+        return html`<tc-section title="Due date">
             ${this.dueDate
                 ? renderDueDate(this.dueDate)
                 : renderNoDueDatePlaceholder()}
@@ -35,7 +31,7 @@ export class DueDateElement extends LitElement {
                 @keyup=${this.handleKeyUp}
                 type="text"
             />
-        </section>`
+        </tc-section>`
     }
 }
 

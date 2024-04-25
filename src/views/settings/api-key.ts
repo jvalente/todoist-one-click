@@ -1,12 +1,9 @@
 import { html, LitElement } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
-import { settingsSection } from '../common/styles/section'
 import { setAPIKey } from '../../controllers/api-key'
 
 @customElement('tc-api-key')
 export class ApiKeyElement extends LitElement {
-    static styles = [settingsSection]
-
     @query('#apiKey')
     apiKeyInput?: HTMLInputElement
 
@@ -19,7 +16,7 @@ export class ApiKeyElement extends LitElement {
     }
 
     render() {
-        return html`<section>
+        return html`<tc-section title="Enter your API token">
                 <p>
                     Get started with Todoist One-Click by grabbing your API token
                     from Todoist <a href="https://app.todoist.com/app/settings/integrations/developer" target="_blank">'Settings > Integrations > Developer'</a>.
@@ -34,6 +31,6 @@ export class ApiKeyElement extends LitElement {
                     />
                     <button @click=${this.handleOnClick}>Save</button>
                 </p>
-            </section>`
+            </tc-section>`
     }
 }

@@ -9,15 +9,12 @@ import './due-date'
 import './loading'
 
 import Projects from '../../models/projects'
-import { settingsSection } from '../common/styles/section'
 import type { ProjectsState } from '../../types/projects.types'
 import { Rule, RulesState } from '../../types/rules.types'
 import Rules from '../../models/rules'
 
 @customElement('tc-settings-data')
 export class SettingsDataElement extends LitElement {
-    static styles = [settingsSection]
-
     @property({ type: String })
     apiKey!: string
 

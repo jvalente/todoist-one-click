@@ -1,14 +1,11 @@
 import { html, LitElement } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
-import { settingsSection } from '../../common/styles/section'
 
 import './target-labels-list'
 import { updateDefaultRule } from '../../../controllers/rules'
 
 @customElement('tc-target-labels')
 export class TargetLabelsElement extends LitElement {
-    static styles = [settingsSection]
-
     @property()
     private labels?: Array<string>
 
@@ -68,9 +65,8 @@ export class TargetLabelsElement extends LitElement {
     }
 
     render() {
-        return html`<section>
-            <label>Target labels</label>
+        return html`<tc-section title="Target labels">
             ${this.renderTargetLabelsList()}${this.renderTargeLabelsInput()}
-        </section>`
+        </tc-section>`
     }
 }

@@ -1,21 +1,18 @@
 import { html, LitElement } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import { settingsSection } from '../common/styles/section'
 import { deleteAPIKey } from '../../controllers/api-key'
 import { clearAllData } from '../../controllers/data'
 import { addTask } from '../../controllers/task'
 
 @customElement('tc-reset')
 export class ApiKeyElement extends LitElement {
-    static styles = [settingsSection]
-
     private addTestTask() {
         addTask('Todoist One-Click test task', 'https://doist.com')
     }
 
     render() {
-        return html`<section>
-            <label>Local data management & troubleshooting</label>
+        return html`<tc-section title="Local data management & troubleshooting">
+            <label></label>
             <div>
                 <tc-al @click=${deleteAPIKey}>Update API Token</tc-al>
             </div>
@@ -31,6 +28,6 @@ export class ApiKeyElement extends LitElement {
                 <small>Add a test task to test your setup. </small>
                 <tc-al @click=${this.addTestTask}>Add test task</tc-al>
             </div>
-        </section>`
+        </tc-section>`
     }
 }
