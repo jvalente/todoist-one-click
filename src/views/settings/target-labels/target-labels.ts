@@ -44,7 +44,9 @@ export class TargetLabelsElement extends LitElement {
 
     private renderTargetLabelsList() {
         if (!this.labels?.length) {
-            return html`<small>No target labels added yet.</small>`
+            return html`<tc-text small secondary
+                >No target labels added yet.</tc-text
+            >`
         }
 
         return html` <tc-target-labels-list

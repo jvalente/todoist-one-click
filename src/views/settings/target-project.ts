@@ -44,14 +44,14 @@ export class TargetProjectElement extends LitElement {
     render() {
         return html`<tc-section title="Target project">
             <div>
-                <small
-                    >Tasks will be added to the selected project below.</small
+                <tc-text small secondary
+                    >Tasks will be added to the selected project below.</tc-text
                 >
-                <small
+                <tc-text small secondary
                     >The project list was last updated on
                     ${this.formatedDate()}.
-                    <tc-al @click=${this.refreshProjects}>Refresh</tc-al>
-                </small>
+                    <tc-link @click=${this.refreshProjects}>Refresh</tc-link>
+                </tc-text>
             </div>
 
             <select id="dropdown" @change=${this.handleSelectionChange}>

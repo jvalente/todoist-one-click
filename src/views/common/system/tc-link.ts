@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-link')
-export class ActionLinkElement extends LitElement {
+export class LinkElement extends LitElement {
     static styles = css`
         a {
             color: var(--accent-color-0);

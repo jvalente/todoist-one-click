@@ -12,21 +12,22 @@ export class ApiKeyElement extends LitElement {
 
     render() {
         return html`<tc-section title="Local data management & troubleshooting">
-            <label></label>
             <div>
-                <tc-al @click=${deleteAPIKey}>Update API Token</tc-al>
+                <tc-link @click=${deleteAPIKey}>Update API Token</tc-link>
             </div>
             <div>
-                <small
-                    >Clear the extension's data from your browser, including the
+                <tc-text small secondary>
+                    Clear the extension's data from your browser, including the
                     API token, target project, and labels. This won't affect
                     your Todoist account data.
-                </small>
-                <tc-al @click=${clearAllData}>Clear all local data</tc-al>
+                </tc-text>
+                <tc-link @click=${clearAllData}>Clear all local data</tc-link>
             </div>
             <div>
-                <small>Add a test task to test your setup. </small>
-                <tc-al @click=${this.addTestTask}>Add test task</tc-al>
+                <tc-text small secondary
+                    >Add a test task to test your setup.</tc-text
+                >
+                <tc-link @click=${this.addTestTask}>Add test task</tc-link>
             </div>
         </tc-section>`
     }

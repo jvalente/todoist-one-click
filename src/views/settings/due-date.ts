@@ -36,18 +36,19 @@ export class DueDateElement extends LitElement {
 }
 
 function renderDueDate(dueDate: string) {
-    return html`<p>Your tasks will have a <code>${dueDate}</code> due date.</p>`
+    return html`<tc-text
+        >Your tasks will have a <code>${dueDate}</code> due date.</tc-text
+    >`
 }
 
 function renderNoDueDatePlaceholder() {
-    return html`<small
+    return html`<tc-text small secondary
         >The tasks you add will have no due date. A due date can be set
         according to the
-        <a
+        <tc-link
             href="https://todoist.com/help/articles/introduction-to-due-dates-and-due-times"
-            target="_blank"
-            >Todoist natural language format</a
-        >, in English. For example: <i>today, tomorrow, next week.</i></small
+            >Todoist natural language format</tc-link
+        >, in English. For example: <i>today, tomorrow, next week.</i></tc-text
     >`
 }
 
