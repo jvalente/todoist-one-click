@@ -1,20 +1,18 @@
 import { LitElement, html } from 'lit'
-import { customElement, query } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
+
+import type { InputChangeEvent } from '../common/system'
 
 import '../common/system'
 
 @customElement('tc-api-key')
 class ApiKeyElement extends LitElement {
-    @query('#apiKey')
-    apiKeyInput?: HTMLInputElement
+    @state()
+    private apiKey?: string
 
-    private handleOnClick(event: KeyboardEvent) {
-        const inputValue = this.apiKeyInput?.value
-
-        if (inputValue) {
-            setAPIKey(inputValue)
-        }
+    private handleOnClick() {
+        if (this.apiKey) setAPIKey(this.apiKey)
     }
 
     render() {
@@ -31,12 +29,14 @@ class ApiKeyElement extends LitElement {
                 >Without it, the extension won't be able to add tasks to your
                 Todoist account.</tc-text
             >
-            <input
-                autofocus
+            <tc-text-input
                 placeholder="Paste the API token here..."
-                id="apiKey"
-                type="text"
-            />
+                @change=${(event: InputChangeEvent) => {
+                    this.apiKey = event.value
+                }}
+                ?autofocus=${true}
+                ?disableSpace=${true}
+            ></tc-text-input>
             <button @click=${this.handleOnClick}>Save</button>
         </tc-section>`
     }

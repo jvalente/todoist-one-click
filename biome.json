@@ -17,7 +17,8 @@
                 "noUnusedImports": "warn"
             },
             "suspicious": {
-                "noExplicitAny": "warn"
+                "noExplicitAny": "warn",
+                "noConsoleLog": "warn"
             }
         }
     },

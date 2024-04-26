@@ -1,23 +1,26 @@
 import { LitElement, html } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../controllers/rules'
+
+import type { InputChangeEvent } from '../common/system'
+
+import '../common/system'
 
 @customElement('tc-due-date')
 class DueDateElement extends LitElement {
     @property()
     dueDate?: string
 
-    @query('#dueDate')
-    dueDateInput?: HTMLInputElement
+    @state()
+    private value = ''
 
-    private handleKeyUp(event: InputEvent) {
-        event.preventDefault()
+    private handleInputChange(event: InputChangeEvent) {
+        this.value = event.value
+    }
 
-        // TODO: find type solution
-        if (this.dueDateInput && (event as any).key === 'Enter') {
-            updateDefaultRule({ dueDate: this.dueDateInput.value })
-            this.dueDateInput.value = ''
-        }
+    private handleInputEnterPress() {
+        updateDefaultRule({ dueDate: this.value })
+        this.value = ''
     }
 
     render() {
@@ -27,12 +30,12 @@ class DueDateElement extends LitElement {
                     ? renderDueDate(this.dueDate)
                     : renderNoDueDatePlaceholder()
             }
-            <input
-                id="dueDate"
+            <tc-text-input
                 placeholder=${getInputPlaceholder(this.dueDate)}
-                @keyup=${this.handleKeyUp}
-                type="text"
-            />
+                @change=${this.handleInputChange}
+                @enterPress=${this.handleInputEnterPress}
+                .value=${this.value}
+            /></tc-text-input>
         </tc-section>`
     }
 }

@@ -1,39 +1,27 @@
 import { LitElement, html } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
-
+import { customElement, property, state } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../../controllers/rules'
+
+import type { InputChangeEvent } from '../../common/system'
+
+import '../../common/system'
 import './target-labels-list'
 
 @customElement('tc-target-labels')
 class TargetLabelsElement extends LitElement {
-    @property()
-    private labels?: Array<string>
+    @property({ type: Array })
+    labels?: Array<string>
 
     @state()
     private value = ''
 
-    @query('#targetLabel')
-    targetLabelInput?: HTMLInputElement
-
-    private handleInputChange(event: InputEvent) {
-        event.preventDefault()
-
-        if (this.targetLabelInput) {
-            this.value = (this.targetLabelInput.value || '').trim()
-            this.targetLabelInput.value = this.value
-        }
+    private handleInputChange(event: InputChangeEvent) {
+        this.value = (event.value || '').trim()
     }
 
-    // TODO: handle paste event
-
-    private handleAddLabel(event: InputEvent) {
-        event.preventDefault()
-
-        // TODO: find type solution
-        if ((event as any).key === 'Enter') {
-            updateDefaultRule({ labels: [...(this.labels || []), this.value] })
-            this.value = ''
-        }
+    private handleInputEnterPress() {
+        updateDefaultRule({ labels: [...(this.labels || []), this.value] })
+        this.value = ''
     }
 
     private handleRemoveLabel(label: string) {
@@ -56,13 +44,12 @@ class TargetLabelsElement extends LitElement {
     }
 
     private renderTargeLabelsInput() {
-        return html`<input
-            id="targetLabel"
+        return html`<tc-text-input
             placeholder="Type and press Enter to add a label..."
-            @input=${this.handleInputChange}
-            @keyup=${this.handleAddLabel}
+            @change=${this.handleInputChange}
+            @enterPress=${this.handleInputEnterPress}
             .value=${this.value}
-            type="text"
+            ?disableSpace=${true}
         />`
     }
 

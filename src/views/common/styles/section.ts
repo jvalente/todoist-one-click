@@ -21,15 +21,6 @@ export const settingsSection = css`
         margin: 10px 0;
     }
 
-    section ::slotted(input) {
-        border: none;
-        border-radius: var(--default-border-radius);
-        padding: 10px;
-        color: var(--primary-color);
-        font-size: var(--global-font-size);
-        background-color: var(--bg-color-3);
-    }
-
     section ::slotted(button) {
         border: none;
         border-radius: var(--default-border-radius);
