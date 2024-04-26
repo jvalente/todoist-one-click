@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { errorCard } from '../../common/styles/error-card'
 
@@ -24,21 +24,18 @@ export class FailedTaskItemElement extends LitElement {
     }
 
     render() {
-        if (!this.failedTask) return null
+        if (!this.failedTask) return nothing
 
-        return html`<div>
-            <small>${this.failedTask.task.title}</small>
-            <small
-                ><a href=${this.failedTask.task.url} target="_blank"
-                    >${this.failedTask.task.url}</a
-                ></small
+        return html`<tc-error-card
+            title="${this.failedTask.task.title}"
+            .error=${this.failedTask.error}
+        >
+            <tc-link small slot="actions" @click=${this.handleRetry}
+                >Retry</tc-link
             >
-            <footer>
-                <small><tc-al @click=${this.handleRetry}>Retry</tc-al></small>
-                <small>
-                    <tc-al @click=${this.handleDiscard}>Discard</tc-al>
-                </small>
-            </footer>
-        </div>`
+            <tc-link small slot="actions" @click=${this.handleDiscard}
+                >Discard</tc-link
+            >
+        </tc-error-card>`
     }
 }

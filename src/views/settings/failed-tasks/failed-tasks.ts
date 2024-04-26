@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import FailedTasks from '../../../models/failed-tasks'
 import { repeat } from 'lit/directives/repeat.js'
@@ -7,6 +7,18 @@ import './failed-task-item'
 
 @customElement('tc-failed-tasks')
 export class FailedTasksElement extends LitElement {
+    static styles = css`
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+            list-style: none;
+        }
+    `
+
     @state()
     failedTasks?: any
 

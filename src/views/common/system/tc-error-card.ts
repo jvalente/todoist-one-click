@@ -1,6 +1,5 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { TodoistAPIError } from '../../../api/todoist'
 
 @customElement('tc-error-card')
 export class ErrorCardElement extends LitElement {
@@ -19,7 +18,13 @@ export class ErrorCardElement extends LitElement {
         }
 
         code {
-            font-size: smaller;
+            display: block;
+            font-size: var(--small-font-size);
+        }
+
+        ::slotted([slot='actions']) {
+            display: inline-block;
+            margin: 5px 10px 0 0;
         }
     `
 
@@ -37,10 +42,12 @@ export class ErrorCardElement extends LitElement {
                     >${getErrorDescription(this.error)}</tc-text
                 >
                 <code
-                    >${this.error?.status && this.error?.responseText
-                        ? html`${this.error?.status - this.error?.responseText}`
+                    >${this.error?.status || this.error?.responseText
+                        ? html`${this.error?.status} -
+                          ${this.error?.responseText}`
                         : html`${this.error?.message}`}</code
                 >
+                <slot name="actions"></slot>
             </div>`
         }
 
@@ -49,8 +56,6 @@ export class ErrorCardElement extends LitElement {
 }
 
 function getErrorDescription(error: any) {
-    console.log(error)
-
     if (error && error.status === 401) {
         return 'This error usually happens when the API token is invalid or expired. Try to update it using the option below.'
     }
