@@ -19,7 +19,7 @@ test.describe('extension settings', () => {
         })
 
         await page.route('**/rest/v2/tasks', async (route) => {
-            await route.fulfill({ status: 401 })
+            await route.fulfill({ body: 'Forbidden', status: 401 })
         })
 
         await expect(page.getByText('Todoist One-Click Settings')).toBeVisible()
@@ -35,10 +35,12 @@ test.describe('extension settings', () => {
 
         await page.getByRole('button', { name: 'Save' }).click()
 
-        // Loader should move to projects section
+        // TODO PROJECTS LOADER
         // await expect(page.locator('.loader')).toBeVisible()
 
-        await expect(page.getByText('Something went wrong...')).toBeVisible()
+        await expect(
+            page.getByText('Error while loading projects')
+        ).toBeVisible()
 
         /*
          * Update API token
@@ -62,7 +64,8 @@ test.describe('extension settings', () => {
 
         await page.getByRole('link', { name: 'Refresh' }).click()
 
-        await expect(page.locator('.loader')).toBeVisible()
+        // TODO PROJECTS LOADER
+        // await expect(page.locator('.loader')).toBeVisible()
 
         /*
          * Add a label
