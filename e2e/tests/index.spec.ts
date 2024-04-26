@@ -1,3 +1,4 @@
+import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 
 test.describe('extension settings', () => {
@@ -11,10 +12,7 @@ test.describe('extension settings', () => {
             ) {
                 await route.fulfill({ json: [{ name: 'Lorem', id: 100 }] })
             } else {
-                setTimeout(
-                    async () => await route.fulfill({ status: 401 }),
-                    1000,
-                )
+                await route.fulfill({ status: 401 })
             }
         })
 
@@ -29,10 +27,9 @@ test.describe('extension settings', () => {
         /*
          * Wrong API token
          */
-        await page
-            .getByPlaceholder('Paste the API token here...')
+        await locateSection(page, 'Enter your API token')
+            .locator('input')
             .fill('wrongApiToken')
-
         await page.getByRole('button', { name: 'Save' }).click()
 
         // TODO PROJECTS LOADER
@@ -47,20 +44,18 @@ test.describe('extension settings', () => {
          */
         await page.getByRole('link', { name: 'Update API Token' }).click()
 
-        await page
-            .getByPlaceholder('Paste the API token here...')
+        await locateSection(page, 'Enter your API token')
+            .locator('input')
             .fill('correctApiToken')
-
         await page.getByRole('button', { name: 'Save' }).click()
 
         await expect(
             page.getByText('Target project', { exact: true }),
         ).toBeVisible()
 
-        /*
-         * Select a project
-         */
-        await page.getByRole('combobox').selectOption('Lorem')
+        await locateSection(page, 'Target project')
+            .getByRole('combobox')
+            .selectOption('Lorem')
 
         await page.getByRole('link', { name: 'Refresh' }).click()
 
@@ -70,13 +65,15 @@ test.describe('extension settings', () => {
         /*
          * Add a label
          */
-        await page.getByPlaceholder(/add a label/).fill('labelIpsum')
+        await locateSection(page, 'Target labels')
+            .locator('input')
+            .fill('labelIpsum')
         await page.keyboard.press('Enter')
 
         /*
          * Remove a label
          */
-        await page.getByText('labelIpsum').locator('tc-al').click()
+        await page.getByText('labelIpsum').locator('tc-link').click()
 
         /**
          * Add a due date
@@ -85,9 +82,7 @@ test.describe('extension settings', () => {
             page.getByText('Your tasks will have a today due date.'),
         ).toBeVisible()
 
-        await page
-            .getByPlaceholder(/change\/delete the due date/)
-            .fill('tomorrow')
+        await locateSection(page, 'Due date').locator('input').fill('tomorrow')
         await page.keyboard.press('Enter')
 
         await expect(
@@ -97,7 +92,7 @@ test.describe('extension settings', () => {
         /*
          * Remove a due date
          */
-        await page.getByPlaceholder(/\/delete the due date/).fill('')
+        await locateSection(page, 'Due date').locator('input').fill('')
         await page.keyboard.press('Enter')
 
         await expect(
@@ -107,9 +102,11 @@ test.describe('extension settings', () => {
         /**
          * Setup due date and label again
          */
-        await page.getByPlaceholder(/set a due date/).fill('monday')
+        await locateSection(page, 'Due date').locator('input').fill('monday')
         await page.keyboard.press('Enter')
-        await page.getByPlaceholder(/add a label/).fill('labelIpsum')
+        await locateSection(page, 'Target labels')
+            .locator('input')
+            .fill('labelIpsum')
         await page.keyboard.press('Enter')
 
         /**
@@ -153,8 +150,10 @@ test.describe('extension settings', () => {
          * Clear all data
          */
         await page.getByRole('link', { name: 'Clear all local data' }).click()
-        await expect(
-            page.getByPlaceholder('Paste the API token here...'),
-        ).toBeVisible()
+        await expect(locateSection(page, 'Enter your API token')).toBeVisible()
     })
 })
+
+function locateSection(page: Page, title: string) {
+    return page.locator(`tc-section[title="${title}"]`)
+}
