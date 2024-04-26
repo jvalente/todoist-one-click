@@ -8,7 +8,7 @@ export class TextElement extends LitElement {
             margin: 0;
         }
         :host([small]) p {
-            font-size: smaller;
+            font-size: var(--small-font-size);
         }
 
         :host([secondary]) p {

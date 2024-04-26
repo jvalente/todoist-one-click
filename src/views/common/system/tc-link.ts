@@ -7,6 +7,10 @@ export class LinkElement extends LitElement {
         a {
             color: var(--accent-color-0);
         }
+
+        :host([small]) a {
+            font-size: var(--small-font-size);
+        }
     `
 
     @property({ type: String })

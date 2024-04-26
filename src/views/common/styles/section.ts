@@ -21,11 +21,6 @@ export const settingsSection = css`
         margin: 10px 0;
     }
 
-    section small {
-        display: block;
-        color: var(--secondary-color);
-    }
-
     section ::slotted(input),
     section ::slotted(select) {
         border: none;
@@ -51,20 +46,5 @@ export const settingsSection = css`
 
     section ::slotted(button:hover) {
         background-color: var(--accent-color-1);
-    }
-
-    section code {
-        background-color: var(--bg-color-4);
-        padding: 3px;
-        border-radius: var(--default-border-radius);
-    }
-
-    section ul {
-        margin: 0;
-        padding: 0;
-    }
-
-    section ul li {
-        list-style: none;
     }
 `
