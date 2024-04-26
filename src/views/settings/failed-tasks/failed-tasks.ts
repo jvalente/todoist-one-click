@@ -1,7 +1,7 @@
-import { css, html, LitElement } from 'lit'
+import { LitElement, css, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import FailedTasks from '../../../models/failed-tasks'
 import { repeat } from 'lit/directives/repeat.js'
+import FailedTasks from '../../../models/failed-tasks'
 
 import './failed-task-item'
 
@@ -40,7 +40,6 @@ class FailedTasksElement extends LitElement {
             title="Failed tasks (${this.failedTasks.length})"
         >
             <small>The following tasks could not be added to Todoist:</small>
-
             <ul>
                 ${repeat(
                     this.failedTasks,
@@ -50,7 +49,7 @@ class FailedTasksElement extends LitElement {
                             <tc-failed-task-item
                                 .failedTask=${failedTask}
                             ></tc-failed-task-item>
-                        </li>`
+                        </li>`,
                 )}
             </ul>
         </tc-section>`

@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit'
+import { LitElement, css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-link')
@@ -25,8 +25,8 @@ class LinkElement extends LitElement {
             return html`<a href="${this.href}" target="_blank"
                 ><slot></slot
             ></a>`
-        } else {
-            return html`<a href="#" @click=${this._onClick}><slot></slot></a>`
         }
+
+        return html`<a href="#" @click=${this._onClick}><slot></slot></a>`
     }
 }

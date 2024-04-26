@@ -1,8 +1,9 @@
-import { Rule } from '../types/rules.types'
+import type { Rule } from '../types/rules.types'
 import Model from './model'
 
 const DEFAULT_RULE: Rule = {
     id: crypto.randomUUID(),
+    name: 'default',
     default: true,
     matchMode: 'contains',
     dueDate: 'today',
@@ -11,15 +12,7 @@ const DEFAULT_RULE: Rule = {
 class RulesModel extends Model<Array<Rule>> {
     constructor() {
         super('rules', {
-            defaultState: [
-                {
-                    id: crypto.randomUUID(),
-                    default: true,
-                    matchMode: 'contains',
-                    dueDate: 'today',
-                    labels: [],
-                },
-            ],
+            defaultState: [{ ...DEFAULT_RULE }],
         })
     }
 
@@ -48,7 +41,7 @@ class RulesModel extends Model<Array<Rule>> {
 
     getDefault() {
         return this.get().then(
-            (rules) => rules?.find((rule) => rule.default) || DEFAULT_RULE
+            (rules) => rules?.find((rule) => rule.default) || DEFAULT_RULE,
         )
     }
 }

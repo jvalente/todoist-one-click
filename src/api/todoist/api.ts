@@ -10,7 +10,7 @@ type RequestOptions = {
 
 function request<T>(
     path: string,
-    { method, body }: RequestOptions = { method: 'GET', body: undefined }
+    { method, body }: RequestOptions = { method: 'GET', body: undefined },
 ): Promise<T> {
     return TodoistAPIKey.get().then((apiKey) => {
         if (!apiKey) {

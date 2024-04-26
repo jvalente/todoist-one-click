@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
 

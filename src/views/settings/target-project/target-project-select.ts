@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
 import { updateDefaultRule } from '../../../controllers/rules'
@@ -41,7 +41,7 @@ class ProjectSelectElement extends LitElement {
                         ?selected=${this.isSelected(project)}
                     >
                         ${project.name}
-                    </option>`
+                    </option>`,
             )}
         </select>`
     }

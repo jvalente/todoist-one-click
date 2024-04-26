@@ -1,5 +1,5 @@
-import { html, LitElement } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
+import { LitElement, html } from 'lit'
+import { customElement, property, query } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../controllers/rules'
 
 @customElement('tc-due-date')
@@ -22,9 +22,11 @@ class DueDateElement extends LitElement {
 
     render() {
         return html`<tc-section title="Due date">
-            ${this.dueDate
-                ? renderDueDate(this.dueDate)
-                : renderNoDueDatePlaceholder()}
+            ${
+                this.dueDate
+                    ? renderDueDate(this.dueDate)
+                    : renderNoDueDatePlaceholder()
+            }
             <input
                 id="dueDate"
                 placeholder=${getInputPlaceholder(this.dueDate)}

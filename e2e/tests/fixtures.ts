@@ -1,5 +1,5 @@
-import { test as base, chromium, type BrowserContext } from '@playwright/test'
-import path from 'path'
+import path from 'node:path'
+import { type BrowserContext, test as base, chromium } from '@playwright/test'
 
 const EXTENSION_PATH = path.join(import.meta.dirname, '../../dist')
 
@@ -7,6 +7,7 @@ export const test = base.extend<{
     context: BrowserContext
     extensionId: string
 }>({
+    // biome-ignore lint/correctness/noEmptyPattern: <explanation>
     context: async ({}, use) => {
         const context = await chromium.launchPersistentContext('', {
             headless: false,

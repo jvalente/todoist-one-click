@@ -1,11 +1,11 @@
 import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    describe,
     expect,
     it,
     vi,
-    describe,
-    beforeAll,
-    afterEach,
-    afterAll,
 } from 'vitest'
 
 import { TodoistAPI } from './api'
@@ -53,7 +53,7 @@ describe('API', () => {
                         'Content-Type': 'application/json',
                     },
                     method: 'GET',
-                }
+                },
             )
         })
     })
@@ -75,7 +75,7 @@ describe('API', () => {
         expect.assertions(1)
 
         vi.spyOn(TodoistAPIKey, 'get').mockRejectedValueOnce(
-            new Error('API key not found')
+            new Error('API key not found'),
         )
 
         return TodoistAPI.request('path').catch((error) => {
@@ -89,7 +89,7 @@ describe('API', () => {
         mockFetch.mockResolvedValueOnce(
             new Response('Resource not found', {
                 status: 404,
-            })
+            }),
         )
 
         return TodoistAPI.request('path').catch((error) => {
@@ -114,7 +114,7 @@ describe('API', () => {
         })
     })
 
-    it.only('throws if response error has no valid text', async () => {
+    it('throws if response error has no valid text', async () => {
         const response = new Response()
         expect.assertions(4)
 

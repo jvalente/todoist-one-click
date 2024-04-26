@@ -1,5 +1,5 @@
-import { css, html, LitElement } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { LitElement, css, html } from 'lit'
+import { customElement } from 'lit/decorators.js'
 
 @customElement('tc-text')
 class TextElement extends LitElement {

@@ -8,7 +8,13 @@
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
         "moduleResolution": "bundler",
-        "strict": true
+        "strict": true,
+        "plugins": [
+            {
+                "name": "ts-lit-plugin",
+                "strict": true
+            }
+        ]
     },
     "include": ["src", "e2e"],
     "exclude": ["node_modules"]

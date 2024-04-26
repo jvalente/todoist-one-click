@@ -2,14 +2,13 @@ import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
 import { horizontalList } from '../../common/styles/horizontal-list'
-
 import { deleteIcon } from '../../common/svg/delete'
 
 @customElement('tc-target-labels-list')
 class TargetLabelsListElement extends LitElement {
     static styles = [horizontalList]
 
-    @property()
+    @property({ type: Array })
     labels: Array<string> = []
 
     @property()
@@ -26,11 +25,11 @@ class TargetLabelsListElement extends LitElement {
                 (label) => label,
                 (label) =>
                     html`<li>
-                        ${label}<tc-al
+                        ${label}<tc-link
                             @click=${() => this.handleOnRemove(label)}
-                            >${deleteIcon}</tc-al
+                            >${deleteIcon}</tc-link
                         >
-                    </li>`
+                    </li>`,
             )}
         </ul>`
     }

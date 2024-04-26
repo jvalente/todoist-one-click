@@ -1,4 +1,4 @@
-import { css, html, LitElement, nothing } from 'lit'
+import { LitElement, css, html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-error-card')
@@ -29,7 +29,7 @@ class ErrorCardElement extends LitElement {
     `
 
     @property()
-    title: string = 'Error'
+    title = 'Error'
 
     @property({ type: Object })
     error?: any
@@ -42,10 +42,12 @@ class ErrorCardElement extends LitElement {
                     >${getErrorDescription(this.error)}</tc-text
                 >
                 <code
-                    >${this.error?.status || this.error?.responseText
-                        ? html`${this.error?.status} -
+                    >${
+                        this.error?.status || this.error?.responseText
+                            ? html`${this.error?.status} -
                           ${this.error?.responseText}`
-                        : html`${this.error?.message}`}</code
+                            : html`${this.error?.message}`
+                    }</code
                 >
                 <slot name="actions"></slot>
             </div>`

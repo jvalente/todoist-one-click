@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures'
+import { expect, test } from './fixtures'
 
 test.describe('extension settings', () => {
     test('all settings', async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('extension settings', () => {
             } else {
                 setTimeout(
                     async () => await route.fulfill({ status: 401 }),
-                    1000
+                    1000,
                 )
             }
         })
@@ -39,7 +39,7 @@ test.describe('extension settings', () => {
         // await expect(page.locator('.loader')).toBeVisible()
 
         await expect(
-            page.getByText('Error while loading projects')
+            page.getByText('Error while loading projects'),
         ).toBeVisible()
 
         /*
@@ -54,7 +54,7 @@ test.describe('extension settings', () => {
         await page.getByRole('button', { name: 'Save' }).click()
 
         await expect(
-            page.getByText('Target project', { exact: true })
+            page.getByText('Target project', { exact: true }),
         ).toBeVisible()
 
         /*
@@ -82,7 +82,7 @@ test.describe('extension settings', () => {
          * Add a due date
          */
         await expect(
-            page.getByText('Your tasks will have a today due date.')
+            page.getByText('Your tasks will have a today due date.'),
         ).toBeVisible()
 
         await page
@@ -91,7 +91,7 @@ test.describe('extension settings', () => {
         await page.keyboard.press('Enter')
 
         await expect(
-            page.getByText('Your tasks will have a tomorrow due date.')
+            page.getByText('Your tasks will have a tomorrow due date.'),
         ).toBeVisible()
 
         /*
@@ -101,7 +101,7 @@ test.describe('extension settings', () => {
         await page.keyboard.press('Enter')
 
         await expect(
-            page.getByText('The tasks you add will have no due date.')
+            page.getByText('The tasks you add will have no due date.'),
         ).toBeVisible()
 
         /**
@@ -154,7 +154,7 @@ test.describe('extension settings', () => {
          */
         await page.getByRole('link', { name: 'Clear all local data' }).click()
         await expect(
-            page.getByPlaceholder('Paste the API token here...')
+            page.getByPlaceholder('Paste the API token here...'),
         ).toBeVisible()
     })
 })

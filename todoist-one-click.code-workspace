@@ -1,14 +1,18 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"workbench.colorCustomizations": {
-			"activityBar.background": "#6454ac",
-			"titleBar.activeBackground": "#6454ac",
-			"titleBar.activeForeground": "#FCFBFF"
-		}
-	}
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "workbench.colorCustomizations": {
+            "activityBar.background": "#6454ac",
+            "titleBar.activeBackground": "#6454ac",
+            "titleBar.activeForeground": "#FCFBFF"
+        },
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.biome": "explicit"
+        }
+    }
 }

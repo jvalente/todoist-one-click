@@ -1,10 +1,10 @@
-import { html, LitElement } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { TodoistAPIKey } from '../../api/todoist'
 
+import '../common/system'
 import './api-key'
 import './settings-data'
-import '../common/system'
 
 @customElement('tc-settings')
 export class SettingsElement extends LitElement {
@@ -23,6 +23,10 @@ export class SettingsElement extends LitElement {
     }
 
     private renderApiKey() {
+        const p = new Promise(() => {})
+
+        p.then(() => {})
+
         return html`<tc-api-key .apiKey=${this.apiKey}></tc-api-key>`
     }
 
@@ -35,8 +39,8 @@ export class SettingsElement extends LitElement {
     render() {
         if (!this.apiKey) {
             return html`${this.renderApiKey()}`
-        } else {
-            return html`${this.renderSettingsData()}`
         }
+
+        return html`${this.renderSettingsData()}`
     }
 }

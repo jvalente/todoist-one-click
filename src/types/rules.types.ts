@@ -2,6 +2,7 @@ import type { ModelState } from '../models/model'
 
 export type Rule = {
     id: string
+    name: string
     default: boolean
     query?: string
     matchMode: 'exact' | 'contains'

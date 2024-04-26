@@ -1,5 +1,5 @@
-import { deleteAPIKey } from './api-key'
 import { Storage } from '../api/extension'
+import { deleteAPIKey } from './api-key'
 
 export function clearAllData() {
     deleteAPIKey()

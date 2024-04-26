@@ -1,5 +1,5 @@
 vi.mock('../../models/api-key')
-import { expect, it, vi, describe, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Model from '../../src/models/model'
 import { Storage } from '../api/extension'
 import { TodoistAPI } from '../api/todoist'

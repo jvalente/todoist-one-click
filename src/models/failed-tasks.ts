@@ -1,5 +1,5 @@
 import { TodoistAPIError } from '../api/todoist'
-import { FailedTask } from '../types/tasks.type'
+import type { FailedTask } from '../types/tasks.type'
 import Model from './model'
 
 class FailedTasksModel extends Model<Array<FailedTask>> {

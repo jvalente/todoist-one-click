@@ -1,6 +1,6 @@
+import { Storage } from '../api/extension'
 import { TodoistAPI } from '../api/todoist'
 import { Subject } from '../lib/observer'
-import { Storage } from '../api/extension'
 
 export type ModelState<T> = {
     data: T | undefined
@@ -18,7 +18,7 @@ class Model<T> extends Subject<ModelState<T>> {
         {
             fetchResource,
             defaultState,
-        }: { fetchResource?: { url: string }; defaultState?: T } = {}
+        }: { fetchResource?: { url: string }; defaultState?: T } = {},
     ) {
         super()
 
@@ -48,14 +48,14 @@ class Model<T> extends Subject<ModelState<T>> {
             .then((storageData) => {
                 if (storageData) {
                     return { value: storageData, persist: false }
-                } else {
-                    return this.hydrateFromAPI().then((apiData) => {
-                        return {
-                            value: { data: apiData || this.defaultState },
-                            persist: true,
-                        }
-                    })
                 }
+
+                return this.hydrateFromAPI().then((apiData) => {
+                    return {
+                        value: { data: apiData || this.defaultState },
+                        persist: true,
+                    }
+                })
             })
             .then(({ value, persist }) => {
                 if (persist) {
@@ -71,7 +71,7 @@ class Model<T> extends Subject<ModelState<T>> {
 
     get() {
         return Storage.get<Record<string, T>>(this.name).then(
-            (value) => value?.data
+            (value) => value?.data,
         )
     }
 

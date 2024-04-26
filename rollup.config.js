@@ -1,9 +1,9 @@
 // rollup.config.js
-import fs from 'fs'
-import typescript from '@rollup/plugin-typescript'
+import fs from 'node:fs'
 import nodeResolve from '@rollup/plugin-node-resolve'
-import copy from 'rollup-plugin-copy'
+import typescript from '@rollup/plugin-typescript'
 import archiver from 'archiver'
+import copy from 'rollup-plugin-copy'
 
 const PACKAGE_DIR = 'packages'
 
@@ -45,9 +45,8 @@ function getVersion() {
         const version = JSON.parse(fs.readFileSync('package.json')).version
         if (versionFormat.test(version)) {
             return version
-        } else {
-            throw new Error()
         }
+        throw new Error()
     } catch (error) {
         throw new Error('Could not read version from')
     }
@@ -71,7 +70,7 @@ function makePackage() {
 
             return new Promise((resolve) => {
                 const output = fs.createWriteStream(
-                    `${PACKAGE_DIR}/tdoneclick-${devBrowser}-${version}.zip`
+                    `${PACKAGE_DIR}/tdoneclick-${devBrowser}-${version}.zip`,
                 )
                 output.on('finish', resolve)
 

@@ -1,8 +1,8 @@
-import { html, LitElement } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 
-import './target-labels-list'
 import { updateDefaultRule } from '../../../controllers/rules'
+import './target-labels-list'
 
 @customElement('tc-target-labels')
 class TargetLabelsElement extends LitElement {
