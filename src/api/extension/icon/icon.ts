@@ -1,7 +1,7 @@
 const SUCCESS_ICON_TIMEOUT = 2000
 const ERROR_ICON_TIMEOUT = 5000
 
-export function setDefault() {
+function setDefault() {
     chrome.action.setIcon({
         path: {
             '48': 'icons/icon.png',
@@ -9,7 +9,7 @@ export function setDefault() {
         },
     })
 }
-export function setLoading() {
+function setLoading() {
     chrome.action.setIcon({
         path: {
             '48': 'icons/loading.png',
@@ -18,7 +18,7 @@ export function setLoading() {
     })
 }
 
-export function setSuccess() {
+function setSuccess() {
     chrome.action.setIcon({
         path: {
             '48': 'icons/success.png',
@@ -29,7 +29,7 @@ export function setSuccess() {
     setTimeout(() => setDefault(), SUCCESS_ICON_TIMEOUT)
 }
 
-export function setError() {
+function setError() {
     chrome.action.setIcon({
         path: {
             '48': 'icons/error.png',

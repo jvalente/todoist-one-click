@@ -12,7 +12,7 @@ import { Rule, RulesState } from '../../types/rules.types'
 import Rules from '../../models/rules'
 
 @customElement('tc-settings-data')
-export class SettingsDataElement extends LitElement {
+class SettingsDataElement extends LitElement {
     @property({ type: String })
     apiKey!: string
 

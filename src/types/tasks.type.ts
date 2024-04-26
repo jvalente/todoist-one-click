@@ -1,6 +1,4 @@
-import type { ModelState } from '../models/model'
-
-export type Task = {
+type Task = {
     title: string
     url?: string
 }
@@ -10,5 +8,3 @@ export type FailedTask = {
     task: Task
     error: unknown
 }
-
-export type FailedTasksState = ModelState<Array<FailedTask>>

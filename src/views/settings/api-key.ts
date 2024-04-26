@@ -3,7 +3,7 @@ import { customElement, query } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
 
 @customElement('tc-api-key')
-export class ApiKeyElement extends LitElement {
+class ApiKeyElement extends LitElement {
     @query('#apiKey')
     apiKeyInput?: HTMLInputElement
 

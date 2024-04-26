@@ -17,19 +17,22 @@
         "build:firefox": "npm run clear && DEV_BROWSER=firefox rollup -c",
         "build:all": "npm run clear && DEV_BROWSER=chrome rollup -c && DEV_BROWSER=firefox rollup -c",
         "release:minor": "npm run test:all && npm version minor -m 'Release minor v%s' && npm run build:all",
-        "release:patch": "npm run test:all && npm version patch -m 'Release patch v%s' && npm run build:all"
+        "release:patch": "npm run test:all && npm version patch -m 'Release patch v%s' && npm run build:all",
+        "knip": "knip"
     },
     "devDependencies": {
         "@playwright/test": "1.43.0",
         "@rollup/plugin-node-resolve": "15.2.3",
         "@rollup/plugin-typescript": "11.1.6",
         "@types/chrome": "0.0.263",
+        "@types/node": "20.12.7",
         "archiver": "7.0.1",
+        "knip": "5.10.0",
         "rimraf": "5.0.5",
         "rollup": "4.13.0",
         "rollup-plugin-copy": "3.5.0",
         "tslib": "2.6.2",
-        "typescript": "5.2.2",
+        "typescript": "5.4.5",
         "vitest": "1.4.0"
     },
     "dependencies": {

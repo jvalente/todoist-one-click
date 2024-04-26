@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js'
 import { loading } from '../common/styles/loading'
 
 @customElement('tc-loading')
-export class LoadingElement extends LitElement {
+class LoadingElement extends LitElement {
     static styles = [loading]
 
     render() {

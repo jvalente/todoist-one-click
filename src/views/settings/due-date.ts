@@ -3,7 +3,7 @@ import { customElement, property, query, state } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../controllers/rules'
 
 @customElement('tc-due-date')
-export class DueDateElement extends LitElement {
+class DueDateElement extends LitElement {
     @property()
     dueDate?: string
 

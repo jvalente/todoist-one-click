@@ -6,7 +6,7 @@ import { repeat } from 'lit/directives/repeat.js'
 import './failed-task-item'
 
 @customElement('tc-failed-tasks')
-export class FailedTasksElement extends LitElement {
+class FailedTasksElement extends LitElement {
     static styles = css`
         ul {
             margin: 0;

@@ -6,7 +6,7 @@ import { horizontalList } from '../../common/styles/horizontal-list'
 import { deleteIcon } from '../../common/svg/delete'
 
 @customElement('tc-target-labels-list')
-export class TargetLabelsListElement extends LitElement {
+class TargetLabelsListElement extends LitElement {
     static styles = [horizontalList]
 
     @property()

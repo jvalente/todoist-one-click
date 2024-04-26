@@ -5,7 +5,7 @@ import type { ProjectsState } from '../../../types/projects.types'
 import type { RulesState } from '../../../types/rules.types'
 
 @customElement('tc-project-section')
-export class ProjectSectionElement extends LitElement {
+class ProjectSectionElement extends LitElement {
     @property({ type: Object })
     rule?: RulesState['data']
 

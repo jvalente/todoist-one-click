@@ -1,0 +1,8 @@
+{
+    "entry": ["src/background.ts", "src/views/settings/settings.ts"],
+    "project": ["**/*.ts"],
+    "playwright": {
+        "config": ["e2e/playwright.config.ts"]
+    },
+    "ignoreDependencies": ["@types/chrome"]
+}

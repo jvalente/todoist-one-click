@@ -5,7 +5,7 @@ import './target-labels-list'
 import { updateDefaultRule } from '../../../controllers/rules'
 
 @customElement('tc-target-labels')
-export class TargetLabelsElement extends LitElement {
+class TargetLabelsElement extends LitElement {
     @property()
     private labels?: Array<string>
 

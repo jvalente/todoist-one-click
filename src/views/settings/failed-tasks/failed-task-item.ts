@@ -9,7 +9,7 @@ import {
 import { FailedTask } from '../../../types/tasks.type'
 
 @customElement('tc-failed-task-item')
-export class FailedTaskItemElement extends LitElement {
+class FailedTaskItemElement extends LitElement {
     static styles = [errorCard]
 
     @property({ type: Object })

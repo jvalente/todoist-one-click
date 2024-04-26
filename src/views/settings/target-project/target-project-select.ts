@@ -8,7 +8,7 @@ import type { Rule } from '../../../types/rules.types'
 import { settingsSelect } from '../../common/styles/select'
 
 @customElement('tc-project-select')
-export class ProjectSelectElement extends LitElement {
+class ProjectSelectElement extends LitElement {
     static styles = [settingsSelect]
 
     @property({ type: Object })
