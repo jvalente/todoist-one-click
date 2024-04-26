@@ -17,7 +17,7 @@
                 "noUnusedImports": "warn"
             },
             "suspicious": {
-                "noExplicitAny": "off"
+                "noExplicitAny": "warn"
             }
         }
     },

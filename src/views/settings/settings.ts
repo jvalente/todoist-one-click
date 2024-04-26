@@ -22,25 +22,7 @@ export class SettingsElement extends LitElement {
         this.apiKey = apiKey
     }
 
-    private renderApiKey() {
-        const p = new Promise(() => {})
-
-        p.then(() => {})
-
-        return html`<tc-api-key .apiKey=${this.apiKey}></tc-api-key>`
-    }
-
-    private renderSettingsData() {
-        return html`<tc-settings-data
-            .apiKey=${this.apiKey}
-        ></tc-settings-data>`
-    }
-
     render() {
-        if (!this.apiKey) {
-            return html`${this.renderApiKey()}`
-        }
-
-        return html`${this.renderSettingsData()}`
+        return this.apiKey ? html`<tc-settings-data />` : html`<tc-api-key />`
     }
 }

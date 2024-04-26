@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
+import './advanced-rules'
 import './due-date'
 import './failed-tasks'
 import './loading'
@@ -32,31 +33,35 @@ class SettingsDataElement extends LitElement {
 
     // TODO: Move into separate component
     private renderDefaultRule() {
-        return html`<tc-project-section
+        return html`<tc-project-section 
                 .rule=${this.defaultRule}
             ></tc-project-section
             ><tc-target-labels
                 .labels=${this.defaultRule?.labels}
             ></tc-target-labels
-            ><tc-due-date .dueDate=${this.defaultRule?.dueDate}></tc-due-date>`
+            ><tc-due-date .dueDate=${this.defaultRule?.dueDate} />`
     }
 
     render() {
         if (this.defaultRule) {
             return html`
                 ${renderFailedTasks()}
-                ${this.renderDefaultRule()}${renderReset()}
+                ${this.renderDefaultRule()}${renderAdvancedRules()}${renderReset()}
             `
         }
 
-        return html`<tc-loading></tc-loading>`
+        return html`<tc-loading />`
     }
 }
 
 function renderFailedTasks() {
-    return html`<tc-failed-tasks></tc-failed-tasks>`
+    return html`<tc-failed-tasks />`
+}
+
+function renderAdvancedRules() {
+    return html`<tc-advanced-rules />`
 }
 
 function renderReset() {
-    return html`<tc-reset></tc-reset>`
+    return html`<tc-reset />`
 }
