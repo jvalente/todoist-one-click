@@ -4,6 +4,9 @@ import Projects from '../../../models/projects'
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 
+import '../../common/system'
+import './target-project-select'
+
 @customElement('tc-project-section')
 class ProjectSectionElement extends LitElement {
     @property({ type: Object })

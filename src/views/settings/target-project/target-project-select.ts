@@ -1,48 +1,38 @@
 import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { repeat } from 'lit/directives/repeat.js'
 import { updateDefaultRule } from '../../../controllers/rules'
 
-import type { Project, ProjectsState } from '../../../types/projects.types'
+import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
-import { settingsSelect } from '../../common/styles/select'
+import type { SelectChangeEvent } from '../../common/system'
+
+import '../../common/system'
 
 @customElement('tc-project-select')
 class ProjectSelectElement extends LitElement {
-    static styles = [settingsSelect]
-
     @property({ type: Object })
-    private rule?: Rule
+    rule?: Rule
 
-    @property()
-    private projects: ProjectsState['data'] = []
+    @property({ type: Array })
+    projects: ProjectsState['data'] = []
 
-    // TODO: find type solution
-    private handleSelectionChange(event: any) {
-        updateDefaultRule({ projectId: event.target.value })
+    private handleSelectionChange(event: SelectChangeEvent) {
+        updateDefaultRule({ projectId: event.selectedValue })
     }
 
-    private isSelected(project: Project) {
-        return (
-            project.id === this.rule?.projectId ||
-            (!this.rule?.projectId && project.is_inbox_project)
-        )
+    get selectedProjectId() {
+        return this.rule?.projectId || ''
+    }
+
+    get projectSelectOptions() {
+        return this.projects?.map((project) => [project.id, project.name]) || []
     }
 
     render() {
-        return html`<select id="dropdown" @change=${this.handleSelectionChange}>
-            <option value="" disabled selected>Select your option</option>
-            ${repeat(
-                this.projects || [],
-                (project) => project.id,
-                (project) =>
-                    html`<option
-                        value=${project.id}
-                        ?selected=${this.isSelected(project)}
-                    >
-                        ${project.name}
-                    </option>`,
-            )}
-        </select>`
+        return html`<tc-select
+            .selectedValue=${this.selectedProjectId}
+            .options=${this.projectSelectOptions}
+            @change=${this.handleSelectionChange}
+        />`
     }
 }
