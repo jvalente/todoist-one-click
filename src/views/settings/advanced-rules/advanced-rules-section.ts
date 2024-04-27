@@ -36,8 +36,6 @@ class AdvancedRulesSectionElement extends LitElement {
     }
 
     render() {
-        console.log(this.rules)
-
         return html`<tc-section title="Advanced rules">
            <tc-advanced-rule .projects=${this.projects}></tc-advanced-rule>
         </tc-section>`

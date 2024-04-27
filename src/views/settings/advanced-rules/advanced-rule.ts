@@ -4,7 +4,10 @@ import { customElement, property } from 'lit/decorators.js'
 import type { Rule } from '../../../types/rules.types'
 import type { InputChangeEvent, SelectChangeEvent } from '../../common/system'
 
+import type { ProjectsState } from '../../../types/projects.types'
+
 import '../../common/system'
+import '../target-labels/target-labels-list'
 import '../target-project/target-project-select'
 
 @customElement('tc-advanced-rule')
@@ -29,7 +32,7 @@ class AdvancedRuleElement extends LitElement {
     ]
 
     @property({ type: Array })
-    projects: any[] = []
+    projects: ProjectsState['data'] = []
 
     @property({ type: Object })
     rule: Omit<Rule, 'id'> = { matchMode: 'contains' }
@@ -52,6 +55,12 @@ class AdvancedRuleElement extends LitElement {
         })
     }
 
+    private updateLabels(event: CustomEvent) {
+        this.updateRule({
+            labels: event.detail.labels,
+        })
+    }
+
     private updateDueDate(event: InputChangeEvent) {
         this.updateRule({
             dueDate: event.value,
@@ -59,6 +68,7 @@ class AdvancedRuleElement extends LitElement {
     }
 
     private saveRule() {
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(this.rule)
     }
 
@@ -88,11 +98,11 @@ class AdvancedRuleElement extends LitElement {
                 @change=${this.updateProject}
             ></tc-project-select>
             <tc-text small>then add labels:</tc-text>
-            <tc-text-input
+            <tc-target-labels-list
                 small
-                placeholder="labels..."
-                ?disableSpace=${true}
-            ></tc-text-input>
+                .labels=${this.rule.labels}
+                @change=${this.updateLabels}
+            ></tc-target-labels-list>
             <tc-text small>and due date:</tc-text>
             <tc-text-input
                 small
