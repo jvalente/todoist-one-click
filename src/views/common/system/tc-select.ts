@@ -23,6 +23,8 @@ class SelectElement extends LitElement {
             border-right: 4px solid transparent;
         }
     `
+    @property({ type: Boolean })
+    small = false
 
     @property({ type: Array })
     options: Array<string | string[]> = []

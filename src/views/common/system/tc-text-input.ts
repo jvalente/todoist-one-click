@@ -20,6 +20,8 @@ class TextInputElement extends LitElement {
             padding: 4px 2px;
         }
     `
+    @property({ type: Boolean })
+    small = false
 
     @property({ type: String })
     placeholder = ''
