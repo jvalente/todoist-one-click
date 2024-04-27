@@ -1,16 +1,15 @@
 import { LitElement, html, nothing } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
+import Rules from '../../models/rules'
+
+import type { Rule, RulesState } from '../../types/rules.types'
 
 import './advanced-rules'
 import './due-date'
 import './failed-tasks'
-import './loading'
 import './reset'
 import './target-labels'
 import './target-project'
-
-import Rules from '../../models/rules'
-import type { Rule, RulesState } from '../../types/rules.types'
 
 @customElement('tc-settings-data')
 class SettingsDataElement extends LitElement {

@@ -1,5 +1,5 @@
 import { LitElement, css, html } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-text')
 class TextElement extends LitElement {
@@ -21,6 +21,12 @@ class TextElement extends LitElement {
             border-radius: var(--default-border-radius);
         }
     `
+
+    @property({ type: Boolean })
+    small = false
+
+    @property({ type: Boolean })
+    secondary = false
 
     render() {
         return html`<p><slot></slot></p>`
