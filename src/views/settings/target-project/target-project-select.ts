@@ -21,7 +21,11 @@ class ProjectSelectElement extends LitElement {
     }
 
     get selectedProjectId() {
-        return this.rule?.projectId || ''
+        return (
+            this.rule?.projectId ||
+            this.projects?.find((project) => project.is_inbox_project)?.id ||
+            ''
+        )
     }
 
     get projectSelectOptions() {

@@ -10,8 +10,10 @@ test.describe('extension settings', () => {
                     .headers()
                     .authorization.includes('correctApiToken')
             ) {
+                await new Promise((resolve) => setTimeout(resolve, 500))
                 await route.fulfill({ json: [{ name: 'Lorem', id: 100 }] })
             } else {
+                await new Promise((resolve) => setTimeout(resolve, 500))
                 await route.fulfill({ status: 401 })
             }
         })
@@ -32,8 +34,7 @@ test.describe('extension settings', () => {
             .fill('wrongApiToken')
         await page.getByRole('button', { name: 'Save' }).click()
 
-        // TODO PROJECTS LOADER
-        // await expect(page.locator('.loader')).toBeVisible()
+        await expect(page.locator('.loader')).toBeVisible()
 
         await expect(
             page.getByText('Error while loading projects'),
@@ -59,8 +60,7 @@ test.describe('extension settings', () => {
 
         await page.getByRole('link', { name: 'Refresh' }).click()
 
-        // TODO PROJECTS LOADER
-        // await expect(page.locator('.loader')).toBeVisible()
+        await expect(page.locator('.loader')).toBeVisible()
 
         /*
          * Add a label

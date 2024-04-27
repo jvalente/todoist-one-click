@@ -16,7 +16,7 @@ class ProjectSectionElement extends LitElement {
     private projects: ProjectsState['data'] = []
 
     @state()
-    private lastUpdated?: ProjectsState['lastUpdated'] = 0
+    private lastUpdated?: ProjectsState['lastUpdated']
 
     @state()
     private error?: ProjectsState['error']
@@ -51,12 +51,19 @@ class ProjectSectionElement extends LitElement {
             : 'never'
     }
 
-    render() {
-        return html`<tc-section title="Target project">
-            <tc-error-card
+    private renderSectionContent() {
+        if (this.error) {
+            return html`<tc-error-card
                 title="Error while loading projects"
                 .error=${this.error}
-            ></tc-error-card>
+            ></tc-error-card>`
+        }
+
+        if (!this.lastUpdated && !this.error) {
+            return html`<tc-loading description="Loading projects" />`
+        }
+
+        return html`
             <div>
                 <tc-text small secondary
                     >Tasks will be added to the selected project below.</tc-text
@@ -71,6 +78,12 @@ class ProjectSectionElement extends LitElement {
                 .rule=${this.rule}
                 .projects=${this.projects}
             ></tc-project-select>
+        `
+    }
+
+    render() {
+        return html`<tc-section title="Target project">
+            ${this.renderSectionContent()}
         </tc-section>`
     }
 }
