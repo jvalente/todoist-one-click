@@ -39,7 +39,8 @@ class TextInputElement extends LitElement {
 
     private handleKeyup(event: KeyboardEvent) {
         if (event.key === 'Enter') {
-            this.dispatchEvent(new InputEnterPressEvent())
+            this.dispatchEvent(new InputEnterPressEvent(this.value))
+            this.value = ''
         }
     }
 
@@ -53,6 +54,7 @@ class TextInputElement extends LitElement {
 
     private handleInput(event: InputEvent) {
         const { value } = event.target as HTMLInputElement
+        this.value = value
         this.dispatchEvent(new InputChangeEvent(value))
     }
 

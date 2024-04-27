@@ -30,8 +30,10 @@ export class InputChangeEvent extends CustomEvent<{ value: string }> {
     }
 }
 
-export class InputEnterPressEvent extends CustomEvent<undefined> {
-    constructor() {
-        super('enterPress', {})
+export class InputEnterPressEvent extends CustomEvent<{ value: string }> {
+    constructor(_value: string) {
+        super('enterPress', {
+            detail: { value: _value },
+        })
     }
 }
