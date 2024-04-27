@@ -1,1 +1,1 @@
-export * from './target-labels'
+export * from './target-labels-section'
