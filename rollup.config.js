@@ -69,10 +69,13 @@ function makePackage() {
             if (!fs.existsSync(PACKAGE_DIR)) fs.mkdirSync(PACKAGE_DIR)
 
             return new Promise((resolve) => {
-                const output = fs.createWriteStream(
-                    `${PACKAGE_DIR}/tdoneclick-${devBrowser}-${version}.zip`,
-                )
-                output.on('finish', resolve)
+                const path = `${PACKAGE_DIR}/tdoneclick-${devBrowser}-${version}.zip`
+                const output = fs.createWriteStream(path)
+
+                output.on('finish', () => {
+                    printPackageSize(path)
+                    resolve()
+                })
 
                 const archive = archiver('zip', { zlib: { level: 1 } })
                 archive.on('warning', console.log)
@@ -84,4 +87,13 @@ function makePackage() {
             })
         },
     }
+}
+
+function printPackageSize(path) {
+    // biome-ignore lint/suspicious/noConsoleLog: dev tools
+    console.log(
+        `\x1b[33m\x1b[1m\x1b[4m${devBrowser} package: ${Math.round(
+            fs.statSync(path).size / 1024,
+        )}KB\x1b[0m`,
+    )
 }

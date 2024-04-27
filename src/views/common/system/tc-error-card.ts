@@ -62,12 +62,12 @@ function getErrorDescription(error: any) {
         return 'This error usually happens when the API token is invalid or expired. Try to update it using the option below.'
     }
 
-    if (error && error.status === 400) {
-        return 'This error usually happens when Todoist could not process the request.'
-    }
-
     if (error && error.status >= 500) {
         return 'The Todoist servers may be currently unavailable.'
+    }
+
+    if (error && error.status >= 400) {
+        return 'This error usually happens when Todoist could not process the request.'
     }
 
     if (error && !error.status) {
