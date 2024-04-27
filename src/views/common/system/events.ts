@@ -1,8 +1,10 @@
 /**
  * SELECT
  */
-export class SelectChangeEvent extends CustomEvent<{ selectedValue: string }> {
-    constructor(value: string) {
+export class SelectChangeEvent<ValuesType = string> extends CustomEvent<{
+    selectedValue: ValuesType
+}> {
+    constructor(value: ValuesType) {
         super('change', {
             detail: { selectedValue: value },
         })
