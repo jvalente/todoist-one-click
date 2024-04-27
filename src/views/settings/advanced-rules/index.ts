@@ -1,1 +1,1 @@
-export * from './advanced-rules'
+export * from './advanced-rules-section'

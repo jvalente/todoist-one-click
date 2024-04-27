@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import Rules from '../../models/rules'
 
@@ -32,7 +32,7 @@ class SettingsDataElement extends LitElement {
 
     // TODO: Move into separate component
     private renderDefaultRule() {
-        return html`<tc-project-section 
+        return html`<tc-project-section
                 .rule=${this.defaultRule}
             ></tc-project-section
             ><tc-target-labels
@@ -58,8 +58,7 @@ function renderFailedTasks() {
 }
 
 function renderAdvancedRules() {
-    return nothing
-    // return html`<tc-advanced-rules />`
+    return html`<tc-advanced-rules-section />`
 }
 
 function renderReset() {
