@@ -1,6 +1,8 @@
 import { LitElement, html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
+import { updateDefaultRule } from '../../../controllers/rules'
 import Projects from '../../../models/projects'
+
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 
@@ -36,6 +38,11 @@ class ProjectSectionElement extends LitElement {
         this.projects = data
         this.lastUpdated = lastUpdated
         this.error = error
+    }
+
+    private handleProjectSelectChange(event: CustomEvent) {
+        const { projectId } = event.detail
+        updateDefaultRule({ projectId })
     }
 
     private refreshProjects() {
@@ -77,6 +84,7 @@ class ProjectSectionElement extends LitElement {
             <tc-project-select
                 .rule=${this.rule}
                 .projects=${this.projects}
+                @change=${this.handleProjectSelectChange}
             ></tc-project-select>
         `
     }

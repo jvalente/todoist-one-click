@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { updateDefaultRule } from '../../../controllers/rules'
 
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
@@ -10,6 +9,9 @@ import '../../common/system'
 
 @customElement('tc-project-select')
 class ProjectSelectElement extends LitElement {
+    @property({ type: Boolean })
+    small = false
+
     @property({ type: Object })
     rule?: Rule
 
@@ -17,7 +19,11 @@ class ProjectSelectElement extends LitElement {
     projects: ProjectsState['data'] = []
 
     private handleSelectionChange(event: SelectChangeEvent) {
-        updateDefaultRule({ projectId: event.selectedValue })
+        const customEvent = new CustomEvent('change', {
+            detail: { projectId: event.selectedValue },
+        })
+
+        this.dispatchEvent(customEvent)
     }
 
     get selectedProjectId() {
@@ -34,6 +40,7 @@ class ProjectSelectElement extends LitElement {
 
     render() {
         return html`<tc-select
+            ?small=${this.small}
             .selectedValue=${this.selectedProjectId}
             .options=${this.projectSelectOptions}
             @change=${this.handleSelectionChange}
