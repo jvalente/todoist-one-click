@@ -8,6 +8,8 @@ import copy from 'rollup-plugin-copy'
 const PACKAGE_DIR = 'packages'
 
 const devBrowser = process.env.DEV_BROWSER || 'chrome'
+const build = process.env.BUILD || 'production'
+
 const version = getVersion()
 
 export default {
@@ -66,6 +68,7 @@ function makePackage() {
     return {
         name: 'make-package',
         writeBundle() {
+            if (build === 'development') return
             if (!fs.existsSync(PACKAGE_DIR)) fs.mkdirSync(PACKAGE_DIR)
 
             return new Promise((resolve) => {
