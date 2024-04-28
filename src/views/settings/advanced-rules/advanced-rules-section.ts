@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
+import { deleteRule } from '../../../controllers/rules'
 import Projects from '../../../models/projects'
 import Rules from '../../../models/rules'
 
@@ -7,7 +8,8 @@ import type { ProjectsState } from '../../../types/projects.types'
 import type { RulesState } from '../../../types/rules.types'
 
 import '../../common/system'
-import './advanced-rule'
+import './advanced-rule-form'
+import './advanced-rules-list'
 
 @customElement('tc-advanced-rules-section')
 class AdvancedRulesSectionElement extends LitElement {
@@ -16,6 +18,12 @@ class AdvancedRulesSectionElement extends LitElement {
 
     @state()
     private projects: ProjectsState['data'] = []
+
+    @state()
+    private editingRuleId?: string
+
+    @state()
+    private addingRule = false
 
     connectedCallback() {
         super.connectedCallback()
@@ -35,9 +43,60 @@ class AdvancedRulesSectionElement extends LitElement {
         this.rules = data?.filter((rule) => !rule.default) || []
     }
 
+    private handleAddRule() {
+        this.addingRule = true
+    }
+
+    private handleEditRule(event: CustomEvent) {
+        this.editingRuleId = event.detail.ruleId
+    }
+
+    private handleSaveRule(event: CustomEvent) {
+        const rule = event.detail.rule
+    }
+
+    private handleCancelEdit(event: CustomEvent) {
+        // TODO: confirm cancel
+        this.editingRuleId = undefined
+        this.addingRule = false
+    }
+
+    private handleDeleteRule(event: CustomEvent) {
+        // TODO: confirm delete
+        deleteRule(event.detail.ruleId)
+        this.editingRuleId = undefined
+    }
+
+    private renderRuleForm() {
+        const rule = this.rules?.find(
+            (rule) => rule.id === this.editingRuleId,
+        ) || { matchMode: 'contains' }
+
+        return html`<tc-advanced-rule-form
+            .rule=${rule}
+            .projects=${this.projects}
+            @save=${this.handleSaveRule}
+            @cancel=${this.handleCancelEdit}
+            @delete=${this.handleDeleteRule}
+        ></tc-advanced-rule-form>`
+    }
+
+    private renderRulesList() {
+        return html`<tc-advanced-rules-list
+                .rules=${this.rules}
+                .projects=${this.projects}
+                @editRule=${this.handleEditRule}
+            ></tc-advanced-rules-list
+            ><tc-link @click=${this.handleAddRule}>Add rule</tc-link>`
+    }
+
     render() {
         return html`<tc-section title="Advanced rules">
-           <tc-advanced-rule .projects=${this.projects}></tc-advanced-rule>
+            ${
+                this.editingRuleId || this.addingRule
+                    ? this.renderRuleForm()
+                    : this.renderRulesList()
+            }
         </tc-section>`
     }
 }

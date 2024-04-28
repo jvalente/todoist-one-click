@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import Rules from '../../models/rules'
 
@@ -58,8 +58,7 @@ function renderFailedTasks() {
 }
 
 function renderAdvancedRules() {
-    // return html`<tc-advanced-rules-section />`
-    return nothing
+    return html`<tc-advanced-rules-section />`
 }
 
 function renderReset() {
