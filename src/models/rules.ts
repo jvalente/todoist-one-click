@@ -44,6 +44,20 @@ class RulesModel extends Model<Array<Rule>> {
             (rules) => rules?.find((rule) => rule.default) || DEFAULT_RULE,
         )
     }
+
+    addRule(ruleParams: Omit<Rule, 'id'>) {
+        const rule = { ...ruleParams, id: crypto.randomUUID() }
+
+        this.get().then((rules) => {
+            this.set([...(rules || []), rule])
+        })
+    }
+
+    deleteRule(ruleId: Rule['id']) {
+        this.get().then((rules) => {
+            this.set((rules || []).filter((rule) => rule.id !== ruleId))
+        })
+    }
 }
 
 const Rules = new RulesModel()
