@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from 'lit'
+import { LitElement, css, html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
 
@@ -10,6 +10,13 @@ import './advanced-rule'
 
 @customElement('tc-advanced-rules-list')
 class AdvancedRulesListElement extends LitElement {
+    static styles = css`
+        tc-advanced-rule {
+            display: block;
+            margin-bottom: 10px;
+        }
+    `
+
     @property({ type: Array })
     rules?: RulesState['data'] = []
 

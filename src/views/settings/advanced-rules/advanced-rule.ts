@@ -1,10 +1,11 @@
-import { LitElement, html } from 'lit'
+import { LitElement, html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 
 import '../../common/system'
+import '../target-labels/labels-text-list'
 
 @customElement('tc-advanced-rule')
 class AdvancedRuleElement extends LitElement {
@@ -30,9 +31,34 @@ class AdvancedRuleElement extends LitElement {
     }
 
     render() {
-        return html`<p>
-            ${this.rule.matchMode}: ${this.rule.query} - ${this.projectName}
-            <tc-link @click=${this.handleEditRule}>Edit</tc-link>
-        </p>`
+        return html`
+            <div class="row spaceBetween">
+                <div>
+                    <tc-text bold small
+                        >${this.rule.matchMode}: ${this.rule.query}</tc-text
+                    >
+                    <div class="row">
+                        <tc-text small>#${this.projectName}</tc-text>
+                        ${
+                            this.rule.labels?.length
+                                ? html`<tc-labels-text-list
+                                  .labels=${this.rule.labels}
+                              ></tc-labels-text-list>`
+                                : nothing
+                        }
+                        ${
+                            this.rule.dueDate
+                                ? html`<tc-text small
+                                  >${this.rule.dueDate}</tc-text
+                              >`
+                                : nothing
+                        }
+                    </div>
+                </div>
+                <div>
+                    <tc-link small @click=${this.handleEditRule}>Edit</tc-link>
+                </div>
+            </div>
+        `
     }
 }
