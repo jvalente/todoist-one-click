@@ -53,6 +53,19 @@ class RulesModel extends Model<Array<Rule>> {
         })
     }
 
+    updateRule(ruleParams: Partial<Rule>) {
+        this.get().then((rules) => {
+            this.set(
+                (rules || []).map((rule) => {
+                    if (rule.id === ruleParams.id) {
+                        return { ...rule, ...ruleParams }
+                    }
+                    return rule
+                }),
+            )
+        })
+    }
+
     deleteRule(ruleId: Rule['id']) {
         this.get().then((rules) => {
             this.set((rules || []).filter((rule) => rule.id !== ruleId))

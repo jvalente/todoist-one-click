@@ -10,6 +10,11 @@ export function addRule(ruleParams: Omit<Rule, 'id'>) {
     Rules.addRule(ruleParams)
 }
 
+export function updateRule(ruleParams: Partial<Rule>) {
+    // validate query must exist
+    Rules.updateRule(ruleParams)
+}
+
 export function deleteRule(ruleId: Rule['id']) {
     // validate cannot delete default
     Rules.deleteRule(ruleId)

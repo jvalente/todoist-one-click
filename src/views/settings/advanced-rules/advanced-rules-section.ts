@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit'
+import { LitElement, html, nothing } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import { deleteRule } from '../../../controllers/rules'
+import { addRule, deleteRule, updateRule } from '../../../controllers/rules'
 import Projects from '../../../models/projects'
 import Rules from '../../../models/rules'
 
@@ -52,7 +52,16 @@ class AdvancedRulesSectionElement extends LitElement {
     }
 
     private handleSaveRule(event: CustomEvent) {
-        const rule = event.detail.rule
+        const { rule } = event.detail
+
+        if (this.editingRuleId) {
+            updateRule(event.detail.rule)
+        } else {
+            addRule(event.detail.rule)
+        }
+
+        this.addingRule = false
+        this.editingRuleId = undefined
     }
 
     private handleCancelEdit(event: CustomEvent) {
@@ -64,6 +73,7 @@ class AdvancedRulesSectionElement extends LitElement {
     private handleDeleteRule(event: CustomEvent) {
         // TODO: confirm delete
         deleteRule(event.detail.ruleId)
+
         this.editingRuleId = undefined
     }
 
@@ -82,15 +92,20 @@ class AdvancedRulesSectionElement extends LitElement {
     }
 
     private renderRulesList() {
-        return html`<tc-advanced-rules-list
+        return html`${
+            this.rules?.length
+                ? html`<tc-advanced-rules-list
                 .rules=${this.rules}
                 .projects=${this.projects}
                 @editRule=${this.handleEditRule}
             ></tc-advanced-rules-list
-            ><tc-link @click=${this.handleAddRule}>Add rule</tc-link>`
+            >`
+                : nothing
+        }<tc-link @click=${this.handleAddRule}>Add rule</tc-link>`
     }
 
     render() {
+        console.log(this.rules)
         return html`<tc-section title="Advanced rules">
             ${
                 this.editingRuleId || this.addingRule
