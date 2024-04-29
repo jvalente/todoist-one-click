@@ -13,6 +13,9 @@ class LinkElement extends LitElement {
         }
     `
 
+    @property({ type: Boolean })
+    small = false
+
     @property({ type: String })
     href?: string
 

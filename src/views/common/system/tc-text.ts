@@ -11,6 +11,10 @@ class TextElement extends LitElement {
             font-size: var(--small-font-size);
         }
 
+        :host([bold]) p {
+            font-weight: bold;
+        }
+
         :host([secondary]) p {
             color: var(--secondary-color);
         }
@@ -21,6 +25,9 @@ class TextElement extends LitElement {
             border-radius: var(--default-border-radius);
         }
     `
+
+    @property({ type: Boolean })
+    bold = false
 
     @property({ type: Boolean })
     small = false
