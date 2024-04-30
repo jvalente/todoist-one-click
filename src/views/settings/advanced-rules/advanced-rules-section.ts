@@ -95,17 +95,17 @@ class AdvancedRulesSectionElement extends LitElement {
         return html`${
             this.rules?.length
                 ? html`<tc-advanced-rules-list
-                .rules=${this.rules}
-                .projects=${this.projects}
-                @editRule=${this.handleEditRule}
-            ></tc-advanced-rules-list
-            >`
+                      .rules=${this.rules}
+                      .projects=${this.projects}
+                      @editRule=${this.handleEditRule}
+                  ></tc-advanced-rules-list>`
                 : nothing
-        }<tc-link @click=${this.handleAddRule}>Add rule</tc-link>`
+        }<tc-link @click=${this.handleAddRule}
+                >Add rule</tc-link
+            >`
     }
 
     render() {
-        console.log(this.rules)
         return html`<tc-section title="Advanced rules">
             ${
                 this.editingRuleId || this.addingRule

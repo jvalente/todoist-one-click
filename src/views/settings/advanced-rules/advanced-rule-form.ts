@@ -1,14 +1,15 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { RuleMatchMode } from '../../../types/rules.types'
+import { grid } from '../../common/styles/grid'
 
+import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 import type {
     InputChangeEvent,
     InputEnterPressEvent,
     SelectChangeEvent,
 } from '../../common/system'
-
-import type { ProjectsState } from '../../../types/projects.types'
 
 import '../../common/system'
 import '../target-labels/target-labels-list'
@@ -17,20 +18,17 @@ import '../target-project/target-project-select'
 @customElement('tc-advanced-rule-form')
 class AdvancedRuleFormElement extends LitElement {
     static styles = [
+        grid,
         css`
-            div > {
-                margin: 5;
+            tc-text {
+                white-space: nowrap;
             }
-
-            div {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin: 5px 0;
-            }
-
             tc-text-input {
                 flex-grow: 1;
+            }
+
+            tc-project-select {
+                width: 100%;
             }
         `,
     ]
@@ -40,7 +38,7 @@ class AdvancedRuleFormElement extends LitElement {
 
     // QUIRK: if the attribute is explicitly set to undefined, the default value is not used
     @property({ type: Object, converter: (value: any) => JSON.parse(value) })
-    rule: Partial<Rule> = { matchMode: 'contains' }
+    rule: Partial<Rule> = { matchMode: RuleMatchMode.Contains }
 
     get query() {
         return this.rule.query || ''
@@ -81,10 +79,7 @@ class AdvancedRuleFormElement extends LitElement {
     }
 
     private cancelEditRule() {
-        const customEvent = new CustomEvent('cancel', {
-            detail: { ruleId: this.rule.id },
-        })
-
+        const customEvent = new CustomEvent('cancel')
         this.dispatchEvent(customEvent)
     }
 
@@ -98,47 +93,63 @@ class AdvancedRuleFormElement extends LitElement {
 
     render() {
         return html`
-            <div>
-                <tc-text small>If the tab url</tc-text>
-                <tc-select
-                    small
-                    .options=${['contains', 'is exactly', 'matches regex']}
-                    .selectedValue=${'contains'}
-                    @change=${(matchMode: SelectChangeEvent<any>) =>
-                        this.updateRule({ matchMode: matchMode.selectedValue })}
-                ></tc-select>
-                <tc-text-input
-                    small
-                    .value=${this.query}
-                    placeholder="url"
-                    @change=${this.updateQuery}
-                ></tc-text-input>
+            <div class="stack">
+                <div class="row">
+                    <tc-text small>If the tab url</tc-text>
+                    <tc-select
+                        small
+                        .options=${Object.values(RuleMatchMode)}
+                        .selectedValue=${this.rule.matchMode as string}
+                        @change=${(matchMode: SelectChangeEvent<any>) =>
+                            this.updateRule({
+                                matchMode: matchMode.selectedValue,
+                            })}
+                    ></tc-select>
+                    <tc-text-input
+                        small
+                        .value=${this.query}
+                        placeholder="url"
+                        @change=${this.updateQuery}
+                    ></tc-text-input>
+                </div>
+                <div class="row">
+                    <tc-text small>then add to project:</tc-text>
+                    <tc-project-select
+                        small
+                        .rule=${this.rule}
+                        .projects=${this.projects}
+                        @change=${this.updateProject}
+                    ></tc-project-select>
+                </div>
+                <div>
+                    <tc-text small>add labels:</tc-text>
+                    <tc-target-labels-list
+                        small
+                        .labels=${this.rule.labels}
+                        @change=${this.updateLabels}
+                    ></tc-target-labels-list>
+                </div>
+                <div>
+                    <tc-text small
+                        >and due date:
+                        <code>${this.rule.dueDate || 'no date'}</code>.</tc-text
+                    >
+                    <tc-text-input
+                        small
+                        placeholder="due date..."
+                        @enterPress=${this.updateDueDate}
+                    ></tc-text-input>
+                </div>
+                <div class="row spaceBetween">
+                    <div class="row">
+                        <button @click=${this.saveRule}>Save</button>
+                        <tc-link small @click=${this.cancelEditRule}
+                            >Cancel</tc-link
+                        >
+                    </div>
+                    <tc-link small @click=${this.deleteRule}>Delete</tc-link>
+                </div>
             </div>
-            <tc-text small>then add to project:</tc-text>
-            <tc-project-select
-                small
-                .rule=${this.rule}
-                .projects=${this.projects}
-                @change=${this.updateProject}
-            ></tc-project-select>
-            <tc-text small>then add labels:</tc-text>
-            <tc-target-labels-list
-                small
-                .labels=${this.rule.labels}
-                @change=${this.updateLabels}
-            ></tc-target-labels-list>
-            <tc-text small
-                >and due date:
-                <code>${this.rule.dueDate || 'no date'}</code>.</tc-text
-            >
-            <tc-text-input
-                small
-                placeholder="due date..."
-                @enterPress=${this.updateDueDate}
-            ></tc-text-input>
-            <button @click=${this.saveRule}>Save</button>
-            <tc-link @click=${this.cancelEditRule}>Cancel</tc-link>
-            <tc-link @click=${this.deleteRule}>Delete</tc-link>
         `
     }
 }

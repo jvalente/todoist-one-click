@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { grid } from '../../common/styles/grid'
 
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
@@ -9,6 +10,8 @@ import '../target-labels/labels-text-list'
 
 @customElement('tc-advanced-rule')
 class AdvancedRuleElement extends LitElement {
+    static styles = [grid]
+
     @property({ type: Object })
     rule!: Rule
 
