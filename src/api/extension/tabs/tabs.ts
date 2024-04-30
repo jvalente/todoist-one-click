@@ -5,8 +5,8 @@ function getActiveTab() {
         .then((tabs) => {
             const currentTab = tabs[0]
             return {
-                title: currentTab.title,
-                url: currentTab.url,
+                title: currentTab.title || '',
+                url: currentTab.url || '',
                 id: currentTab.id,
             }
         })

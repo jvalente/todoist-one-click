@@ -1,11 +1,13 @@
-import type { Rule } from '../types/rules.types'
+import { RuleMatchMode } from '../types/rules.types'
 import Model from './model'
+
+import type { Rule } from '../types/rules.types'
 
 const DEFAULT_RULE: Rule = {
     id: crypto.randomUUID(),
     name: 'default',
     default: true,
-    matchMode: 'contains',
+    matchMode: RuleMatchMode.Contains,
     dueDate: 'today',
 }
 
@@ -43,6 +45,33 @@ class RulesModel extends Model<Array<Rule>> {
         return this.get().then(
             (rules) => rules?.find((rule) => rule.default) || DEFAULT_RULE,
         )
+    }
+
+    contains(rule: Rule, url: string) {
+        return (
+            rule.matchMode === RuleMatchMode.Contains &&
+            rule.query &&
+            url.includes(rule.query)
+        )
+    }
+
+    isExactly(rule: Rule, url: string) {
+        return (
+            rule.matchMode === RuleMatchMode.Exact &&
+            rule.query?.toLocaleLowerCase() === url.toLocaleLowerCase()
+        )
+    }
+
+    getByUrl(url: string) {
+        return this.get().then((rules) => {
+            const rule = rules?.find((rule) => {
+                if (this.contains(rule, url) || this.isExactly(rule, url)) {
+                    return rule
+                }
+            })
+
+            return rule || this.getDefault()
+        })
     }
 
     addRule(ruleParams: Omit<Rule, 'id'>) {

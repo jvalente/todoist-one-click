@@ -1,8 +1,13 @@
 import type { ModelState } from '../models/model'
 
+export enum RuleMatchMode {
+    Contains = 'contains',
+    Exact = 'exact',
+}
+
 export type Rule = {
     id: string
-    matchMode: 'exact' | 'contains'
+    matchMode: RuleMatchMode
     name?: string
     default?: boolean
     query?: string

@@ -39,18 +39,20 @@ export function addTask(title?: string, url?: string) {
 }
 
 function getTaskProps(title?: string, url?: string) {
-    return Promise.all([
-        Rules.getDefault(),
-        title && url ? Promise.resolve({ title, url }) : Tabs.getActiveTab(),
-    ]).then(([{ projectId, labels, dueDate }, { title, url }]) => {
-        // TODO: Improve content validation
-
-        return {
-            title,
-            url,
-            projectId,
-            labels,
-            dueDate,
-        }
+    return (
+        title && url ? Promise.resolve({ title, url }) : Tabs.getActiveTab()
+    ).then(({ title, url }) => {
+        return Promise.all([
+            Promise.resolve({ title, url }),
+            Rules.getByUrl(url),
+        ]).then(([{ title, url }, { projectId, labels, dueDate }]) => {
+            return {
+                title,
+                url,
+                projectId,
+                labels,
+                dueDate,
+            }
+        })
     })
 }
