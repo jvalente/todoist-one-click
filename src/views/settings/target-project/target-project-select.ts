@@ -13,7 +13,7 @@ class ProjectSelectElement extends LitElement {
     small = false
 
     @property({ type: Object })
-    rule?: Omit<Rule, 'id'>
+    rule?: Partial<Rule>
 
     @property({ type: Array })
     projects: ProjectsState['data'] = []

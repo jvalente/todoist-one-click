@@ -8,6 +8,12 @@ export const grid = css`
         gap: 10px;
     }
 
+    .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
     .spaceBetween {
         justify-content: space-between;
     }
