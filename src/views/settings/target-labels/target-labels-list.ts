@@ -1,16 +1,34 @@
-import { LitElement, html, nothing } from 'lit'
+import { LitElement, css, html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
-import { horizontalList } from '../../common/styles/horizontal-list'
-import { deleteIcon } from '../../common/svg/delete'
 
 import type { InputEnterPressEvent } from '../../common/system'
 
 import '../../common/system'
+import './label-pill'
 
 @customElement('tc-target-labels-list')
 class TargetLabelsListElement extends LitElement {
-    static styles = [horizontalList]
+    static styles = [
+        css`
+            ul {
+                margin: 0 0 10px 0;
+                display: flex;
+                padding: 0;
+                flex-wrap: wrap;
+            }
+
+            ul li {
+                list-style-type: none;
+                gap: 5px;
+                margin: 5px 10px;
+            }
+
+            ul:first-child li {
+                margin-left: 0;
+            }
+        `,
+    ]
 
     @property({ type: Boolean })
     small = false
@@ -18,12 +36,14 @@ class TargetLabelsListElement extends LitElement {
     @property({ type: Array })
     labels?: Array<string> = []
 
-    private handleRemoveLabel(label: string) {
+    private handleRemoveLabel(event: CustomEvent) {
+        const { label } = event.detail
         this.labels = (this.labels || []).filter((l: string) => l !== label)
         this.dispatchLabelsChange()
     }
 
     private handleAddLabel(event: InputEnterPressEvent) {
+        // TODO: do not add if label already exists
         this.labels = [...(this.labels || []), event.detail.value]
         this.dispatchLabelsChange()
     }
@@ -45,10 +65,11 @@ class TargetLabelsListElement extends LitElement {
                 (label) => label,
                 (label) =>
                     html`<li>
-                        ${label}<tc-link
-                            @click=${() => this.handleRemoveLabel(label)}
-                            >${deleteIcon}</tc-link
-                        >
+                        <tc-label-pill
+                            ?small=${this.small}
+                            .label=${label}
+                            @delete=${this.handleRemoveLabel}
+                        ></tc-label-pill>
                     </li>`,
             )}
         </ul>`
