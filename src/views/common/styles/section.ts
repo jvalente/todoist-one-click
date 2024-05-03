@@ -20,17 +20,4 @@ export const settingsSection = css`
     ::slotted(*) {
         margin: 10px 0;
     }
-
-    section ::slotted(button) {
-        border: none;
-        border-radius: var(--default-border-radius);
-        padding: 10px;
-        font-size: var(--global-font-size);
-        color: var(--primary-color-inverted);
-        background-color: var(--accent-color-0);
-    }
-
-    section ::slotted(button:hover) {
-        background-color: var(--accent-color-1);
-    }
 `

@@ -37,7 +37,7 @@ class ApiKeyElement extends LitElement {
                 ?autofocus=${true}
                 ?disableSpace=${true}
             ></tc-text-input>
-            <button @click=${this.handleOnClick}>Save</button>
+            <tc-button @click=${this.handleOnClick}>Save</tc-button>
         </tc-section>`
     }
 }

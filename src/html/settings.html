@@ -8,6 +8,7 @@
             --small-font-size: smaller;
             --title-font-size: 20px;
             --default-border-radius: 5px;
+            --container-width: 450px;
         }
 
         @media (prefers-color-scheme: light) {
@@ -24,6 +25,7 @@
                 --bg-color-error: rgb(255, 236, 248);
                 --accent-color-0: rgb(110, 93, 198);
                 --accent-color-1: rgb(94, 77, 178);
+                --accent-color-2: rgb(130,112,219);
             }
         }
 
@@ -41,6 +43,7 @@
                 --bg-color-error: rgb(80, 37, 63);
                 --accent-color-0: rgb(143, 126, 231);
                 --accent-color-1: rgb(159, 143, 239);
+                --accent-color-2: rgb(53, 44, 99);
             }
         }
 
@@ -57,7 +60,7 @@
         #container {
             margin: 0 auto;
             padding: 20px;
-            max-width: 450px;
+            max-width: var(--container-width);
         }
     </style>
     <body>
