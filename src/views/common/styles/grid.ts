@@ -17,4 +17,8 @@ export const grid = css`
     .spaceBetween {
         justify-content: space-between;
     }
+
+    .flexEnd {
+        justify-content: flex-end;
+    }
 `

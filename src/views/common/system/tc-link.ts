@@ -1,30 +1,36 @@
 import { LitElement, css, html, nothing } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
+import { grid } from '../styles/grid'
+
+import './tc-button'
 
 @customElement('tc-link')
 class LinkElement extends LitElement {
-    static styles = css`
-        a {
-            color: var(--accent-color-0);
-        }
+    static styles = [
+        grid,
+        css`
+            a {
+                color: var(--accent-color-0);
+            }
 
-        :host([small]) a {
-            font-size: var(--small-font-size);
-        }
+            :host([small]) a {
+                font-size: var(--small-font-size);
+            }
 
-        dialog {
-            background-color: var(--bg-color-3);
-            color: var(--primary-color);
-            border: none;
-            border-radius: var(--default-border-radius);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
+            dialog {
+                background-color: var(--bg-color-3);
+                color: var(--primary-color);
+                border: none;
+                border-radius: var(--default-border-radius);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
 
-        dialog::backdrop {
-            background-color: var(--bg-color-0);
-            opacity: 0.75;
-        }
-    `
+            dialog::backdrop {
+                background-color: var(--bg-color-0);
+                opacity: 0.75;
+            }
+        `,
+    ]
 
     @query('dialog')
     dialog!: HTMLDialogElement
@@ -80,11 +86,14 @@ class LinkElement extends LitElement {
         if (this.confirmDialog) {
             return html`<dialog @click=${this.handleDialogClickEvent}>
                 <p>${this.confirmDialog.message}</p>
-                <button @click=${this.continueEvent}>
-                    ${this.confirmDialog.confirm || 'Confirm'}</button
-                ><button @click=${this.abortEvent}>
-                    ${this.confirmDialog.cancel || 'Cancel'}
-                </button>
+                <div class="row flexEnd">
+                    <tc-button secondary small @click=${this.abortEvent}>
+                        ${this.confirmDialog.cancel || 'Cancel'}
+                    </tc-button>
+                    <tc-button small @click=${this.continueEvent}>
+                        ${this.confirmDialog.confirm || 'Confirm'}</tc-button
+                    >
+                </div>
             </dialog>`
         }
 
