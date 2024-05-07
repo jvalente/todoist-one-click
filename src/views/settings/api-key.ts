@@ -34,6 +34,7 @@ class ApiKeyElement extends LitElement {
                 @change=${(event: InputChangeEvent) => {
                     this.apiKey = event.value
                 }}
+                @enterPress=${this.handleOnClick}
                 ?autofocus=${true}
                 ?disableSpace=${true}
             ></tc-text-input>
