@@ -152,6 +152,7 @@ class AdvancedRuleFormElement extends LitElement {
                     <tc-text-input
                         small
                         .value=${this.query}
+                        ?disableEnter=${true}
                         placeholder="url"
                         @change=${this.updateQuery}
                     ></tc-text-input>

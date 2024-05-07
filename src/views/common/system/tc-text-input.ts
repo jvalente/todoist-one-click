@@ -33,13 +33,17 @@ class TextInputElement extends LitElement {
     disableSpace = false
 
     @property({ type: Boolean })
+    disableEnter = false
+
+    @property({ type: Boolean })
     autofocus = false
 
     // TODO: handle paste event
 
     private handleKeyup(event: KeyboardEvent) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && !this.disableEnter) {
             this.dispatchEvent(new InputEnterPressEvent(this.value))
+            // TODO this should not be here. It should be handled by the parent component
             this.value = ''
         }
     }
