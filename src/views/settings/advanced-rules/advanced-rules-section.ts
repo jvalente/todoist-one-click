@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from 'lit'
+import { LitElement, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { addRule, deleteRule, updateRule } from '../../../controllers/rules'
 import Projects from '../../../models/projects'
@@ -11,7 +11,7 @@ import '../../common/system'
 import './advanced-rule-form'
 import './advanced-rules-list'
 
-const DEFAULT_RULE = { matchMode: 'contains' }
+const DEFAULT_RULE = { matchMode: 'contains', dueDate: 'today' }
 
 @customElement('tc-advanced-rules-section')
 class AdvancedRulesSectionElement extends LitElement {
@@ -101,10 +101,15 @@ class AdvancedRulesSectionElement extends LitElement {
                       .projects=${this.projects}
                       @editRule=${this.handleEditRule}
                   ></tc-advanced-rules-list>`
-                : nothing
-        }<tc-link @click=${this.handleAddRule}
-                >Add rule</tc-link
-            >`
+                : html`<div>
+                      <tc-text small secondary
+                          >Advanced rules allow adding tabs matching the given
+                          URL to the project, labels, and due dates other than
+                          the default ones.</tc-text
+                      >
+                  </div>`
+        }
+            <div><tc-link @click=${this.handleAddRule}>Add rule</tc-link></div>`
     }
 
     render() {

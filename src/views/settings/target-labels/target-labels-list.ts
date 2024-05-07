@@ -43,6 +43,7 @@ class TargetLabelsListElement extends LitElement {
     }
 
     private handleAddLabel(event: InputEnterPressEvent) {
+        if (!event.detail.value) return
         // TODO: do not add if label already exists
         this.labels = [...(this.labels || []), event.detail.value]
         this.dispatchLabelsChange()

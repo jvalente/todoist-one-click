@@ -14,6 +14,7 @@ import type {
 import '../../common/system'
 import '../target-labels/target-labels-list'
 import '../target-project/target-project-select'
+import { matchModeDescription } from './constants'
 
 @customElement('tc-advanced-rule-form')
 class AdvancedRuleFormElement extends LitElement {
@@ -78,6 +79,8 @@ class AdvancedRuleFormElement extends LitElement {
     }
 
     private saveRule() {
+        if (!this.rule.query) return
+
         const customEvent = new CustomEvent('save', {
             detail: { rule: this.rule },
         })
@@ -103,17 +106,17 @@ class AdvancedRuleFormElement extends LitElement {
             <div class="row spaceBetween">
                 <div class="row">
                     <tc-button small @click=${this.saveRule}>Save</tc-button>
-                    <tc-link small 
-                    .confirmDialog=${
-                        hasChanges(this.defaultRule, this.rule)
-                            ? {
-                                  message:
-                                      'Discard the changes and back to the rules list?',
-                              }
-                            : undefined
-                    }
-
-                    @click=${this.cancelEditRule}
+                    <tc-link
+                        small
+                        .confirmDialog=${
+                            hasChanges(this.defaultRule, this.rule)
+                                ? {
+                                      message:
+                                          'Discard the changes and back to the rules list?',
+                                  }
+                                : undefined
+                        }
+                        @click=${this.cancelEditRule}
                         >Cancel</tc-link
                     >
                 </div>
@@ -139,7 +142,7 @@ class AdvancedRuleFormElement extends LitElement {
         return html`
             <div class="stack">
                 <div class="row">
-                    <tc-text small>If the tab url</tc-text>
+                    <tc-text small>If the url</tc-text>
                     <tc-select
                         small
                         .options=${matchModeSelectOptions()}
@@ -153,7 +156,7 @@ class AdvancedRuleFormElement extends LitElement {
                         small
                         .value=${this.query}
                         ?disableEnter=${true}
-                        placeholder="url"
+                        placeholder="url (required)"
                         @change=${this.updateQuery}
                     ></tc-text-input>
                 </div>
@@ -168,6 +171,8 @@ class AdvancedRuleFormElement extends LitElement {
                 </div>
                 <div>
                     <tc-text small>add labels:</tc-text>
+                </div>
+                <div>
                     <tc-target-labels-list
                         small
                         .labels=${this.rule.labels}
@@ -179,9 +184,11 @@ class AdvancedRuleFormElement extends LitElement {
                         >and due date:
                         <code>${this.rule.dueDate || 'no date'}</code>.</tc-text
                     >
+                </div>
+                <div>
                     <tc-text-input
                         small
-                        placeholder="due date..."
+                        placeholder=${getInputPlaceholder(this.rule.dueDate)}
                         @enterPress=${this.updateDueDate}
                     ></tc-text-input>
                 </div>
@@ -192,10 +199,6 @@ class AdvancedRuleFormElement extends LitElement {
 }
 
 function matchModeSelectOptions() {
-    const matchModeDescription = {
-        [RuleMatchMode.Contains]: 'contains',
-        [RuleMatchMode.Exact]: 'matches exactly',
-    }
     Object.values(RuleMatchMode)
 
     return Object.values(RuleMatchMode).map((matchMode) => [
@@ -206,4 +209,10 @@ function matchModeSelectOptions() {
 
 function hasChanges(defaultRule: Partial<Rule>, rule: Partial<Rule>) {
     return JSON.stringify(defaultRule) !== JSON.stringify(rule)
+}
+
+function getInputPlaceholder(value?: string) {
+    return `Type and press Enter to ${
+        value ? 'change/delete the' : 'set a'
+    } due date...`
 }

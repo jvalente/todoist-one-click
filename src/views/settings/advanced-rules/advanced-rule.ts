@@ -7,6 +7,7 @@ import type { Rule } from '../../../types/rules.types'
 
 import '../../common/system'
 import '../target-labels/labels-text-list'
+import { matchModeDescription } from './constants'
 
 @customElement('tc-advanced-rule')
 class AdvancedRuleElement extends LitElement {
@@ -38,7 +39,8 @@ class AdvancedRuleElement extends LitElement {
             <div class="row spaceBetween">
                 <div>
                     <tc-text bold small
-                        >${this.rule.matchMode}: ${this.rule.query}</tc-text
+                        >url ${matchModeDescription[this.rule.matchMode]}:
+                        ${this.rule.query}</tc-text
                     >
                     <div class="row">
                         <tc-text small>#${this.projectName}</tc-text>
