@@ -11,6 +11,8 @@ import '../../common/system'
 import './advanced-rule-form'
 import './advanced-rules-list'
 
+const DEFAULT_RULE = { matchMode: 'contains' }
+
 @customElement('tc-advanced-rules-section')
 class AdvancedRulesSectionElement extends LitElement {
     @state()
@@ -78,12 +80,12 @@ class AdvancedRulesSectionElement extends LitElement {
     }
 
     private renderRuleForm() {
-        const rule = this.rules?.find(
-            (rule) => rule.id === this.editingRuleId,
-        ) || { matchMode: 'contains' }
+        const rule =
+            this.rules?.find((rule) => rule.id === this.editingRuleId) ||
+            DEFAULT_RULE
 
         return html`<tc-advanced-rule-form
-            .rule=${rule}
+            .defaultRule=${rule}
             .projects=${this.projects}
             @save=${this.handleSaveRule}
             @cancel=${this.handleCancelEdit}

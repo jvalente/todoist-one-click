@@ -1,5 +1,5 @@
-import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { LitElement, css, html, nothing } from 'lit'
+import { customElement, property, state } from 'lit/decorators.js'
 import { RuleMatchMode } from '../../../types/rules.types'
 import { grid } from '../../common/styles/grid'
 
@@ -37,8 +37,15 @@ class AdvancedRuleFormElement extends LitElement {
     projects: ProjectsState['data'] = []
 
     // QUIRK: if the attribute is explicitly set to undefined, the default value is not used
-    @property({ type: Object, converter: (value: any) => JSON.parse(value) })
-    rule: Partial<Rule> = { matchMode: RuleMatchMode.Contains }
+    @property({ type: Object })
+    defaultRule!: Partial<Rule>
+
+    @state()
+    private rule!: Partial<Rule>
+
+    firstUpdated() {
+        this.rule = { ...this.defaultRule }
+    }
 
     get query() {
         return this.rule.query || ''
@@ -91,14 +98,51 @@ class AdvancedRuleFormElement extends LitElement {
         this.dispatchEvent(customEvent)
     }
 
+    private renderFormActions() {
+        return html`
+            <div class="row spaceBetween">
+                <div class="row">
+                    <tc-button small @click=${this.saveRule}>Save</tc-button>
+                    <tc-link small 
+                    .confirmDialog=${
+                        hasChanges(this.defaultRule, this.rule)
+                            ? {
+                                  message:
+                                      'Discard the changes and back to the rules list?',
+                              }
+                            : undefined
+                    }
+
+                    @click=${this.cancelEditRule}
+                        >Cancel</tc-link
+                    >
+                </div>
+                ${
+                    this.rule.id
+                        ? html` <tc-link
+                          small
+                          .confirmDialog=${{
+                              message: `Delete the rule for ${this.query}?`,
+                          }}
+                          @click=${this.deleteRule}
+                          >Delete</tc-link
+                      >`
+                        : nothing
+                }
+            </div>
+        `
+    }
+
     render() {
+        if (!this.rule) return nothing
+
         return html`
             <div class="stack">
                 <div class="row">
                     <tc-text small>If the tab url</tc-text>
                     <tc-select
                         small
-                        .options=${Object.values(RuleMatchMode)}
+                        .options=${matchModeSelectOptions()}
                         .selectedValue=${this.rule.matchMode as string}
                         @change=${(matchMode: SelectChangeEvent<any>) =>
                             this.updateRule({
@@ -140,16 +184,25 @@ class AdvancedRuleFormElement extends LitElement {
                         @enterPress=${this.updateDueDate}
                     ></tc-text-input>
                 </div>
-                <div class="row spaceBetween">
-                    <div class="row">
-                        <button @click=${this.saveRule}>Save</button>
-                        <tc-link small @click=${this.cancelEditRule}
-                            >Cancel</tc-link
-                        >
-                    </div>
-                    <tc-link small @click=${this.deleteRule}>Delete</tc-link>
-                </div>
+                ${this.renderFormActions()}
             </div>
         `
     }
+}
+
+function matchModeSelectOptions() {
+    const matchModeDescription = {
+        [RuleMatchMode.Contains]: 'contains',
+        [RuleMatchMode.Exact]: 'matches exactly',
+    }
+    Object.values(RuleMatchMode)
+
+    return Object.values(RuleMatchMode).map((matchMode) => [
+        matchMode,
+        matchModeDescription[matchMode],
+    ])
+}
+
+function hasChanges(defaultRule: Partial<Rule>, rule: Partial<Rule>) {
+    return JSON.stringify(defaultRule) !== JSON.stringify(rule)
 }
