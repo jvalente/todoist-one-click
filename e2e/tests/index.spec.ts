@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 
 test.describe('extension settings', () => {
-    test('all settings', async ({ page }) => {
+    test('basic settings', async ({ page }) => {
         await page.route('**/rest/v2/projects', async (route) => {
             if (
                 route
@@ -73,7 +73,7 @@ test.describe('extension settings', () => {
         /*
          * Remove a label
          */
-        await page.getByText('labelIpsum').locator('tc-link').click()
+        await page.locator('tc-label-pill').locator('tc-link').click()
 
         /**
          * Add a due date
@@ -151,6 +151,160 @@ test.describe('extension settings', () => {
          */
         await page.getByRole('link', { name: 'Clear all local data' }).click()
         await expect(locateSection(page, 'Enter your API token')).toBeVisible()
+    })
+
+    test('advanced rules declaration', async ({ page }) => {
+        await page.route('**/rest/v2/projects', async (route) => {
+            if (
+                route
+                    .request()
+                    .headers()
+                    .authorization.includes('correctApiToken')
+            ) {
+                await new Promise((resolve) => setTimeout(resolve, 500))
+                await route.fulfill({
+                    json: [
+                        { name: 'Lorem', id: 100 },
+                        { name: 'Ipsum', id: 101 },
+                    ],
+                })
+            } else {
+                await new Promise((resolve) => setTimeout(resolve, 500))
+                await route.fulfill({ status: 401 })
+            }
+        })
+
+        await locateSection(page, 'Enter your API token')
+            .locator('input')
+            .fill('correctApiToken')
+        await page.getByRole('button', { name: 'Save' }).click()
+
+        await page.getByRole('link', { name: 'Add rule' }).click()
+
+        /**
+         * Do not show confirm dialog if there are no changes to the form
+         */
+        await page.getByRole('link', { name: 'Cancel' }).click()
+        await page.getByRole('link', { name: 'Add rule' }).click()
+
+        /**
+         * Shows confirm dialog if there are changes to the form
+         */
+        await locateSection(page, 'Advanced rules')
+            .locator('tc-select')
+            .filter({ hasText: 'contains' })
+            .getByRole('combobox')
+            .selectOption('matches exactly')
+
+        await page.getByRole('link', { name: 'Cancel' }).click()
+        await page
+            .locator('dialog')
+            .getByRole('button', { name: 'Cancel' })
+            .click()
+
+        /**
+         * Add a rule
+         */
+        await page
+            .getByRole('textbox', { name: 'url' })
+            .fill('https://doist.com')
+
+        await locateSection(page, 'Advanced rules')
+            .locator('tc-project-select')
+            .getByRole('combobox')
+            .selectOption('Ipsum')
+
+        await locateSection(page, 'Advanced rules')
+            .locator('tc-target-labels-list')
+            .getByRole('textbox')
+            .fill('advanced-rule-label')
+
+        await page.keyboard.press('Enter')
+
+        await locateSection(page, 'Advanced rules')
+            .getByRole('textbox', { name: 'due date...' })
+            .fill('tomorrow')
+
+        await page.keyboard.press('Enter')
+
+        await page.getByRole('button', { name: 'Save' }).click()
+
+        await expect(
+            page.getByText('url matches exactly: https://doist.com'),
+        ).toBeVisible()
+
+        await page.route('**/rest/v2/tasks', async (route) => {
+            await route.fulfill({ status: 200 })
+        })
+
+        const addTaskAPIRequest = page.waitForRequest((request) => {
+            const postData = request.postData()
+            const expectedPostData = JSON.stringify({
+                content: '[Todoist One-Click test task](https://doist.com)',
+                project_id: '101',
+                labels: ['advanced-rule-label'],
+                due_string: 'tomorrow',
+            })
+
+            return (
+                request.url().includes('rest/v2/tasks') &&
+                request.method() === 'POST' &&
+                postData === expectedPostData
+            )
+        })
+
+        page.getByRole('link', { name: 'Add test task' }).click()
+
+        await addTaskAPIRequest
+
+        /**
+         * Do not show confirm dialog if there are no changes to the form
+         */
+        await page.getByRole('link', { name: 'Edit' }).click()
+
+        await expect(
+            locateSection(page, 'Advanced rules').getByText('If the url'),
+        ).toBeVisible()
+
+        await page.getByRole('link', { name: 'Cancel' }).click()
+
+        await expect(
+            page.getByText('Discard the changes and back to the rules list'),
+        ).not.toBeVisible()
+
+        /**
+         * Shows confirm dialog if there are changes to the form
+         */
+        await page.getByRole('link', { name: 'Edit' }).click()
+
+        await locateSection(page, 'Advanced rules')
+            .locator('tc-label-pill')
+            .locator('tc-link')
+            .click()
+
+        await locateSection(page, 'Advanced rules')
+            .getByRole('link', { name: 'Cancel' })
+            .click()
+
+        await expect(
+            page.getByText('Discard the changes and back to the rules list'),
+        ).toBeVisible()
+
+        await page
+            .locator('dialog')
+            .getByRole('button', { name: 'Cancel' })
+            .click()
+
+        await locateSection(page, 'Advanced rules')
+            .getByRole('link', { name: 'Delete' })
+            .click()
+
+        await page
+            .locator('dialog')
+            .getByRole('button', { name: 'Confirm' })
+            .click()
+
+        await expect(page.getByText('exact: doist.com')).not.toBeVisible()
     })
 })
 
