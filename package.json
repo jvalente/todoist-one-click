@@ -35,7 +35,7 @@
         "rollup-plugin-copy": "3.5.0",
         "ts-lit-plugin": "2.0.2",
         "tslib": "2.6.3",
-        "typescript": "5.4.5",
+        "typescript": "5.5.3",
         "vitest": "1.6.0"
     },
     "dependencies": {
