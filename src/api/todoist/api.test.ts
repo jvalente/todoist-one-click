@@ -12,7 +12,6 @@ import { TodoistAPI } from './api'
 import { TodoistAPIKey } from './api-key'
 
 const unmockedFetch = global.fetch
-const unmockedNavigator = global.navigator
 const mockFetch = vi.fn()
 global.fetch = mockFetch
 global.chrome = {
@@ -20,7 +19,6 @@ global.chrome = {
         setIcon: vi.fn(),
     },
 } as any
-global.navigator = { online: true } as any
 
 describe('API', () => {
     beforeAll(() => {
@@ -37,7 +35,6 @@ describe('API', () => {
 
     afterAll(() => {
         global.fetch = unmockedFetch
-        global.navigator = unmockedNavigator
     })
 
     it('calls fetch with the correct GET parameters', async () => {
@@ -53,7 +50,7 @@ describe('API', () => {
                         'Content-Type': 'application/json',
                     },
                     method: 'GET',
-                },
+                }
             )
         })
     })
@@ -75,7 +72,7 @@ describe('API', () => {
         expect.assertions(1)
 
         vi.spyOn(TodoistAPIKey, 'get').mockRejectedValueOnce(
-            new Error('API key not found'),
+            new Error('API key not found')
         )
 
         return TodoistAPI.request('path').catch((error) => {
@@ -89,7 +86,7 @@ describe('API', () => {
         mockFetch.mockResolvedValueOnce(
             new Response('Resource not found', {
                 status: 404,
-            }),
+            })
         )
 
         return TodoistAPI.request('path').catch((error) => {
