@@ -8,7 +8,8 @@
         "default_icon": {
             "48": "icons/icon.png",
             "96": "icons/icon.png"
-        }
+        },
+        "default_popup": "news-popup.html"
     },
     "background": {
         "scripts": ["background.js"],

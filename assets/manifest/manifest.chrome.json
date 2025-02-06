@@ -5,7 +5,8 @@
     "manifest_version": 3,
     "permissions": ["storage", "unlimitedStorage", "contextMenus", "tabs"],
     "action": {
-        "default_icon": "icons/icon.png"
+        "default_icon": "icons/icon.png",
+        "default_popup": "news-popup.html"
     },
     "background": {
         "service_worker": "background.js",
