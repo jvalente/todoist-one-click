@@ -29,7 +29,7 @@
         "@types/chrome": "0.0.269",
         "@types/node": "22.8.6",
         "archiver": "7.0.1",
-        "knip": "5.27.0",
+        "knip": "5.36.0",
         "rimraf": "6.0.1",
         "rollup": "4.20.0",
         "rollup-plugin-copy": "3.5.0",
