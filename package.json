@@ -36,7 +36,7 @@
         "ts-lit-plugin": "2.0.2",
         "tslib": "2.6.3",
         "typescript": "5.5.4",
-        "vitest": "2.0.5"
+        "vitest": "2.1.9"
     },
     "dependencies": {
         "lit": "3.1.4"
