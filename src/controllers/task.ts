@@ -4,6 +4,7 @@ import Rules from '../models/rules'
 import { Task } from '../models/task'
 import Projects from '../models/projects'
 import { llmAPI } from '../api/llm'
+import { GuessProjectOption } from '../models/guess-project-option'
 
 export function addTask(title?: string, url?: string) {
     Icon.setLoading()
@@ -47,14 +48,15 @@ function getTaskProps(title?: string, url?: string) {
         return Promise.all([
             Promise.resolve({ title, url }),
             Rules.getByUrl(url),
+            GuessProjectOption.get(),
         ]).then(
             ([
                 { title, url },
                 { projectId, labels, dueDate, default: isDefault },
+                guessProjectEnabled,
             ]) => {
                 // default rule was inferred and guessProject is enabled
-                if (isDefault && true) {
-                    // replace true with the guess option
+                if (isDefault && guessProjectEnabled) {
                     return guessProject(title, url).then(
                         (guessedProjectId) => ({
                             title,
