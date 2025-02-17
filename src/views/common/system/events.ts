@@ -37,3 +37,18 @@ export class InputEnterPressEvent extends CustomEvent<{ value: string }> {
         })
     }
 }
+
+/**
+ * CHECKBOX
+ */
+export class CheckboxChangeEvent extends CustomEvent<{ checked: boolean }> {
+    constructor(_checked: boolean) {
+        super('change', {
+            detail: { checked: _checked },
+        })
+    }
+
+    get checked() {
+        return this.detail.checked
+    }
+}

@@ -1,4 +1,5 @@
 export * from './tc-button'
+export * from './tc-checkbox'
 export * from './tc-error-card'
 export * from './tc-link'
 export * from './tc-loading'
