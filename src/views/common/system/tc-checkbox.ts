@@ -8,6 +8,7 @@ class CheckboxElement extends LitElement {
         css`
             div {
                 display: flex;
+                margin: 5px 0;
             }
 
             label {

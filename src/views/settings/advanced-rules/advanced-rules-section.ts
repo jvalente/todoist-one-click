@@ -105,7 +105,9 @@ class AdvancedRulesSectionElement extends LitElement {
                       <tc-text small secondary
                           >Advanced rules allow adding tabs matching the given
                           URL to the project, labels, and due dates other than
-                          the default ones.</tc-text
+                          the default ones. If 'Guess the Project' is enabled,
+                          the advanced rules will still take
+                          precedence."</tc-text
                       >
                   </div>`
         }
