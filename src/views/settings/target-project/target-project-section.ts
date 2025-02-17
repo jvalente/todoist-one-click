@@ -9,8 +9,8 @@ import type { Rule } from '../../../types/rules.types'
 import '../../common/system'
 import './target-project-select'
 import './target-project-guess'
-import { GuessProjectOption } from '../../../models/guess-project-option'
 import { setGuessProjectOption } from '../../../controllers/guess-project-option'
+import { GuessProjectOption } from '../../../models/guess-project-option'
 
 @customElement('tc-project-section')
 class ProjectSectionElement extends LitElement {
@@ -80,7 +80,8 @@ class ProjectSectionElement extends LitElement {
     private renderIntroText() {
         return this.guessProjectEnabled === true
             ? html`<tc-text small secondary
-                  >AI will attempt to guess the project based on the webpage title and URL.</tc-text
+                  >AI will attempt to guess the project based on the webpage
+                  title and URL.</tc-text
               >`
             : html`<tc-text small secondary
                   >Tasks will be added to the selected project below.</tc-text

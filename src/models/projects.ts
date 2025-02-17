@@ -8,13 +8,13 @@ class ProjectModel extends Model<Array<Project>> {
 
     getAllNames() {
         return this.get().then((projects) =>
-            projects?.map((project) => project.name)
+            projects?.map((project) => project.name),
         )
     }
 
     getByName(projectName: string) {
         return this.get().then((projects) =>
-            projects?.find((project) => project.name === projectName)
+            projects?.find((project) => project.name === projectName),
         )
     }
 }

@@ -50,7 +50,7 @@ describe('API', () => {
                         'Content-Type': 'application/json',
                     },
                     method: 'GET',
-                }
+                },
             )
         })
     })
@@ -72,7 +72,7 @@ describe('API', () => {
         expect.assertions(1)
 
         vi.spyOn(TodoistAPIKey, 'get').mockRejectedValueOnce(
-            new Error('API key not found')
+            new Error('API key not found'),
         )
 
         return TodoistAPI.request('path').catch((error) => {
@@ -86,7 +86,7 @@ describe('API', () => {
         mockFetch.mockResolvedValueOnce(
             new Response('Resource not found', {
                 status: 404,
-            })
+            }),
         )
 
         return TodoistAPI.request('path').catch((error) => {

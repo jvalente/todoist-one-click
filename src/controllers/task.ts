@@ -1,10 +1,10 @@
 import { Icon, Tabs } from '../api/extension'
+import { llmAPI } from '../api/llm'
 import FailedTasks from '../models/failed-tasks'
+import { GuessProjectOption } from '../models/guess-project-option'
+import Projects from '../models/projects'
 import Rules from '../models/rules'
 import { Task } from '../models/task'
-import Projects from '../models/projects'
-import { llmAPI } from '../api/llm'
-import { GuessProjectOption } from '../models/guess-project-option'
 
 export function addTask(title?: string, url?: string) {
     Icon.setLoading()

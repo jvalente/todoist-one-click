@@ -1,7 +1,7 @@
 // TODO: consider refactoring simple options (guess project, API key) into an abstract model
 
-import { Subject } from '../lib/observer'
 import { Storage } from '../api/extension'
+import { Subject } from '../lib/observer'
 
 const STORAGE_KEY = 'guessProject'
 
