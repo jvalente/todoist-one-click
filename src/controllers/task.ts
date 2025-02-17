@@ -2,6 +2,8 @@ import { Icon, Tabs } from '../api/extension'
 import FailedTasks from '../models/failed-tasks'
 import Rules from '../models/rules'
 import { Task } from '../models/task'
+import Projects from '../models/projects'
+import { llmAPI } from '../api/llm'
 
 export function addTask(title?: string, url?: string) {
     Icon.setLoading()
@@ -45,14 +47,47 @@ function getTaskProps(title?: string, url?: string) {
         return Promise.all([
             Promise.resolve({ title, url }),
             Rules.getByUrl(url),
-        ]).then(([{ title, url }, { projectId, labels, dueDate }]) => {
-            return {
-                title,
-                url,
-                projectId,
-                labels,
-                dueDate,
-            }
-        })
+        ]).then(
+            ([
+                { title, url },
+                { projectId, labels, dueDate, default: isDefault },
+            ]) => {
+                // default rule was inferred and guessProject is enabled
+                if (isDefault && true) {
+                    // replace true with the guess option
+                    return guessProject(title, url).then(
+                        (guessedProjectId) => ({
+                            title,
+                            url,
+                            projectId: guessedProjectId || projectId,
+                            labels,
+                            dueDate,
+                        }),
+                    )
+                }
+
+                return {
+                    title,
+                    url,
+                    projectId,
+                    labels,
+                    dueDate,
+                }
+            },
+        )
     })
+}
+
+function guessProject(title: string, url: string) {
+    return Projects.getAllNames()
+        .then((projects) =>
+            projects ? llmAPI.guessProject(projects, title, url) : undefined,
+        )
+        .then((guessedProjectName) => {
+            if (!guessedProjectName) return undefined
+
+            return Projects.getByName(guessedProjectName).then(
+                (project) => project?.id,
+            )
+        })
 }
