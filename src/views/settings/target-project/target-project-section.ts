@@ -8,6 +8,9 @@ import type { Rule } from '../../../types/rules.types'
 
 import '../../common/system'
 import './target-project-select'
+import './target-project-guess'
+import { GuessProjectOption } from '../../../models/guess-project-option'
+import { setGuessProjectOption } from '../../../controllers/guess-project-option'
 
 @customElement('tc-project-section')
 class ProjectSectionElement extends LitElement {
@@ -23,11 +26,22 @@ class ProjectSectionElement extends LitElement {
     @state()
     private error?: ProjectsState['error']
 
+    @state()
+    private guessProjectEnabled = false
+
     connectedCallback() {
         super.connectedCallback()
 
         Projects.attach(this.onProjectsUpdate)
         Projects.hydrate()
+
+        // TODO: find DRY solution
+        GuessProjectOption.attach((checked) => {
+            this.guessProjectEnabled = checked === true
+        })
+        GuessProjectOption.get().then((checked) => {
+            this.guessProjectEnabled = checked === true
+        })
     }
 
     private onProjectsUpdate = ({
@@ -38,6 +52,11 @@ class ProjectSectionElement extends LitElement {
         this.projects = data
         this.lastUpdated = lastUpdated
         this.error = error
+    }
+
+    private onGuessProjectOptionChange = (event: CustomEvent) => {
+        const { checked } = event.detail
+        setGuessProjectOption(checked)
     }
 
     private handleProjectSelectChange(event: CustomEvent) {
@@ -58,6 +77,16 @@ class ProjectSectionElement extends LitElement {
             : 'never'
     }
 
+    private renderIntroText() {
+        return this.guessProjectEnabled === true
+            ? html`<tc-text small secondary
+                  >AI will attempt to guess the project based on the webpage title and URL.</tc-text
+              >`
+            : html`<tc-text small secondary
+                  >Tasks will be added to the selected project below.</tc-text
+              >`
+    }
+
     private renderSectionContent() {
         if (this.error) {
             return html`<tc-error-card
@@ -72,9 +101,7 @@ class ProjectSectionElement extends LitElement {
 
         return html`
             <div>
-                <tc-text small secondary
-                    >Tasks will be added to the selected project below.</tc-text
-                >
+                ${this.renderIntroText()}
                 <tc-text small secondary
                     >The project list was last updated on
                     ${this.formatedDate()}.
@@ -86,6 +113,10 @@ class ProjectSectionElement extends LitElement {
                 .projects=${this.projects}
                 @change=${this.handleProjectSelectChange}
             ></tc-project-select>
+            <tc-project-guess
+                .checked="${this.guessProjectEnabled}"
+                @change=${this.onGuessProjectOptionChange}
+            ></tc-project-guess>
         `
     }
 
