@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
-        "ignore": ["./e2e/html-report", "./dist"]
+        "ignore": ["./e2e/html-report", "./e2e/test-results", "./dist"]
     },
     "organizeImports": {
         "enabled": true
