@@ -24,7 +24,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.4",
-        "@playwright/test": "1.48.2",
+        "@playwright/test": "1.52.0",
         "@rollup/plugin-node-resolve": "15.2.3",
         "@rollup/plugin-typescript": "12.1.2",
         "@types/chrome": "0.0.279",
