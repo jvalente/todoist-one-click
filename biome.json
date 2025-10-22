@@ -1,10 +1,11 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-    "files": {
-        "ignore": ["./e2e/html-report", "./e2e/test-results", "./dist"]
-    },
-    "organizeImports": {
-        "enabled": true
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
     },
     "linter": {
         "enabled": true,
@@ -18,7 +19,7 @@
             },
             "suspicious": {
                 "noExplicitAny": "off",
-                "noConsoleLog": "warn"
+                "noConsole": "warn"
             }
         }
     },
