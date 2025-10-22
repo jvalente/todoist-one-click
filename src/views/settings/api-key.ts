@@ -1,3 +1,4 @@
+import { msg } from '@lit/localize'
 import { html, LitElement } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
@@ -15,21 +16,19 @@ export class ApiKeyElement extends LitElement {
     }
 
     render() {
-        return html`<tc-section title="Enter your API token">
+        return html`<tc-section title=${msg('Enter your API token')}>
             <tc-text>
-                Get started with Todoist One-Click by grabbing your API token
-                from Todoist
+                ${msg('Get started with Todoist One-Click by grabbing your API token from Todoist')}
                 <tc-link
                     href="https://app.todoist.com/app/settings/integrations/developer"
-                    >'Settings > Integrations > Developer'</tc-link
+                    >'${msg('Settings > Integrations > Developer')}'</tc-link
                 >.
             </tc-text>
             <tc-text
-                >Without it, the extension won't be able to add tasks to your
-                Todoist account.</tc-text
-            >
+                >${msg("Without it, the extension won't be able to add tasks to your Todoist account.")}
+            </tc-text>
             <tc-text-input
-                placeholder="Paste the API token here..."
+                placeholder=${msg('Paste the API token here...')}
                 @change=${(event: InputChangeEvent) => {
                     this.apiKey = event.value
                 }}
@@ -37,7 +36,7 @@ export class ApiKeyElement extends LitElement {
                 ?autofocus=${true}
                 ?disableSpace=${true}
             ></tc-text-input>
-            <tc-button @click=${this.handleOnClick}>Save</tc-button>
+            <tc-button @click=${this.handleOnClick}>${msg('Save')}</tc-button>
         </tc-section>`
     }
 }

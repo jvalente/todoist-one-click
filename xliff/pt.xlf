@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file datatype="plaintext" original="" source-language="en" target-language="pt">
+    <header>
+      <tool tool-id="tolgee.io" tool-name="Tolgee"/>
+    </header>
+    <body>
+      <trans-unit id="s2abc3a4bfc0fe689">
+        <source xml:space="preserve">Without it, the extension won't be able to add tasks to your Todoist account.</source>
+        <target xml:space="preserve">Sem ele, não será possível adicionar tarefas à sua conta Todoist.</target>
+      </trans-unit>
+      <trans-unit id="s33f85f24c0f5f008">
+        <source xml:space="preserve">Save</source>
+        <target xml:space="preserve">Guardar</target>
+      </trans-unit>
+      <trans-unit id="s4da07b63fe0ca1d2">
+        <source xml:space="preserve">Paste the API token here...</source>
+        <target xml:space="preserve">Cola o token API aqui...</target>
+      </trans-unit>
+      <trans-unit id="sa37b61e5efedea42">
+        <source xml:space="preserve">Get started with Todoist One-Click by grabbing your API token from Todoist</source>
+        <target xml:space="preserve">Para começar com o Todoist One-Click introduz o teu token API do Todoist</target>
+      </trans-unit>
+      <trans-unit id="sd2e377f2100acf2d">
+        <source xml:space="preserve">Settings &gt; Integrations &gt; Developer</source>
+        <target xml:space="preserve">Configurações &gt; Integrações &gt; Desenvolvedor</target>
+      </trans-unit>
+      <trans-unit id="se7c70beafcbe7b29">
+        <source xml:space="preserve">Enter your API token</source>
+        <target xml:space="preserve">Introduz o token API</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

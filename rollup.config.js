@@ -13,7 +13,7 @@ const build = process.env.BUILD || 'production'
 const version = getVersion()
 
 export default {
-    input: ['src/background.ts', 'src/views/settings/settings.ts'],
+    input: ['src/background.ts', 'src/views/index.ts'],
     output: {
         dir: 'dist',
         format: 'es',
