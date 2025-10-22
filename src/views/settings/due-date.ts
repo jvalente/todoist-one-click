@@ -1,7 +1,6 @@
-import { LitElement, html } from 'lit'
+import { html, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../controllers/rules'
-
 import type { InputChangeEvent } from '../common/system'
 
 import '../common/system'

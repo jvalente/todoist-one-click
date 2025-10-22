@@ -7,7 +7,6 @@ import {
     it,
     vi,
 } from 'vitest'
-
 import { TodoistAPI } from './api'
 import { TodoistAPIKey } from './api-key'
 

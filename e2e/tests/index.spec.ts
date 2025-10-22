@@ -1,5 +1,5 @@
-import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
+import type { Page } from '@playwright/test'
 
 test.describe('extension settings', () => {
     test('basic settings', async ({ page }) => {

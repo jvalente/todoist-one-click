@@ -1,9 +1,8 @@
-import { LitElement, html } from 'lit'
+import { html, LitElement } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { addRule, deleteRule, updateRule } from '../../../controllers/rules'
 import Projects from '../../../models/projects'
 import Rules from '../../../models/rules'
-
 import type { ProjectsState } from '../../../types/projects.types'
 import type { RulesState } from '../../../types/rules.types'
 

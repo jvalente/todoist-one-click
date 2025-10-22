@@ -1,7 +1,6 @@
-import { LitElement, css, html, nothing } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { repeat } from 'lit/directives/repeat.js'
-
 import type { ProjectsState } from '../../../types/projects.types'
 import type { RulesState } from '../../../types/rules.types'
 

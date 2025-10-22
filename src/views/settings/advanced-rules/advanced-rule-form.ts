@@ -1,8 +1,7 @@
-import { LitElement, css, html, nothing } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { RuleMatchMode } from '../../../types/rules.types'
 import { grid } from '../../common/styles/grid'
-
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 import type {

@@ -1,4 +1,5 @@
 vi.mock('../../models/api-key')
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Model from '../../src/models/model'
 import { Storage } from '../api/extension'

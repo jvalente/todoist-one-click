@@ -1,7 +1,6 @@
-import { LitElement, html } from 'lit'
+import { html, LitElement } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
-
 import type { InputChangeEvent } from '../common/system'
 
 import '../common/system'

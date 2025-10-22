@@ -1,11 +1,10 @@
-import { LitElement, html, nothing } from 'lit'
+import { html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { errorCard } from '../../common/styles/error-card'
-
 import {
     discardFailedTask,
     retryFailedTask,
 } from '../../../controllers/failed-tasks'
+import { errorCard } from '../../common/styles/error-card'
 import type { FailedTask } from '../../../types/tasks.type'
 
 @customElement('tc-failed-task-item')

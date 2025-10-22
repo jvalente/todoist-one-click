@@ -1,6 +1,5 @@
-import { LitElement, html } from 'lit'
+import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 import type { SelectChangeEvent } from '../../common/system'

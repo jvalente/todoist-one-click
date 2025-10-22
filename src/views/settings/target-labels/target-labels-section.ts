@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from 'lit'
+import { html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../../controllers/rules'
 

@@ -1,6 +1,6 @@
 import FailedTasks from '../models/failed-tasks'
-import type { FailedTask } from '../types/tasks.type'
 import { addTask } from './task'
+import type { FailedTask } from '../types/tasks.type'
 
 export function discardFailedTask(failedTask?: FailedTask) {
     if (!failedTask) return

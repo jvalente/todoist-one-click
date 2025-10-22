@@ -1,6 +1,5 @@
 import { RuleMatchMode } from '../types/rules.types'
 import Model from './model'
-
 import type { Rule } from '../types/rules.types'
 
 const DEFAULT_RULE: Rule = {
