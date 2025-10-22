@@ -53,8 +53,6 @@ export class AdvancedRulesSectionElement extends LitElement {
     }
 
     private handleSaveRule(event: CustomEvent) {
-        const { rule } = event.detail
-
         if (this.editingRuleId) {
             updateRule(event.detail.rule)
         } else {
@@ -65,7 +63,7 @@ export class AdvancedRulesSectionElement extends LitElement {
         this.editingRuleId = undefined
     }
 
-    private handleCancelEdit(event: CustomEvent) {
+    private handleCancelEdit() {
         // TODO: confirm cancel
         this.editingRuleId = undefined
         this.addingRule = false

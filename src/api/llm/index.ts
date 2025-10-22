@@ -28,13 +28,7 @@ function guessProject(projects: string[], title: string, url: string) {
             }
             return undefined
         })
-        .catch((error) => {
-            console.error(
-                'There was a problem with the fetch operation:',
-                error,
-            )
-            return undefined
-        })
+        .catch(() => undefined)
 }
 
 export const llmAPI = { guessProject }
