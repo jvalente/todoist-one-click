@@ -67,6 +67,7 @@ class RulesModel extends Model<Array<Rule>> {
                 if (this.contains(rule, url) || this.isExactly(rule, url)) {
                     return rule
                 }
+                return null
             })
 
             return rule || this.getDefault()

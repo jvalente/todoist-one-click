@@ -8,7 +8,7 @@ import '../../common/system'
 import './advanced-rule'
 
 @customElement('tc-advanced-rules-list')
-class AdvancedRulesListElement extends LitElement {
+export class AdvancedRulesListElement extends LitElement {
     static styles = css`
         tc-advanced-rule {
             display: block;

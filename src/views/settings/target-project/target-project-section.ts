@@ -12,7 +12,7 @@ import { setGuessProjectOption } from '../../../controllers/guess-project-option
 import { GuessProjectOption } from '../../../models/guess-project-option'
 
 @customElement('tc-project-section')
-class ProjectSectionElement extends LitElement {
+export class ProjectSectionElement extends LitElement {
     @property({ type: Object })
     rule?: Rule
 

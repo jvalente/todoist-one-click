@@ -96,9 +96,9 @@ describe('model hydration', () => {
     describe('error', () => {
         it('populates the error state if the API call fails', async () => {
             vi.spyOn(Storage, 'get').mockResolvedValue(undefined)
-            const mockAPI = vi
-                .spyOn(TodoistAPI, 'request')
-                .mockRejectedValue(new Error('API error'))
+            vi.spyOn(TodoistAPI, 'request').mockRejectedValue(
+                new Error('API error'),
+            )
 
             const model = new Model('model', { fetchResource: { url: 'test' } })
             model.attach(mockListener)

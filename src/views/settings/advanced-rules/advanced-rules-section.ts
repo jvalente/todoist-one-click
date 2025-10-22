@@ -13,7 +13,7 @@ import './advanced-rules-list'
 const DEFAULT_RULE = { matchMode: 'contains', dueDate: 'today' }
 
 @customElement('tc-advanced-rules-section')
-class AdvancedRulesSectionElement extends LitElement {
+export class AdvancedRulesSectionElement extends LitElement {
     @state()
     private rules: RulesState['data'] = []
 

@@ -6,7 +6,7 @@ import type { InputChangeEvent } from '../common/system'
 import '../common/system'
 
 @customElement('tc-due-date')
-class DueDateElement extends LitElement {
+export class DueDateElement extends LitElement {
     @property()
     dueDate?: string
 

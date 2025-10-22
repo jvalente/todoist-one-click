@@ -6,7 +6,7 @@ import FailedTasks from '../../../models/failed-tasks'
 import './failed-task-item'
 
 @customElement('tc-failed-tasks')
-class FailedTasksElement extends LitElement {
+export class FailedTasksElement extends LitElement {
     static styles = css`
         ul {
             margin: 0;

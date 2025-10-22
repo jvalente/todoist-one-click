@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-text')
-class TextElement extends LitElement {
+export class TextElement extends LitElement {
     static styles = css`
         p {
             margin: 0;

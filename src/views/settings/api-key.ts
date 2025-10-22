@@ -6,7 +6,7 @@ import type { InputChangeEvent } from '../common/system'
 import '../common/system'
 
 @customElement('tc-api-key')
-class ApiKeyElement extends LitElement {
+export class ApiKeyElement extends LitElement {
     @state()
     private apiKey?: string
 

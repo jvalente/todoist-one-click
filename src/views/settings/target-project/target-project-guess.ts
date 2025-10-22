@@ -5,7 +5,7 @@ import '../../common/system'
 import type { CheckboxChangeEvent } from '../../common/system'
 
 @customElement('tc-project-guess')
-class ProjectGuessElement extends LitElement {
+export class ProjectGuessElement extends LitElement {
     @property({ type: Boolean })
     checked = true
 

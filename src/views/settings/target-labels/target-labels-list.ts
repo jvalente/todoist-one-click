@@ -7,7 +7,7 @@ import '../../common/system'
 import './label-pill'
 
 @customElement('tc-target-labels-list')
-class TargetLabelsListElement extends LitElement {
+export class TargetLabelsListElement extends LitElement {
     static styles = [
         css`
             ul {

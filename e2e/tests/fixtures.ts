@@ -7,7 +7,7 @@ export const test = base.extend<{
     context: BrowserContext
     extensionId: string
 }>({
-    // biome-ignore lint/correctness/noEmptyPattern: <explanation>
+    // biome-ignore lint/correctness/noEmptyPattern: First argument must use the object destructuring pattern
     context: async ({}, use) => {
         const context = await chromium.launchPersistentContext('', {
             headless: false,

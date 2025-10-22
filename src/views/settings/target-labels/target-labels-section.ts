@@ -6,7 +6,7 @@ import '../../common/system'
 import './target-labels-list'
 
 @customElement('tc-target-labels-section')
-class TargetLabelsSectionElement extends LitElement {
+export class TargetLabelsSectionElement extends LitElement {
     @property({ type: Array })
     labels?: Array<string>
 

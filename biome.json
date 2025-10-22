@@ -1,5 +1,13 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "files": {
+        "includes": [
+            "**",
+            "!**/dist",
+            "!**/e2e/test-results",
+            "!**/e2e/html-report"
+        ]
+    },
     "assist": {
         "actions": {
             "source": {

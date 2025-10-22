@@ -2,7 +2,7 @@ import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-error-card')
-class ErrorCardElement extends LitElement {
+export class ErrorCardElement extends LitElement {
     static styles = css`
         div {
             padding: 3px 5px;

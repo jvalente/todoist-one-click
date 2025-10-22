@@ -5,7 +5,7 @@ import { deleteIcon } from '../../common/svg/delete'
 import '../../common/system'
 
 @customElement('tc-label-pill')
-class TargetLabelPillElement extends LitElement {
+export class TargetLabelPillElement extends LitElement {
     static styles = [
         css`
             div {

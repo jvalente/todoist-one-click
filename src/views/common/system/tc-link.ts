@@ -5,7 +5,7 @@ import { grid } from '../styles/grid'
 import './tc-button'
 
 @customElement('tc-link')
-class LinkElement extends LitElement {
+export class LinkElement extends LitElement {
     static styles = [
         grid,
         css`

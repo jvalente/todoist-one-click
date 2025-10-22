@@ -7,7 +7,7 @@ import type { SelectChangeEvent } from '../../common/system'
 import '../../common/system'
 
 @customElement('tc-project-select')
-class ProjectSelectElement extends LitElement {
+export class ProjectSelectElement extends LitElement {
     @property({ type: Boolean })
     small = false
 

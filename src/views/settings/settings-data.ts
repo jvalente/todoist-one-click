@@ -11,7 +11,7 @@ import './target-labels'
 import './target-project'
 
 @customElement('tc-settings-data')
-class SettingsDataElement extends LitElement {
+export class SettingsDataElement extends LitElement {
     @property({ type: String })
     apiKey!: string
 

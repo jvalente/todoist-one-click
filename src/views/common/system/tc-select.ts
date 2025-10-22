@@ -4,7 +4,7 @@ import { repeat } from 'lit/directives/repeat.js'
 import { SelectChangeEvent } from './events'
 
 @customElement('tc-select')
-class SelectElement extends LitElement {
+export class SelectElement extends LitElement {
     static styles = css`
         select {
             width: 100%;

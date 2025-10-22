@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import './tc-text'
 
 @customElement('tc-loading')
-class LoadingElement extends LitElement {
+export class LoadingElement extends LitElement {
     static styles = [
         // https://css-loaders.com/spinner/#l1
         css`

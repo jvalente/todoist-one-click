@@ -5,7 +5,7 @@ import { clearAllData } from '../../controllers/data'
 import { addTask } from '../../controllers/task'
 
 @customElement('tc-reset')
-class ApiKeyElement extends LitElement {
+export class ApiKeyElement extends LitElement {
     private addTestTask() {
         addTask('Todoist One-Click test task', 'https://doist.com')
     }

@@ -9,7 +9,7 @@ import '../target-labels/labels-text-list'
 import { matchModeDescription } from './constants'
 
 @customElement('tc-advanced-rule')
-class AdvancedRuleElement extends LitElement {
+export class AdvancedRuleElement extends LitElement {
     static styles = [grid]
 
     @property({ type: Object })

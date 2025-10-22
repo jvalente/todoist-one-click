@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { CheckboxChangeEvent } from './events'
 
 @customElement('tc-checkbox')
-class CheckboxElement extends LitElement {
+export class CheckboxElement extends LitElement {
     static styles = [
         css`
             div {

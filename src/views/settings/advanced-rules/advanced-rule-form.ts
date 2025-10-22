@@ -16,7 +16,7 @@ import '../target-project/target-project-select'
 import { matchModeDescription } from './constants'
 
 @customElement('tc-advanced-rule-form')
-class AdvancedRuleFormElement extends LitElement {
+export class AdvancedRuleFormElement extends LitElement {
     static styles = [
         grid,
         css`

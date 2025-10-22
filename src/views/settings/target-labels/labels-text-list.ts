@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import '../../common/system'
 
 @customElement('tc-labels-text-list')
-class LabelsTextListElement extends LitElement {
+export class LabelsTextListElement extends LitElement {
     @property({ type: Array })
     labels?: Array<string> = []
 

@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('tc-button')
-class ButtonElement extends LitElement {
+export class ButtonElement extends LitElement {
     static styles = [
         css`
             button {

@@ -15,6 +15,8 @@ export class Subject<T> {
     }
 
     notify(data: T) {
-        this.observers.forEach((observer) => observer(data))
+        this.observers.forEach((observer) => {
+            observer(data)
+        })
     }
 }

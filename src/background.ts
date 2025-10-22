@@ -11,7 +11,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 })
 
 // open settings
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener((info, _) => {
     if (info.menuItemId === 'open-settings') {
         chrome.runtime.openOptionsPage()
     }

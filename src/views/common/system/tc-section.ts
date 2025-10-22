@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { settingsSection } from '../styles/section'
 
 @customElement('tc-section')
-class SectionElement extends LitElement {
+export class SectionElement extends LitElement {
     static styles = [settingsSection]
 
     @property()

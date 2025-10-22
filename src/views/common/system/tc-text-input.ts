@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { InputChangeEvent, InputEnterPressEvent } from './events'
 
 @customElement('tc-text-input')
-class TextInputElement extends LitElement {
+export class TextInputElement extends LitElement {
     static styles = css`
         input {
             width: 100%;

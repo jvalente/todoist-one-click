@@ -49,7 +49,7 @@ function getVersion() {
             return version
         }
         throw new Error()
-    } catch (error) {
+    } catch {
         throw new Error('Could not read version from')
     }
 }
@@ -81,7 +81,9 @@ function makePackage() {
                 })
 
                 const archive = archiver('zip', { zlib: { level: 1 } })
+                // biome-ignore lint/suspicious/noConsole: dev tools
                 archive.on('warning', console.log)
+                // biome-ignore lint/suspicious/noConsole: dev tools
                 archive.on('error', console.log)
 
                 archive.pipe(output)
@@ -93,7 +95,7 @@ function makePackage() {
 }
 
 function printPackageSize(path) {
-    // biome-ignore lint/suspicious/noConsoleLog: dev tools
+    // biome-ignore lint/suspicious/noConsole: dev tools
     console.log(
         `\x1b[33m\x1b[1m\x1b[4m${devBrowser} package: ${Math.round(
             fs.statSync(path).size / 1024,
