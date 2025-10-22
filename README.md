@@ -1,5 +1,6 @@
 # Running the extension locally
 
+-   Make sure that you are using the node version suggested by `.nvmrc`.
 -   Start by installing the dependencies with `npm install`.
 
 While working with the Chrome browser:
