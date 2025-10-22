@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { html, LitElement, nothing } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../controllers/rules'
 import type { InputChangeEvent } from '../common/system'
@@ -22,6 +22,10 @@ export class DueDateElement extends LitElement {
         this.value = ''
     }
 
+    private handleClearDueDate() {
+        updateDefaultRule({ dueDate: '' })
+    }
+
     render() {
         return html`<tc-section title="Due date">
             ${
@@ -35,7 +39,14 @@ export class DueDateElement extends LitElement {
                 @enterPress=${this.handleInputEnterPress}
                 .value=${this.value}
             /></tc-text-input>
-        </tc-section>`
+            ${
+                this.dueDate
+                    ? html`<div>
+                        <tc-link @click=${this.handleClearDueDate}>Clear due date</tc-link>
+                    </div>`
+                    : nothing
+            }
+            </tc-section>`
     }
 }
 

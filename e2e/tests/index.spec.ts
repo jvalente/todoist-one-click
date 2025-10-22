@@ -92,8 +92,7 @@ test.describe('extension settings', () => {
         /*
          * Remove a due date
          */
-        await locateSection(page, 'Due date').locator('input').fill('')
-        await page.keyboard.press('Enter')
+        await page.getByRole('link', { name: 'Clear due date' }).click()
 
         await expect(
             page.getByText('The tasks you add will have no due date.'),
