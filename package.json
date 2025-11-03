@@ -23,7 +23,7 @@
         "lint": "npx @biomejs/biome check ."
     },
     "devDependencies": {
-        "@biomejs/biome": "2.2.7",
+        "@biomejs/biome": "2.3.2",
         "@playwright/test": "1.56.1",
         "@rollup/plugin-node-resolve": "16.0.1",
         "@rollup/plugin-typescript": "12.1.2",
