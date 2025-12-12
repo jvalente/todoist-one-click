@@ -1,5 +1,5 @@
 import { Icon, Tabs } from '../api/extension'
-import { llmAPI } from '../api/llm'
+import { llmAPI, analyticsAPI } from '../api/misc'
 import FailedTasks from '../models/failed-tasks'
 import { GuessProjectOption } from '../models/guess-project-option'
 import Projects from '../models/projects'
@@ -22,7 +22,10 @@ export function addTask(title?: string, url?: string) {
             })
 
             task.flush()
-                .then(() => Icon.setSuccess())
+                .then(() => {
+                    Icon.setSuccess()
+                    analyticsAPI.registerEvent()
+                })
                 .catch((error) => {
                     Icon.setError()
                     const { title, url } = task

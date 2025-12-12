@@ -1,8 +1,10 @@
-const LLM_URL = 'https://tdoneclick.pythonanywhere.com/guess_project'
+import { Manifest } from "../extension"
+
+const LAMBDA_URL = 'https://6izom2n40j.execute-api.us-east-1.amazonaws.com/production'
 const LLM_TIMEOUT = 20000
 
 function guessProject(projects: string[], title: string, url: string) {
-    const urlWithParams = `${LLM_URL}?projects=${encodeURIComponent(
+    const urlWithParams = `${LAMBDA_URL}/guess_project?projects=${encodeURIComponent(
         JSON.stringify(projects),
     )}&title=${title}&url=${url}`
 
@@ -31,4 +33,19 @@ function guessProject(projects: string[], title: string, url: string) {
         .catch(() => undefined)
 }
 
+function registerEvent() {
+    const url = `${LAMBDA_URL}/register_event`
+    const version = Manifest.getVersion()
+    const lang = navigator?.language || 'unknown'
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ version, lang }),
+    })
+}
+
 export const llmAPI = { guessProject }
+export const analyticsAPI = { registerEvent }
