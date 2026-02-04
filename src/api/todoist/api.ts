@@ -1,7 +1,7 @@
 import { TodoistAPIKey } from './api-key'
 
-const API_URL = 'https://api.todoist.com/rest'
-const API_VERSION = 'v2'
+const API_URL = 'https://api.todoist.com/api'
+const API_VERSION = 'v1'
 
 type RequestOptions = {
     method: 'GET' | 'POST'
