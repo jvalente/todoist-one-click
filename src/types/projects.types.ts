@@ -15,4 +15,4 @@ export type Project = {
     view_style: string
 }
 
-export type ProjectsState = ModelState<Project[]>
+export type ProjectsState = ModelState<{ results: Project[] }>

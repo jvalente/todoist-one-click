@@ -15,7 +15,7 @@ export class ProjectSelectElement extends LitElement {
     rule?: Partial<Rule>
 
     @property({ type: Array })
-    projects: ProjectsState['data'] = []
+    projects: ProjectsState['data'] = { results: [] }
 
     private handleSelectionChange(event: SelectChangeEvent) {
         const customEvent = new CustomEvent('change', {
@@ -28,13 +28,13 @@ export class ProjectSelectElement extends LitElement {
     get selectedProjectId() {
         return (
             this.rule?.projectId ||
-            this.projects?.find((project) => project.is_inbox_project)?.id ||
+            this.projects?.results?.find((project) => project.is_inbox_project)?.id ||
             ''
         )
     }
 
     get projectSelectOptions() {
-        return this.projects?.map((project) => [project.id, project.name]) || []
+        return this.projects?.results?.map((project) => [project.id, project.name]) || []
     }
 
     render() {

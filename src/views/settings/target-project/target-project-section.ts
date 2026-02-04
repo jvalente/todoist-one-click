@@ -17,7 +17,7 @@ export class ProjectSectionElement extends LitElement {
     rule?: Rule
 
     @state()
-    private projects: ProjectsState['data'] = []
+    private projects: ProjectsState['data'] = { results: [] }
 
     @state()
     private lastUpdated?: ProjectsState['lastUpdated']
@@ -48,7 +48,7 @@ export class ProjectSectionElement extends LitElement {
         lastUpdated,
         error,
     }: ProjectsState) => {
-        this.projects = data
+        this.projects = data || { results: [] }
         this.lastUpdated = lastUpdated
         this.error = error
     }
