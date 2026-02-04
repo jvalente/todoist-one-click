@@ -20,7 +20,7 @@ export class AdvancedRulesListElement extends LitElement {
     rules?: RulesState['data'] = []
 
     @property({ type: Array })
-    projects?: ProjectsState['data'] = []
+    projects?: ProjectsState['data'] = { results: [] }
 
     render() {
         if (!this.rules?.length) return nothing

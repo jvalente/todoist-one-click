@@ -34,7 +34,7 @@ export class AdvancedRuleFormElement extends LitElement {
     ]
 
     @property({ type: Array })
-    projects: ProjectsState['data'] = []
+    projects: ProjectsState['data'] = { results: [] }
 
     // QUIRK: if the attribute is explicitly set to undefined, the default value is not used
     @property({ type: Object })

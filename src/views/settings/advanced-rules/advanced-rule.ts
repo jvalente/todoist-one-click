@@ -16,7 +16,7 @@ export class AdvancedRuleElement extends LitElement {
     rule!: Rule
 
     @property({ type: Array })
-    projects?: ProjectsState['data'] = []
+    projects?: ProjectsState['data'] = { results: [] }
 
     private handleEditRule() {
         const customEvent = new CustomEvent('editRule', {
@@ -29,7 +29,7 @@ export class AdvancedRuleElement extends LitElement {
     }
 
     private get projectName() {
-        const project = this.projects?.find((p) => p.id === this.rule.projectId)
+        const project = this.projects?.results?.find((p) => p.id === this.rule.projectId)
         return project?.name || 'Inbox'
     }
 

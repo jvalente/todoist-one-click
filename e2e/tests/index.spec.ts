@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 
 test.describe('extension settings', () => {
     test('basic settings', async ({ page }) => {
-        await page.route('**/rest/v2/projects', async (route) => {
+        await page.route('**/api/v1/projects', async (route) => {
             if (
                 route
                     .request()
@@ -11,14 +11,14 @@ test.describe('extension settings', () => {
                     .authorization.includes('correctApiToken')
             ) {
                 await new Promise((resolve) => setTimeout(resolve, 500))
-                await route.fulfill({ json: [{ name: 'Lorem', id: 100 }] })
+                await route.fulfill({ json: { results: [{ name: 'Lorem', id: 100 }] } })
             } else {
                 await new Promise((resolve) => setTimeout(resolve, 500))
                 await route.fulfill({ status: 401 })
             }
         })
 
-        await page.route('**/rest/v2/tasks', async (route) => {
+        await page.route('**/api/v1/tasks', async (route) => {
             await route.fulfill({ body: 'Forbidden', status: 401 })
         })
 
@@ -121,7 +121,7 @@ test.describe('extension settings', () => {
         /**
          * Add a test task (success)
          */
-        await page.route('**/rest/v2/tasks', async (route) => {
+        await page.route('**/api/v1/tasks', async (route) => {
             await route.fulfill({ status: 200 })
         })
 
@@ -135,7 +135,7 @@ test.describe('extension settings', () => {
             })
 
             return (
-                request.url().includes('rest/v2/tasks') &&
+                request.url().includes('api/v1/tasks') &&
                 request.method() === 'POST' &&
                 postData === expectedPostData
             )
@@ -153,7 +153,7 @@ test.describe('extension settings', () => {
     })
 
     test('advanced rules declaration', async ({ page }) => {
-        await page.route('**/rest/v2/projects', async (route) => {
+        await page.route('**/api/v1/projects', async (route) => {
             if (
                 route
                     .request()
@@ -162,10 +162,11 @@ test.describe('extension settings', () => {
             ) {
                 await new Promise((resolve) => setTimeout(resolve, 500))
                 await route.fulfill({
-                    json: [
-                        { name: 'Lorem', id: 100 },
-                        { name: 'Ipsum', id: 101 },
-                    ],
+                    json:
+                        { results: [
+                            { name: 'Lorem', id: 100 },
+                            { name: 'Ipsum', id: 101 },
+                        ] },
                 })
             } else {
                 await new Promise((resolve) => setTimeout(resolve, 500))
@@ -232,7 +233,7 @@ test.describe('extension settings', () => {
             page.getByText('url matches exactly: https://doist.com'),
         ).toBeVisible()
 
-        await page.route('**/rest/v2/tasks', async (route) => {
+        await page.route('**/api/v1/tasks', async (route) => {
             await route.fulfill({ status: 200 })
         })
 
@@ -246,7 +247,7 @@ test.describe('extension settings', () => {
             })
 
             return (
-                request.url().includes('rest/v2/tasks') &&
+                request.url().includes('api/v1/tasks') &&
                 request.method() === 'POST' &&
                 postData === expectedPostData
             )

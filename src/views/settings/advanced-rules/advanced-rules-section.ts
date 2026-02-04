@@ -18,7 +18,7 @@ export class AdvancedRulesSectionElement extends LitElement {
     private rules: RulesState['data'] = []
 
     @state()
-    private projects: ProjectsState['data'] = []
+    private projects: ProjectsState['data'] = { results: [] }
 
     @state()
     private editingRuleId?: string
