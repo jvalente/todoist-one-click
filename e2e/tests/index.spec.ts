@@ -11,7 +11,9 @@ test.describe('extension settings', () => {
                     .authorization.includes('correctApiToken')
             ) {
                 await new Promise((resolve) => setTimeout(resolve, 500))
-                await route.fulfill({ json: { results: [{ name: 'Lorem', id: 100 }] } })
+                await route.fulfill({
+                    json: { results: [{ name: 'Lorem', id: 100 }] },
+                })
             } else {
                 await new Promise((resolve) => setTimeout(resolve, 500))
                 await route.fulfill({ status: 401 })
@@ -162,11 +164,12 @@ test.describe('extension settings', () => {
             ) {
                 await new Promise((resolve) => setTimeout(resolve, 500))
                 await route.fulfill({
-                    json:
-                        { results: [
+                    json: {
+                        results: [
                             { name: 'Lorem', id: 100 },
                             { name: 'Ipsum', id: 101 },
-                        ] },
+                        ],
+                    },
                 })
             } else {
                 await new Promise((resolve) => setTimeout(resolve, 500))

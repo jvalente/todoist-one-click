@@ -1,5 +1,5 @@
 import { Icon, Tabs } from '../api/extension'
-import { llmAPI, analyticsAPI } from '../api/misc'
+import { analyticsAPI, llmAPI } from '../api/misc'
 import FailedTasks from '../models/failed-tasks'
 import { GuessProjectOption } from '../models/guess-project-option'
 import Projects from '../models/projects'

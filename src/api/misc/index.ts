@@ -1,4 +1,4 @@
-import { Manifest } from "../extension"
+import { Manifest } from '../extension'
 
 const LAMBDA_URL = 'https://6izom2n40j.execute-api.us-east-1.amazonaws.com/production'
 const LLM_TIMEOUT = 20000
