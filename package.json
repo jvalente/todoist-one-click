@@ -31,7 +31,7 @@
         "@types/node": "24.9.1",
         "archiver": "7.0.1",
         "knip": "5.59.1",
-        "rimraf": "6.0.1",
+        "rimraf": "6.1.0",
         "rollup": "4.41.1",
         "rollup-plugin-copy": "3.5.0",
         "ts-lit-plugin": "2.0.2",
