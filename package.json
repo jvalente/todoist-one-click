@@ -27,7 +27,7 @@
         "@playwright/test": "1.56.1",
         "@rollup/plugin-node-resolve": "16.0.1",
         "@rollup/plugin-typescript": "12.1.2",
-        "@types/chrome": "0.1.16",
+        "@types/chrome": "0.1.40",
         "@types/node": "24.9.2",
         "archiver": "7.0.1",
         "knip": "5.59.1",
