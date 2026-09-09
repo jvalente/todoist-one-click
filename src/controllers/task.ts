@@ -10,32 +10,41 @@ export function addTask(title?: string, url?: string) {
     Icon.setLoading()
 
     getTaskProps(title, url)
-        .then(({ title, url, projectId, labels, dueDate }: any) => {
-            if (!title) throw new Error('Title is required')
-
-            const task = new Task({
+        .then(
+            ({
                 title,
                 url,
                 projectId,
                 labels,
                 dueDate,
-            })
+                guessProjectEnabled,
+            }: any) => {
+                if (!title) throw new Error('Title is required')
 
-            task.flush()
-                .then(() => {
-                    Icon.setSuccess()
-                    analyticsAPI.registerEvent()
+                const task = new Task({
+                    title,
+                    url,
+                    projectId,
+                    labels,
+                    dueDate,
                 })
-                .catch((error) => {
-                    Icon.setError()
-                    const { title, url } = task
-                    FailedTasks.add({ title, url }, error)
 
-                    // TODO introduce an error icon?
-                    // TODO: does this belong here?
-                    chrome.runtime.openOptionsPage()
-                })
-        })
+                task.flush()
+                    .then(() => {
+                        Icon.setSuccess()
+                        analyticsAPI.registerEvent(guessProjectEnabled)
+                    })
+                    .catch((error) => {
+                        Icon.setError()
+                        const { title, url } = task
+                        FailedTasks.add({ title, url }, error)
+
+                        // TODO introduce an error icon?
+                        // TODO: does this belong here?
+                        chrome.runtime.openOptionsPage()
+                    })
+            },
+        )
         .catch(() => {
             Icon.setError()
 
@@ -67,6 +76,7 @@ function getTaskProps(title?: string, url?: string) {
                             projectId: guessedProjectId || projectId,
                             labels,
                             dueDate,
+                            guessProjectEnabled: true,
                         }),
                     )
                 }
@@ -77,6 +87,7 @@ function getTaskProps(title?: string, url?: string) {
                     projectId,
                     labels,
                     dueDate,
+                    guessProjectEnabled: guessProjectEnabled === true,
                 }
             },
         )
