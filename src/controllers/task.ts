@@ -10,7 +10,15 @@ export function addTask(title?: string, url?: string) {
     Icon.setLoading()
 
     getTaskProps(title, url)
-        .then(({ title, url, projectId, labels, dueDate }: any) => {
+        .then((taskProps: any) => {
+            const {
+                title,
+                url,
+                projectId,
+                labels,
+                dueDate,
+                guessProjectEnabled,
+            } = taskProps
             if (!title) throw new Error('Title is required')
 
             const task = new Task({
@@ -22,9 +30,9 @@ export function addTask(title?: string, url?: string) {
             })
 
             task.flush()
-                .then(() => {
+                .then(({ user_id: userId }) => {
                     Icon.setSuccess()
-                    analyticsAPI.registerEvent()
+                    analyticsAPI.registerEvent(guessProjectEnabled, userId)
                 })
                 .catch((error) => {
                     Icon.setError()
@@ -67,6 +75,7 @@ function getTaskProps(title?: string, url?: string) {
                             projectId: guessedProjectId || projectId,
                             labels,
                             dueDate,
+                            guessProjectEnabled: true,
                         }),
                     )
                 }
@@ -77,6 +86,7 @@ function getTaskProps(title?: string, url?: string) {
                     projectId,
                     labels,
                     dueDate,
+                    guessProjectEnabled: guessProjectEnabled === true,
                 }
             },
         )
