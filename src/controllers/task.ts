@@ -10,41 +10,40 @@ export function addTask(title?: string, url?: string) {
     Icon.setLoading()
 
     getTaskProps(title, url)
-        .then(
-            ({
+        .then((taskProps: any) => {
+            const {
                 title,
                 url,
                 projectId,
                 labels,
                 dueDate,
                 guessProjectEnabled,
-            }: any) => {
-                if (!title) throw new Error('Title is required')
+            } = taskProps
+            if (!title) throw new Error('Title is required')
 
-                const task = new Task({
-                    title,
-                    url,
-                    projectId,
-                    labels,
-                    dueDate,
+            const task = new Task({
+                title,
+                url,
+                projectId,
+                labels,
+                dueDate,
+            })
+
+            task.flush()
+                .then(({ user_id: userId }) => {
+                    Icon.setSuccess()
+                    analyticsAPI.registerEvent(guessProjectEnabled, userId)
                 })
+                .catch((error) => {
+                    Icon.setError()
+                    const { title, url } = task
+                    FailedTasks.add({ title, url }, error)
 
-                task.flush()
-                    .then(({ user_id: userId }) => {
-                        Icon.setSuccess()
-                        analyticsAPI.registerEvent(guessProjectEnabled, userId)
-                    })
-                    .catch((error) => {
-                        Icon.setError()
-                        const { title, url } = task
-                        FailedTasks.add({ title, url }, error)
-
-                        // TODO introduce an error icon?
-                        // TODO: does this belong here?
-                        chrome.runtime.openOptionsPage()
-                    })
-            },
-        )
+                    // TODO introduce an error icon?
+                    // TODO: does this belong here?
+                    chrome.runtime.openOptionsPage()
+                })
+        })
         .catch(() => {
             Icon.setError()
 

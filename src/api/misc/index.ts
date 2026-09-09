@@ -46,12 +46,7 @@ function registerEvent(guessProjectEnabled: boolean, userId: string) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            version,
-            lang,
-            guessProjectEnabled,
-            userId,
-        }),
+        body: JSON.stringify({ version, lang, guessProjectEnabled, userId }),
     })
 }
 
