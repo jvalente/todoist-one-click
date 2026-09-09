@@ -30,9 +30,9 @@ export function addTask(title?: string, url?: string) {
                 })
 
                 task.flush()
-                    .then(() => {
+                    .then(({ user_id: userId }) => {
                         Icon.setSuccess()
-                        analyticsAPI.registerEvent(guessProjectEnabled)
+                        analyticsAPI.registerEvent(guessProjectEnabled, userId)
                     })
                     .catch((error) => {
                         Icon.setError()

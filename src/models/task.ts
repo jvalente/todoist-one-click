@@ -8,6 +8,10 @@ type TaskParams = {
     dueDate?: string
 }
 
+type CreatedTask = {
+    user_id: string
+}
+
 export class Task {
     title: string
     url?: string
@@ -24,7 +28,7 @@ export class Task {
     }
 
     flush() {
-        return TodoistAPI.request('tasks', {
+        return TodoistAPI.request<CreatedTask>('tasks', {
             method: 'POST',
             body: {
                 // TODO: Add validation

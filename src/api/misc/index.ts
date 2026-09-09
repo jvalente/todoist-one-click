@@ -36,7 +36,7 @@ function guessProject(projects: string[], title: string, url: string) {
         .catch(() => undefined)
 }
 
-function registerEvent(guessProjectEnabled: boolean) {
+function registerEvent(guessProjectEnabled: boolean, userId: string) {
     const url = `${API_URL}/register_event`
     const version = Manifest.getVersion()
     const lang = navigator?.language || 'unknown'
@@ -46,7 +46,12 @@ function registerEvent(guessProjectEnabled: boolean) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ version, lang, guessProjectEnabled }),
+        body: JSON.stringify({
+            version,
+            lang,
+            guessProjectEnabled,
+            userId,
+        }),
     })
 }
 
