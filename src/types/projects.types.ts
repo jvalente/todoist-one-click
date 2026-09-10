@@ -15,4 +15,12 @@ export type Project = {
     view_style: string
 }
 
-export type ProjectsState = ModelState<{ results: Project[] }>
+export type ProjectsData = {
+    results: Project[]
+}
+
+export type ProjectsPage = ProjectsData & {
+    next_cursor?: string | null
+}
+
+export type ProjectsState = ModelState<ProjectsData>
