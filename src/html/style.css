@@ -14,7 +14,7 @@
     :root {
         color-scheme: light;
         --primary-color: rgb(34, 34, 34);
-        --secondary-color: rgb(117, 129, 149);
+        --secondary-color: #6f6b66;
 
         --bg-color-0: rgb(255, 255, 255);
         --bg-color-1: rgb(247, 248, 249);
@@ -22,7 +22,10 @@
         --bg-color-3: rgb(220, 223, 228);
         --bg-color-4: rgb(179, 185, 196);
         --bg-color-error: rgb(255, 236, 248);
+        --disabled-background-color: #eeece9;
+        --disabled-text-color: #918b83;
         --input-border-color: #cdc8c2;
+        --page-background-color: #faf9f8;
         --section-background-color: #ffffff;
         --section-border-color: #e6e3e0;
         --section-shadow: 0 2px 5px #342a1c0d;
@@ -33,7 +36,7 @@
     :root {
         color-scheme: dark;
         --primary-color: rgb(240, 240, 240);
-        --secondary-color: rgb(159, 173, 188);
+        --secondary-color: #b0aaa2;
 
         --bg-color-0: rgb(16, 18, 20);
         --bg-color-1: rgb(22, 26, 29);
@@ -41,9 +44,12 @@
         --bg-color-3: rgb(34, 39, 43);
         --bg-color-4: rgb(40, 46, 51);
         --bg-color-error: rgb(80, 37, 63);
+        --disabled-background-color: #34312d;
+        --disabled-text-color: #968c81;
         --link-color: #ff9686;
         --focus-ring-color: #ff968644;
         --input-border-color: #625b53;
+        --page-background-color: var(--bg-color-0);
         --section-background-color: var(--bg-color-1);
         --section-border-color: #3a3733;
         --section-shadow: 0 2px 5px #00000026;
@@ -55,7 +61,7 @@ body {
     padding: 64px 24px;
     line-height: 1.5;
     font-size: var(--global-font-size);
-    background-color: var(--bg-color-0);
+    background-color: var(--page-background-color);
     color: var(--primary-color);
     font-family: system-ui, sans-serif;
 }

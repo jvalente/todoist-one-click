@@ -16,7 +16,7 @@ export class ButtonElement extends LitElement {
             border: 1px solid transparent;
             border-radius: 7px;
             font: inherit;
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 600;
             line-height: 1.5;
             color: var(--on-accent-color);
@@ -50,8 +50,8 @@ export class ButtonElement extends LitElement {
 
         button:disabled,
         :host([secondary]) button:disabled {
-            color: var(--secondary-color);
-            background-color: var(--bg-color-2);
+            color: var(--disabled-text-color);
+            background-color: var(--disabled-background-color);
             border-color: transparent;
             cursor: default;
         }

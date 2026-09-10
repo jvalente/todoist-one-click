@@ -10,9 +10,14 @@ test('text inputs support password and disabled states', async ({
     const input = host.getByRole('textbox', { name: 'API token' })
     await expect(input).toHaveAttribute('type', 'password')
     await expect(input).toHaveAttribute('aria-describedby', 'help')
-    await expect(
-        host.getByRole('link', { name: 'Find your token' }),
-    ).toBeVisible()
+    const tokenLink = host.getByRole('link', {
+        name: 'Find your token',
+        exact: true,
+    })
+    await expect(tokenLink).toBeVisible()
+    await expect(tokenLink).toHaveAttribute('target', '_blank')
+    await expect(tokenLink).toHaveAttribute('rel', 'noreferrer')
+    await expect(host.locator('tc-link[external] svg')).toBeVisible()
     await expect(
         host.getByText(/Settings → Integrations → Developer/),
     ).toBeVisible()

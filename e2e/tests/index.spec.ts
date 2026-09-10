@@ -37,15 +37,26 @@ test.describe('extension settings', () => {
             }),
         ).toBeVisible()
 
-        // TODO: save button should be disabled
+        const saveButton = page.getByRole('button', { name: 'Save token' })
+        const apiTokenInput = locateSection(page, 'Connect Todoist').locator(
+            'input',
+        )
+
+        await expect(saveButton).toBeDisabled()
+        await expect(
+            page.getByText(
+                'Your token is stored locally in this browser and used to connect to Todoist.',
+            ),
+        ).toBeVisible()
+        await apiTokenInput.fill('   ')
+        await expect(saveButton).toBeDisabled()
 
         /*
          * Wrong API token
          */
-        await locateSection(page, 'Connect Todoist')
-            .locator('input')
-            .fill('wrongApiToken')
-        await page.getByRole('button', { name: 'Save' }).click()
+        await apiTokenInput.fill('wrongApiToken')
+        await expect(saveButton).toBeEnabled()
+        await saveButton.click()
 
         await expect(page.locator('.loader')).toBeVisible()
 
@@ -57,7 +68,7 @@ test.describe('extension settings', () => {
         await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('correctApiToken')
-        await page.getByRole('button', { name: 'Save' }).click()
+        await page.getByRole('button', { name: 'Save token' }).click()
 
         await expect(
             page.getByText('Target project', { exact: true }),
@@ -126,7 +137,7 @@ test.describe('extension settings', () => {
         await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('correctApiToken')
-        await page.getByRole('button', { name: 'Save' }).click()
+        await page.getByRole('button', { name: 'Save token' }).click()
 
         await expect(page.getByText('Failed tasks (1)')).toBeVisible()
         await expect(page.getByText(/the API token is invalid/)).toBeVisible()
@@ -194,7 +205,7 @@ test.describe('extension settings', () => {
         await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('correctApiToken')
-        await page.getByRole('button', { name: 'Save' }).click()
+        await page.getByRole('button', { name: 'Save token' }).click()
 
         await page.getByRole('link', { name: 'Add rule' }).click()
 

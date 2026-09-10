@@ -13,6 +13,18 @@ export class LinkElement extends LitElement {
                 color: var(--link-color);
             }
 
+            :host([external]) a {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                text-decoration: none;
+            }
+
+            :host([external]) a:hover {
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+
             :host([small]) a {
                 font-size: var(--small-font-size);
             }
@@ -37,6 +49,9 @@ export class LinkElement extends LitElement {
 
     @property({ type: Boolean })
     small = false
+
+    @property({ type: Boolean, reflect: true })
+    external = false
 
     @property({ type: String })
     href?: string
@@ -100,11 +115,31 @@ export class LinkElement extends LitElement {
         return nothing
     }
 
+    private renderExternalIcon() {
+        if (!this.external) return nothing
+
+        return html`<svg
+            viewBox="0 0 16 16"
+            width="14"
+            height="14"
+            fill="none"
+            aria-hidden="true"
+        >
+            <path
+                d="M5 3.5h7.5V11M12.5 3.5l-9 9"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            ></path>
+        </svg>`
+    }
+
     render() {
         if (this.href) {
-            return html`<a href="${this.href}" target="_blank"
-                ><slot></slot
-            ></a>`
+            return html`<a href="${this.href}" target="_blank" rel="noreferrer"
+                ><slot></slot>${this.renderExternalIcon()}</a
+            >`
         }
 
         return html`<a href="#" @click=${this._onClick}><slot></slot></a>

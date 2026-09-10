@@ -7,7 +7,13 @@ test('buttons support keyboard activation and native disabling', async ({
     await page.goto(`chrome-extension://${extensionId}/settings.html`)
 
     const host = page.locator('tc-api-key tc-button')
-    const button = host.getByRole('button', { name: 'Save', exact: true })
+    const button = host.getByRole('button', {
+        name: 'Save token',
+        exact: true,
+    })
+    await host.evaluate((element: HTMLElement & { disabled?: boolean }) => {
+        element.disabled = false
+    })
     await host.evaluate((element) => {
         element.dataset.activations = '0'
         element.addEventListener('click', () => {

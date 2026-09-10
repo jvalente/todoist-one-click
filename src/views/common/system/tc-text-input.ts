@@ -19,6 +19,7 @@ export class TextInputElement extends LitElement {
         }
 
         label {
+            font-size: 0.875rem;
             font-weight: 600;
         }
 
@@ -30,7 +31,7 @@ export class TextInputElement extends LitElement {
             border-radius: 7px;
             outline: none;
             font: inherit;
-            font-size: 1rem;
+            font-size: 0.875rem;
             line-height: 1.5;
             color: var(--primary-color);
             background-color: var(--bg-color-0);
