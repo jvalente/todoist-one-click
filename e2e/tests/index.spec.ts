@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 
 test.describe('extension settings', () => {
     test('basic settings', async ({ page }) => {
-        await page.route('**/api/v1/projects', async (route) => {
+        await page.route(/\/api\/v1\/projects(?:\?.*)?$/, async (route) => {
             if (
                 route
                     .request()
@@ -155,7 +155,7 @@ test.describe('extension settings', () => {
     })
 
     test('advanced rules declaration', async ({ page }) => {
-        await page.route('**/api/v1/projects', async (route) => {
+        await page.route(/\/api\/v1\/projects(?:\?.*)?$/, async (route) => {
             if (
                 route
                     .request()
