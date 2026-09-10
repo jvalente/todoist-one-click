@@ -4,20 +4,21 @@ const API_URL = 'https://api.todoist.com/api'
 const API_VERSION = 'v1'
 
 type RequestOptions = {
-    method: 'GET' | 'POST'
-    body: Record<string, unknown> | undefined
+    method?: 'GET' | 'POST'
+    body?: Record<string, unknown>
+    params?: Record<string, string>
 }
 
 function request<T>(
     path: string,
-    { method, body }: RequestOptions = { method: 'GET', body: undefined },
+    { method = 'GET', body, params }: RequestOptions = {},
 ): Promise<T> {
     return TodoistAPIKey.get().then((apiKey) => {
         if (!apiKey) {
             throw new Error('API key not found')
         }
 
-        return fetch(getURL(path), {
+        return fetch(getURL(path, params), {
             method,
             headers: getHeaders(apiKey),
             ...(method === 'POST' && body
@@ -53,8 +54,10 @@ function getHeaders(apiKey: string) {
 /**
  *
  */
-function getURL(path: string) {
-    return `${API_URL}/${API_VERSION}/${path}`
+function getURL(path: string, params?: RequestOptions['params']) {
+    const query = params ? `?${new URLSearchParams(params)}` : ''
+
+    return `${API_URL}/${API_VERSION}/${path}${query}`
 }
 
 /**

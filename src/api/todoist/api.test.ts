@@ -67,6 +67,17 @@ describe('API', () => {
         })
     })
 
+    it('serializes GET query parameters', async () => {
+        return TodoistAPI.request('projects', {
+            params: { limit: '200', cursor: 'next page/2' },
+        }).then(() => {
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://api.todoist.com/api/v1/projects?limit=200&cursor=next+page%2F2',
+                expect.objectContaining({ method: 'GET' }),
+            )
+        })
+    })
+
     it('throws if API key does not exist', async () => {
         expect.assertions(1)
 
