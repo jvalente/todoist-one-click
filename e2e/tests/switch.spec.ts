@@ -1,6 +1,6 @@
 import { expect, test } from './fixtures'
 
-test('checkbox labels and keyboard activation persist the guessing option', async ({
+test('switch labels and keyboard activation persist the guessing option', async ({
     page,
     extensionId,
 }) => {
@@ -19,19 +19,25 @@ test('checkbox labels and keyboard activation persist the guessing option', asyn
     await page.getByRole('textbox', { name: 'API token' }).fill('sample-token')
     await page.getByRole('button', { name: 'Save token' }).click()
 
-    const host = page.locator('tc-project-guess tc-checkbox')
-    const checkbox = host.getByRole('checkbox', {
+    const host = page.locator('tc-project-guess tc-switch')
+    const toggle = host.getByRole('switch', {
         name: 'Guess the project with AI',
         exact: true,
     })
     const fallback = page.getByText(/If no match is found, tasks go to/)
-    await expect(checkbox).not.toBeChecked()
-    await expect(checkbox).toHaveAccessibleDescription(
+    await expect(toggle).not.toBeChecked()
+    await expect(toggle).toHaveAttribute('aria-checked', 'false')
+    await expect(toggle).toHaveAccessibleDescription(
         /Use the page title and URL to find a suitable project[\s\S]*When enabled/,
     )
     await expect(fallback).not.toBeVisible()
+    await toggle.click()
+    await expect(toggle).toBeChecked()
+    await expect(toggle).toHaveAttribute('aria-checked', 'true')
+    await toggle.press('Space')
+    await expect(toggle).not.toBeChecked()
     await host.locator('label').click()
-    await expect(checkbox).toBeChecked()
+    await expect(toggle).toBeChecked()
     await expect(fallback).toContainText('Inbox')
 
     const project = page.getByRole('combobox', { name: 'Default project' })
@@ -44,24 +50,26 @@ test('checkbox labels and keyboard activation persist the guessing option', asyn
     await expect(project).toHaveValue('reading')
 
     await page.reload()
-    await expect(checkbox).toBeChecked()
+    await expect(toggle).toBeChecked()
     await expect(fallback).toContainText('Reading list')
-    await checkbox.press('Space')
-    await expect(checkbox).not.toBeChecked()
+    await toggle.press('Space')
+    await expect(toggle).not.toBeChecked()
+    await expect(toggle).toHaveAttribute('aria-checked', 'false')
     await expect(fallback).not.toBeVisible()
-    await expect(checkbox).toBeFocused()
+    await expect(toggle).toBeFocused()
+    await expect(host.getByText(/When enabled/)).toBeVisible()
 
     await host.evaluate((element: HTMLElement & { disabled?: boolean }) => {
         element.disabled = true
     })
-    await expect(checkbox).toBeDisabled()
+    await expect(toggle).toBeDisabled()
     await host.locator('label').click({ force: true })
-    await expect(checkbox).not.toBeChecked()
+    await expect(toggle).not.toBeChecked()
 
     await host.evaluate((element: HTMLElement & { disabled?: boolean }) => {
         element.disabled = false
     })
-    await expect(checkbox).toBeEnabled()
-    await checkbox.press('Space')
-    await expect(checkbox).toBeChecked()
+    await expect(toggle).toBeEnabled()
+    await toggle.press('Space')
+    await expect(toggle).toBeChecked()
 })

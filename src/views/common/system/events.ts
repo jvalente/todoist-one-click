@@ -39,9 +39,9 @@ export class InputEnterPressEvent extends CustomEvent<{ value: string }> {
 }
 
 /**
- * CHECKBOX
+ * SWITCH
  */
-export class CheckboxChangeEvent extends CustomEvent<{ checked: boolean }> {
+export class SwitchChangeEvent extends CustomEvent<{ checked: boolean }> {
     constructor(_checked: boolean) {
         super('change', {
             detail: { checked: _checked },

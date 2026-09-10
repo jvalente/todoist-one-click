@@ -2,7 +2,7 @@ import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import '../../common/system'
-import type { CheckboxChangeEvent } from '../../common/system'
+import type { SwitchChangeEvent } from '../../common/system'
 
 @customElement('tc-project-guess')
 export class ProjectGuessElement extends LitElement {
@@ -43,23 +43,15 @@ export class ProjectGuessElement extends LitElement {
     @property({ type: String })
     fallbackProject?: string
 
-    private handleCheckedToggle(event: CheckboxChangeEvent) {
-        const customEvent = new CustomEvent('change', {
-            detail: { checked: event.checked },
-        })
-
-        this.dispatchEvent(customEvent)
-    }
-
     render() {
-        return html`<tc-checkbox
+        return html`<tc-switch
             name="toggle-guess-project"
             .checked=${this.checked}
             @change=${this.handleCheckedToggle}
         >
             Guess the project with AI
-            <div slot="help" class="details">
-                <p>Use the page title and URL to find a suitable project.</p>
+            <span slot="help">Use the page title and URL to find a suitable project.</span>
+            <div slot="details" class="details">
                 ${
                     this.checked
                         ? html`<p>
@@ -77,6 +69,14 @@ export class ProjectGuessElement extends LitElement {
                     >.
                 </p>
             </div>
-        </tc-checkbox>`
+        </tc-switch>`
+    }
+
+    private handleCheckedToggle(event: SwitchChangeEvent) {
+        const customEvent = new CustomEvent('change', {
+            detail: { checked: event.checked },
+        })
+
+        this.dispatchEvent(customEvent)
     }
 }
