@@ -3,33 +3,39 @@ import Model from './model'
 import type { FailedTask } from '../types/tasks.type'
 
 class FailedTasksModel extends Model<Array<FailedTask>> {
+    private pendingUpdate = Promise.resolve()
+
     constructor() {
         super('failedTasks')
     }
 
     add(task: FailedTask['task'], error: FailedTask['error']) {
         const id = crypto.randomUUID()
-
         const serializedError =
             error instanceof TodoistAPIError ? error.serialize() : error
 
-        this.get()
-            .then((failedTasks) => {
-                this.set([
-                    ...(failedTasks || []),
-                    { id, task, error: serializedError },
-                ])
-            })
-            .catch(() => {
-                // TODO: Model/Storage error handling
-                // we need some kind of "global" error handling entity?
-            })
+        return this.update((failedTasks) => [
+            ...failedTasks,
+            { id, task, error: serializedError },
+        ])
     }
 
-    discard(id: FailedTask['id']): void {
-        this.get().then((failedTasks) => {
-            this.set(failedTasks?.filter((failedTask) => failedTask.id !== id))
-        })
+    discard(id: FailedTask['id']) {
+        return this.update((failedTasks) =>
+            failedTasks.filter((failedTask) => failedTask.id !== id),
+        )
+    }
+
+    private update(update: (failedTasks: FailedTask[]) => FailedTask[]) {
+        const pendingUpdate = this.pendingUpdate.then(() =>
+            this.get().then((failedTasks) =>
+                this.set(update(failedTasks || [])),
+            ),
+        )
+
+        this.pendingUpdate = pendingUpdate.catch(() => undefined)
+
+        return pendingUpdate
     }
 }
 

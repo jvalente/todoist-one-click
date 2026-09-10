@@ -5,13 +5,15 @@ import type { FailedTask } from '../types/tasks.type'
 export function discardFailedTask(failedTask?: FailedTask) {
     if (!failedTask) return
 
-    FailedTasks.discard(failedTask.id)
+    return FailedTasks.discard(failedTask.id)
 }
 
-export function retryFailedTask(failedTask?: FailedTask) {
-    if (!failedTask) return
+export async function retryFailedTask(failedTask?: FailedTask) {
+    if (!failedTask?.task.title || !failedTask.task.url) return
 
-    // TODO: handle more elegantly
-    FailedTasks.discard(failedTask.id)
-    addTask(failedTask.task?.title, failedTask.task?.url)
+    const added = await addTask(failedTask.task.title, failedTask.task.url, {
+        recordFailure: false,
+    })
+
+    if (added) return FailedTasks.discard(failedTask.id)
 }

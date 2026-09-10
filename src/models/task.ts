@@ -2,7 +2,7 @@ import { TodoistAPI } from '../api/todoist'
 
 type TaskParams = {
     title: string
-    url?: string
+    url: string
     projectId?: string
     labels?: string[]
     dueDate?: string
@@ -14,7 +14,7 @@ type CreatedTask = {
 
 export class Task {
     title: string
-    url?: string
+    url: string
     projectId?: string
     labels?: string[]
     dueDate?: string

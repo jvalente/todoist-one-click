@@ -1,6 +1,6 @@
 type Task = {
     title: string
-    url?: string
+    url: string
 }
 
 export type FailedTask = {

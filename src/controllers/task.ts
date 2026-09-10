@@ -6,91 +6,85 @@ import Projects from '../models/projects'
 import Rules from '../models/rules'
 import { Task } from '../models/task'
 
-export function addTask(title?: string, url?: string) {
-    Icon.setLoading()
-
-    getTaskProps(title, url)
-        .then((taskProps: any) => {
-            const {
-                title,
-                url,
-                projectId,
-                labels,
-                dueDate,
-                guessProjectEnabled,
-            } = taskProps
-            if (!title) throw new Error('Title is required')
-
-            const task = new Task({
-                title,
-                url,
-                projectId,
-                labels,
-                dueDate,
-            })
-
-            task.flush()
-                .then(({ user_id: userId }) => {
-                    Icon.setSuccess()
-                    analyticsAPI.registerEvent(guessProjectEnabled, userId)
-                })
-                .catch((error) => {
-                    Icon.setError()
-                    const { title, url } = task
-                    FailedTasks.add({ title, url }, error)
-
-                    // TODO introduce an error icon?
-                    // TODO: does this belong here?
-                    chrome.runtime.openOptionsPage()
-                })
-        })
-        .catch(() => {
-            Icon.setError()
-
-            // TODO: Handle validation error?
-            // global error handler?
-        })
+type TaskSource = {
+    title: string
+    url: string
 }
 
-function getTaskProps(title?: string, url?: string) {
-    return (
-        title && url ? Promise.resolve({ title, url }) : Tabs.getActiveTab()
-    ).then(({ title, url }) => {
-        return Promise.all([
-            Promise.resolve({ title, url }),
-            Rules.getByUrl(url),
-            GuessProjectOption.get(),
-        ]).then(
-            ([
-                { title, url },
-                { projectId, labels, dueDate, default: isDefault },
-                guessProjectEnabled,
-            ]) => {
-                // default rule was inferred and guessProject is enabled
-                if (isDefault && guessProjectEnabled) {
-                    return guessProject(title, url).then(
-                        (guessedProjectId) => ({
-                            title,
-                            url,
-                            projectId: guessedProjectId || projectId,
-                            labels,
-                            dueDate,
-                            guessProjectEnabled: true,
-                        }),
-                    )
-                }
+type AddTaskOptions = {
+    recordFailure?: boolean
+}
 
-                return {
-                    title,
-                    url,
-                    projectId,
+export async function addTask(
+    title?: string,
+    url?: string,
+    { recordFailure = true }: AddTaskOptions = {},
+): Promise<boolean> {
+    Icon.setLoading()
+
+    let source: TaskSource | undefined
+
+    try {
+        source = await getTaskSource(title, url)
+        const { projectId, labels, dueDate, guessProjectEnabled } =
+            await getTaskProps(source)
+        const task = new Task({ ...source, projectId, labels, dueDate })
+        const { user_id: userId } = await task.flush()
+
+        Icon.setSuccess()
+        analyticsAPI.registerEvent(guessProjectEnabled, userId)
+
+        return true
+    } catch (error) {
+        Icon.setError()
+
+        if (source && recordFailure) {
+            await FailedTasks.add(source, error)
+            chrome.runtime.openOptionsPage()
+        }
+
+        return false
+    }
+}
+
+function getTaskSource(title?: string, url?: string): Promise<TaskSource> {
+    const source =
+        title !== undefined || url !== undefined
+            ? Promise.resolve({ title, url })
+            : Tabs.getActiveTab()
+
+    return source.then(({ title, url }) => {
+        if (!title) throw new Error('Title is required')
+        if (!url) throw new Error('URL is required')
+
+        return { title, url }
+    })
+}
+
+function getTaskProps({ title, url }: TaskSource) {
+    return Promise.all([Rules.getByUrl(url), GuessProjectOption.get()]).then(
+        ([
+            { projectId, labels, dueDate, default: isDefault },
+            guessProjectEnabled,
+        ]) => {
+            // default rule was inferred and guessProject is enabled
+            if (isDefault && guessProjectEnabled) {
+                return guessProject(title, url).then((guessedProjectId) => ({
+                    projectId: guessedProjectId || projectId,
                     labels,
                     dueDate,
-                    guessProjectEnabled: guessProjectEnabled === true,
-                }
-            },
-        )
-    })
+                    guessProjectEnabled: true,
+                }))
+            }
+
+            return {
+                projectId,
+                labels,
+                dueDate,
+                guessProjectEnabled: guessProjectEnabled === true,
+            }
+        },
+    )
 }
 
 function guessProject(title: string, url: string) {
