@@ -11,7 +11,7 @@ export class SectionElement extends LitElement {
 
     render() {
         return html`<section>
-            <h1>${this.title}</h1>
+            <h2>${this.title}</h2>
             <slot></slot>
         </section>`
     }

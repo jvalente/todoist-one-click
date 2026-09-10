@@ -24,26 +24,37 @@ test.describe('extension settings', () => {
             await route.fulfill({ body: 'Forbidden', status: 401 })
         })
 
-        await expect(page.getByText('Todoist One-Click Settings')).toBeVisible()
+        await expect(
+            page.getByRole('heading', {
+                level: 1,
+                name: 'Todoist One-Click',
+            }),
+        ).toBeVisible()
+        await expect(
+            page.getByRole('heading', {
+                level: 2,
+                name: 'Connect Todoist',
+            }),
+        ).toBeVisible()
 
         // TODO: save button should be disabled
 
         /*
          * Wrong API token
          */
-        await locateSection(page, 'Enter your API token')
+        await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('wrongApiToken')
         await page.getByRole('button', { name: 'Save' }).click()
 
         await expect(page.locator('.loader')).toBeVisible()
 
-        await expect(locateSection(page, 'Enter your API token')).toBeVisible()
+        await expect(locateSection(page, 'Connect Todoist')).toBeVisible()
 
         /*
          * Update API token
          */
-        await locateSection(page, 'Enter your API token')
+        await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('correctApiToken')
         await page.getByRole('button', { name: 'Save' }).click()
@@ -110,9 +121,9 @@ test.describe('extension settings', () => {
          * Add a test task (failure)
          */
         await page.getByRole('link', { name: 'Add test task' }).click()
-        await expect(locateSection(page, 'Enter your API token')).toBeVisible()
+        await expect(locateSection(page, 'Connect Todoist')).toBeVisible()
 
-        await locateSection(page, 'Enter your API token')
+        await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('correctApiToken')
         await page.getByRole('button', { name: 'Save' }).click()
@@ -154,7 +165,7 @@ test.describe('extension settings', () => {
          * Clear all data
          */
         await page.getByRole('link', { name: 'Clear all local data' }).click()
-        await expect(locateSection(page, 'Enter your API token')).toBeVisible()
+        await expect(locateSection(page, 'Connect Todoist')).toBeVisible()
     })
 
     test('advanced rules declaration', async ({ page }) => {
@@ -180,7 +191,7 @@ test.describe('extension settings', () => {
             }
         })
 
-        await locateSection(page, 'Enter your API token')
+        await locateSection(page, 'Connect Todoist')
             .locator('input')
             .fill('correctApiToken')
         await page.getByRole('button', { name: 'Save' }).click()

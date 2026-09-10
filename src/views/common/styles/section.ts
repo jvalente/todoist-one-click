@@ -1,23 +1,35 @@
 import { css } from 'lit'
 
 export const settingsSection = css`
+    :host {
+        display: block;
+    }
+
     section {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         margin-bottom: 20px;
-        padding: 10px 20px;
-        background-color: var(--bg-color-1);
-        border-radius: var(--default-border-radius);
+        padding: 28px;
+        background-color: var(--section-background-color);
+        border: 1px solid var(--section-border-color);
+        border-radius: 12px;
+        box-shadow: var(--section-shadow);
     }
 
-    section h1 {
-        font-size: var(--title-font-size);
-        font-weight: 600;
-        border-bottom: 1px solid var(--bg-color-3);
-        margin: 10px 0 5px 0;
+    h2 {
+        margin: 0 0 28px;
+        font-size: 25px;
+        font-weight: 650;
+        line-height: 1.25;
+        letter-spacing: -0.7px;
     }
 
     ::slotted(*) {
-        margin: 10px 0;
+        margin: 0 0 20px;
+    }
+
+    ::slotted(:last-child) {
+        margin-bottom: 0;
     }
 `

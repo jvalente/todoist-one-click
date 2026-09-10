@@ -15,7 +15,7 @@ export class ApiKeyElement extends LitElement {
     }
 
     render() {
-        return html`<tc-section title="Enter your API token">
+        return html`<tc-section title="Connect Todoist">
             <tc-text-input
                 label="API token"
                 type="password"
