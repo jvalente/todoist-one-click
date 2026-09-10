@@ -38,15 +38,11 @@ test.describe('extension settings', () => {
 
         await expect(page.locator('.loader')).toBeVisible()
 
-        await expect(
-            page.getByText('Error while loading projects'),
-        ).toBeVisible()
+        await expect(locateSection(page, 'Enter your API token')).toBeVisible()
 
         /*
          * Update API token
          */
-        await page.getByRole('link', { name: 'Update API Token' }).click()
-
         await locateSection(page, 'Enter your API token')
             .locator('input')
             .fill('correctApiToken')
@@ -114,6 +110,13 @@ test.describe('extension settings', () => {
          * Add a test task (failure)
          */
         await page.getByRole('link', { name: 'Add test task' }).click()
+        await expect(locateSection(page, 'Enter your API token')).toBeVisible()
+
+        await locateSection(page, 'Enter your API token')
+            .locator('input')
+            .fill('correctApiToken')
+        await page.getByRole('button', { name: 'Save' }).click()
+
         await expect(page.getByText('Failed tasks (1)')).toBeVisible()
         await expect(page.getByText(/the API token is invalid/)).toBeVisible()
         await page.getByRole('link', { name: 'Discard' }).click()

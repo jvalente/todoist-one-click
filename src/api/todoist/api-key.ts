@@ -10,13 +10,15 @@ function get() {
 }
 
 function set(value: string) {
-    Storage.set(STORAGE_KEY, value)
-    apiKeyObservable.notify(value)
+    return Storage.set(STORAGE_KEY, value).then(() => {
+        apiKeyObservable.notify(value)
+    })
 }
 
 function remove() {
-    Storage.remove(STORAGE_KEY)
-    apiKeyObservable.notify(undefined)
+    return Storage.remove(STORAGE_KEY).then(() => {
+        apiKeyObservable.notify(undefined)
+    })
 }
 
 export const TodoistAPIKey = {

@@ -9,6 +9,7 @@ import type {
 class ProjectModel extends Model<ProjectsData> {
     constructor() {
         super('projects')
+        TodoistAPI.attachUnauthorized(() => this.delete())
     }
 
     protected hydrateFromAPI() {

@@ -1,9 +1,10 @@
 import { TodoistAPIKey } from '../api/todoist'
+import Projects from '../models/projects'
 
 export function setAPIKey(value: string) {
-    return TodoistAPIKey.set(value)
+    return Projects.delete().then(() => TodoistAPIKey.set(value))
 }
 
 export function deleteAPIKey() {
-    return TodoistAPIKey.remove()
+    return Projects.delete().then(() => TodoistAPIKey.remove())
 }

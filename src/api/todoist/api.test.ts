@@ -106,6 +106,25 @@ describe('API', () => {
         })
     })
 
+    it('clears invalid credentials after an unauthorized response', async () => {
+        const clearProjects = vi.fn().mockResolvedValue(undefined)
+        const detach = TodoistAPI.attachUnauthorized(clearProjects)
+        const remove = vi.spyOn(TodoistAPIKey, 'remove').mockResolvedValue()
+        mockFetch.mockResolvedValueOnce(
+            new Response('Unauthorized', { status: 401 }),
+        )
+
+        await expect(TodoistAPI.request('path')).rejects.toMatchObject({
+            status: 401,
+        })
+
+        expect(clearProjects).toHaveBeenCalledOnce()
+        expect(remove).toHaveBeenCalledOnce()
+
+        detach()
+        remove.mockRestore()
+    })
+
     it('throws if response has no valid json', async () => {
         expect.assertions(1)
 

@@ -10,7 +10,7 @@ vi.mock('../api/extension', () => ({
 }))
 
 vi.mock('../api/todoist', () => ({
-    TodoistAPI: { request: vi.fn() },
+    TodoistAPI: { request: vi.fn(), attachUnauthorized: vi.fn() },
 }))
 
 import { Storage } from '../api/extension'
@@ -21,7 +21,10 @@ const project = (id: string) => ({ id, name: `Project ${id}` })
 
 describe('project hydration', () => {
     beforeEach(() => {
-        vi.clearAllMocks()
+        vi.mocked(Storage.get).mockClear()
+        vi.mocked(Storage.set).mockClear()
+        vi.mocked(Storage.remove).mockClear()
+        vi.mocked(TodoistAPI.request).mockClear()
         vi.mocked(Storage.get).mockResolvedValue(undefined)
         vi.mocked(Storage.set).mockResolvedValue()
     })
@@ -81,5 +84,14 @@ describe('project hydration', () => {
             error,
             lastUpdated: undefined,
         })
+    })
+
+    it('clears cached projects after an unauthorized response', async () => {
+        const onUnauthorized = vi.mocked(TodoistAPI.attachUnauthorized).mock
+            .calls[0][0]
+
+        await onUnauthorized()
+
+        expect(Storage.remove).toHaveBeenCalledWith('projects')
     })
 })

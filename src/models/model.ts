@@ -85,7 +85,7 @@ class Model<T> extends Subject<ModelState<T>> {
     }
 
     delete() {
-        Storage.remove(this.name)
+        return Storage.remove(this.name)
     }
 }
 

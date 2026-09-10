@@ -9,6 +9,8 @@ type RequestOptions = {
     params?: Record<string, string>
 }
 
+const unauthorizedObservers = new Set<() => Promise<void>>()
+
 function request<T>(
     path: string,
     { method = 'GET', body, params }: RequestOptions = {},
@@ -36,9 +38,29 @@ function request<T>(
                 return response.json().then((data) => data)
             })
             .catch((error) => {
-                throw new TodoistAPIError(error)
+                const apiError = new TodoistAPIError(error)
+
+                if (apiError.status === 401) {
+                    return clearUnauthorizedData().then(() => {
+                        return TodoistAPIKey.remove().then(() => {
+                            throw apiError
+                        })
+                    })
+                }
+
+                throw apiError
             })
     })
+}
+
+function attachUnauthorized(observer: () => Promise<void>) {
+    unauthorizedObservers.add(observer)
+
+    return () => unauthorizedObservers.delete(observer)
+}
+
+function clearUnauthorizedData() {
+    return Promise.all([...unauthorizedObservers].map((observer) => observer()))
 }
 
 /**
@@ -99,5 +121,5 @@ class TodoistAPIError extends Error {
     }
 }
 
-export const TodoistAPI = { request }
+export const TodoistAPI = { request, attachUnauthorized }
 export { TodoistAPIError }
