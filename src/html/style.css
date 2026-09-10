@@ -8,6 +8,7 @@
     --accent-color-hover: #b32f20;
     --on-accent-color: #ffffff;
     --link-color: var(--accent-color);
+    --focus-ring-color: #c9392833;
 }
 
 @media (prefers-color-scheme: light) {
@@ -21,6 +22,7 @@
         --bg-color-3: rgb(220, 223, 228);
         --bg-color-4: rgb(179, 185, 196);
         --bg-color-error: rgb(255, 236, 248);
+        --input-border-color: #cdc8c2;
     }
 }
 
@@ -36,6 +38,8 @@
         --bg-color-4: rgb(40, 46, 51);
         --bg-color-error: rgb(80, 37, 63);
         --link-color: #ff9686;
+        --focus-ring-color: #ff968644;
+        --input-border-color: #625b53;
     }
 }
 

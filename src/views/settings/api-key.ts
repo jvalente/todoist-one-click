@@ -29,6 +29,7 @@ export class ApiKeyElement extends LitElement {
                 Todoist account.</tc-text
             >
             <tc-text-input
+                type="password"
                 placeholder="Paste the API token here..."
                 @change=${(event: InputChangeEvent) => {
                     this.apiKey = event.value
