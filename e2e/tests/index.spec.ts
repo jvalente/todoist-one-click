@@ -102,7 +102,7 @@ test.describe('extension settings', () => {
         /*
          * Remove a label
          */
-        await page.locator('tc-label-pill').locator('tc-link').click()
+        await page.getByRole('button', { name: 'Remove labelIpsum' }).click()
 
         /**
          * Add a due date
@@ -315,8 +315,7 @@ test.describe('extension settings', () => {
         await page.getByRole('link', { name: 'Edit' }).click()
 
         await locateSection(page, 'Advanced rules')
-            .locator('tc-label-pill')
-            .locator('tc-link')
+            .getByRole('button', { name: 'Remove advanced-rule-label' })
             .click()
 
         await locateSection(page, 'Advanced rules')

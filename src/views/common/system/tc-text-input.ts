@@ -8,8 +8,20 @@ export class TextInputElement extends LitElement {
     static styles = [
         fieldStyles,
         css`
+            .control {
+                display: flex;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            ::slotted([slot='trailing']) {
+                flex-shrink: 0;
+            }
+
             input {
                 box-sizing: border-box;
+                flex: 1;
+                min-width: 0;
                 width: 100%;
                 padding: 12px;
                 border: 1px solid var(--input-border-color);
@@ -72,6 +84,10 @@ export class TextInputElement extends LitElement {
     @property({ type: Boolean })
     autofocus = false
 
+    focus(options?: FocusOptions) {
+        this.renderRoot.querySelector('input')?.focus(options)
+    }
+
     // TODO: handle paste event
 
     private handleKeyup(event: KeyboardEvent) {
@@ -107,18 +123,21 @@ export class TextInputElement extends LitElement {
 
     render() {
         return html`${this.renderHeading()}
-            <input
-                id="input"
-                type=${this.type}
-                placeholder=${this.placeholder}
-                .value=${this.value}
-                ?disabled=${this.disabled}
-                aria-describedby="help"
-                @input=${this.handleInput}
-                @keydown=${this.handleKeydown}
-                @keyup=${this.handleKeyup}
-                ?autofocus=${this.autofocus}
-            />
+            <div class="control">
+                <input
+                    id="input"
+                    type=${this.type}
+                    placeholder=${this.placeholder}
+                    .value=${this.value}
+                    ?disabled=${this.disabled}
+                    aria-describedby="help"
+                    @input=${this.handleInput}
+                    @keydown=${this.handleKeydown}
+                    @keyup=${this.handleKeyup}
+                    ?autofocus=${this.autofocus}
+                />
+                <slot name="trailing"></slot>
+            </div>
             <div class="help" id="help"><slot name="help"></slot></div>`
     }
 }
