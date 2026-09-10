@@ -37,14 +37,14 @@ class Model<T> extends Subject<ModelState<T>> {
         return Storage.get<ModelState<T>>(this.name)
     }
 
-    private hydrateFromAPI() {
+    protected hydrateFromAPI() {
         if (!this.fetchResource) return Promise.resolve(undefined)
 
         return TodoistAPI.request<T>(this.fetchResource.url)
     }
 
     hydrate() {
-        this.hydrateFromStorage()
+        return this.hydrateFromStorage()
             .then((storageData) => {
                 if (storageData) {
                     return { value: storageData, persist: false }
@@ -59,7 +59,7 @@ class Model<T> extends Subject<ModelState<T>> {
             })
             .then(({ value, persist }) => {
                 if (persist) {
-                    this.set(value.data)
+                    return this.set(value.data)
                 } else {
                     this.notify(value || { data: undefined })
                 }
@@ -78,7 +78,7 @@ class Model<T> extends Subject<ModelState<T>> {
     set(data: T | undefined) {
         const lastUpdated = Date.now()
 
-        Storage.set(this.name, {
+        return Storage.set(this.name, {
             data,
             lastUpdated,
         })
