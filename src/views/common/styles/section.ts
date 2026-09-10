@@ -17,12 +17,23 @@ export const settingsSection = css`
         box-shadow: var(--section-shadow);
     }
 
-    h2 {
+    header {
         margin: 0 0 28px;
+    }
+
+    h2 {
+        margin: 0;
         font-size: 25px;
         font-weight: 650;
         line-height: 1.25;
         letter-spacing: -0.7px;
+    }
+
+    header p {
+        margin: 10px 0 0;
+        color: var(--secondary-color);
+        font-size: 0.8125rem;
+        line-height: 1.65;
     }
 
     ::slotted(*) {

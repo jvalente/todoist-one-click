@@ -55,6 +55,24 @@ export class ButtonElement extends LitElement {
             border-color: transparent;
             cursor: default;
         }
+
+        :host([text]) button {
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: var(--link-color);
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+
+        :host([text]) button:hover:enabled {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        :host([text]) button:disabled {
+            color: var(--secondary-color);
+        }
     `
 
     @property({ type: Boolean, reflect: true })
@@ -62,6 +80,9 @@ export class ButtonElement extends LitElement {
 
     @property({ type: Boolean, reflect: true })
     secondary = false
+
+    @property({ type: Boolean, reflect: true })
+    text = false
 
     @property({ type: Boolean, reflect: true })
     disabled = false

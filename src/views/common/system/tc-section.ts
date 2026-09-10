@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { settingsSection } from '../styles/section'
 
@@ -9,9 +9,15 @@ export class SectionElement extends LitElement {
     @property()
     title!: string
 
+    @property()
+    description = ''
+
     render() {
         return html`<section>
-            <h2>${this.title}</h2>
+            <header>
+                <h2>${this.title}</h2>
+                ${this.description ? html`<p>${this.description}</p>` : nothing}
+            </header>
             <slot></slot>
         </section>`
     }

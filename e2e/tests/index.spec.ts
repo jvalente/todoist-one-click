@@ -74,13 +74,22 @@ test.describe('extension settings', () => {
             page.getByText('Target project', { exact: true }),
         ).toBeVisible()
 
-        await locateSection(page, 'Target project')
-            .getByRole('combobox', { name: 'Default project' })
-            .selectOption('Lorem')
+        const projectSelect = locateSection(page, 'Target project').getByRole(
+            'combobox',
+            { name: 'Default project' },
+        )
+        await projectSelect.selectOption('Lorem')
 
-        await page.getByRole('link', { name: 'Refresh' }).click()
+        await page.getByRole('button', { name: 'Refresh projects' }).click()
 
-        await expect(page.locator('.loader')).toBeVisible()
+        await expect(
+            page.getByRole('button', { name: 'Refreshing…' }),
+        ).toBeDisabled()
+        await expect(projectSelect).toBeVisible()
+        await expect(projectSelect).toHaveValue('100')
+        await expect(
+            page.getByRole('button', { name: 'Refresh projects' }),
+        ).toBeEnabled()
 
         /*
          * Add a label

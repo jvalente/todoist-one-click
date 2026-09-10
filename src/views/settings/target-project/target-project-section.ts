@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { updateDefaultRule } from '../../../controllers/rules'
 import Projects from '../../../models/projects'
@@ -13,6 +13,12 @@ import { GuessProjectOption } from '../../../models/guess-project-option'
 
 @customElement('tc-project-section')
 export class ProjectSectionElement extends LitElement {
+    static styles = css`
+        tc-project-select {
+            margin-bottom: 24px;
+        }
+    `
+
     @property({ type: Object })
     rule?: Rule
 
@@ -24,6 +30,9 @@ export class ProjectSectionElement extends LitElement {
 
     @state()
     private error?: ProjectsState['error']
+
+    @state()
+    private refreshing = false
 
     @state()
     private guessProjectEnabled = false
@@ -48,9 +57,12 @@ export class ProjectSectionElement extends LitElement {
         lastUpdated,
         error,
     }: ProjectsState) => {
+        if (this.refreshing && !data && !error) return
+
         this.projects = data || { results: [] }
         this.lastUpdated = lastUpdated
         this.error = error
+        this.refreshing = false
     }
 
     private onGuessProjectOptionChange = (event: CustomEvent) => {
@@ -64,27 +76,20 @@ export class ProjectSectionElement extends LitElement {
     }
 
     private refreshProjects() {
+        if (this.refreshing) return
+        this.refreshing = true
         Projects.delete()
 
         // TODO: improve this (model API)
         setTimeout(() => Projects.hydrate(), 200)
     }
 
-    private formatedDate() {
-        return this.lastUpdated
-            ? new Date(this.lastUpdated).toLocaleString()
-            : 'never'
-    }
-
-    private renderIntroText() {
-        return this.guessProjectEnabled === true
-            ? html`<tc-text small secondary
-                  >AI will attempt to guess the project based on the webpage
-                  title and URL.</tc-text
-              >`
-            : html`<tc-text small secondary
-                  >Tasks will be added to the selected project below.</tc-text
-              >`
+    private get fallbackProjectName() {
+        return this.projects?.results.find((project) =>
+            this.rule?.projectId
+                ? project.id === this.rule.projectId
+                : project.is_inbox_project,
+        )?.name
     }
 
     private renderSectionContent() {
@@ -100,29 +105,28 @@ export class ProjectSectionElement extends LitElement {
         }
 
         return html`
-            <div>
-                ${this.renderIntroText()}
-                <tc-text small secondary
-                    >The project list was last updated on
-                    ${this.formatedDate()}.
-                    <tc-link @click=${this.refreshProjects}>Refresh</tc-link>
-                </tc-text>
-            </div>
             <tc-project-select
                 label="Default project"
                 .rule=${this.rule}
                 .projects=${this.projects}
+                .lastUpdated=${this.lastUpdated}
+                .refreshing=${this.refreshing}
                 @change=${this.handleProjectSelectChange}
+                @refresh=${this.refreshProjects}
             ></tc-project-select>
             <tc-project-guess
                 .checked="${this.guessProjectEnabled}"
+                .fallbackProject=${this.fallbackProjectName}
                 @change=${this.onGuessProjectOptionChange}
             ></tc-project-guess>
         `
     }
 
     render() {
-        return html`<tc-section title="Target project">
+        return html`<tc-section
+            title="Target project"
+            description="Choose where new tasks go by default."
+        >
             ${this.renderSectionContent()}
         </tc-section>`
     }
