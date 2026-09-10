@@ -1,79 +1,49 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { fieldStyles } from '../styles/field'
 import { InputChangeEvent, InputEnterPressEvent } from './events'
 
 @customElement('tc-text-input')
 export class TextInputElement extends LitElement {
-    static styles = css`
-        :host {
-            display: block;
-        }
+    static styles = [
+        fieldStyles,
+        css`
+            input {
+                box-sizing: border-box;
+                width: 100%;
+                padding: 12px;
+                border: 1px solid var(--input-border-color);
+                border-radius: 7px;
+                outline: none;
+                font: inherit;
+                font-size: 0.875rem;
+                line-height: 1.5;
+                color: var(--primary-color);
+                background-color: var(--bg-color-0);
+            }
 
-        .heading {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 6px 16px;
-            margin-bottom: 9px;
-        }
+            input::placeholder {
+                color: var(--secondary-color);
+                opacity: 1;
+            }
 
-        label {
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
+            input:focus {
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 3px var(--focus-ring-color);
+            }
 
-        input {
-            box-sizing: border-box;
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--input-border-color);
-            border-radius: 7px;
-            outline: none;
-            font: inherit;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            color: var(--primary-color);
-            background-color: var(--bg-color-0);
-        }
+            input:disabled {
+                color: var(--secondary-color);
+                background-color: var(--bg-color-2);
+                cursor: default;
+            }
 
-        input::placeholder {
-            color: var(--secondary-color);
-            opacity: 1;
-        }
-
-        input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px var(--focus-ring-color);
-        }
-
-        input:disabled {
-            color: var(--secondary-color);
-            background-color: var(--bg-color-2);
-            cursor: default;
-        }
-
-        :host([small]) input {
-            padding: 6px 8px;
-            font-size: 0.875rem;
-        }
-
-        :host([small]) .heading {
-            margin-bottom: 6px;
-            font-size: 0.875rem;
-        }
-
-        .help {
-            color: var(--secondary-color);
-        }
-
-        ::slotted([slot='help']) {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            line-height: 1.65;
-        }
-    `
+            :host([small]) input {
+                padding: 6px 8px;
+                font-size: 0.875rem;
+            }
+        `,
+    ]
 
     @property({ type: Boolean, reflect: true })
     small = false

@@ -11,6 +11,9 @@ export class ProjectSelectElement extends LitElement {
     @property({ type: Boolean })
     small = false
 
+    @property({ type: String })
+    label = ''
+
     @property({ type: Object })
     rule?: Partial<Rule>
 
@@ -28,18 +31,25 @@ export class ProjectSelectElement extends LitElement {
     get selectedProjectId() {
         return (
             this.rule?.projectId ||
-            this.projects?.results?.find((project) => project.is_inbox_project)?.id ||
+            this.projects?.results?.find((project) => project.is_inbox_project)
+                ?.id ||
             ''
         )
     }
 
     get projectSelectOptions() {
-        return this.projects?.results?.map((project) => [project.id, project.name]) || []
+        return (
+            this.projects?.results?.map((project) => [
+                project.id,
+                project.name,
+            ]) || []
+        )
     }
 
     render() {
         return html`<tc-select
             ?small=${this.small}
+            .label=${this.label}
             .selectedValue=${this.selectedProjectId}
             .options=${this.projectSelectOptions}
             @change=${this.handleSelectionChange}

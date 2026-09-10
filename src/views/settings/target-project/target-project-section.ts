@@ -109,6 +109,7 @@ export class ProjectSectionElement extends LitElement {
                 </tc-text>
             </div>
             <tc-project-select
+                label="Default project"
                 .rule=${this.rule}
                 .projects=${this.projects}
                 @change=${this.handleProjectSelectChange}

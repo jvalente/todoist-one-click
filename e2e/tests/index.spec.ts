@@ -75,7 +75,7 @@ test.describe('extension settings', () => {
         ).toBeVisible()
 
         await locateSection(page, 'Target project')
-            .getByRole('combobox')
+            .getByRole('combobox', { name: 'Default project' })
             .selectOption('Lorem')
 
         await page.getByRole('link', { name: 'Refresh' }).click()
