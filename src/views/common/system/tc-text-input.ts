@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { InputChangeEvent, InputEnterPressEvent } from './events'
 
@@ -7,6 +7,19 @@ export class TextInputElement extends LitElement {
     static styles = css`
         :host {
             display: block;
+        }
+
+        .heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            margin-bottom: 9px;
+        }
+
+        label {
+            font-weight: 600;
         }
 
         input {
@@ -43,6 +56,22 @@ export class TextInputElement extends LitElement {
             padding: 6px 8px;
             font-size: 0.875rem;
         }
+
+        :host([small]) .heading {
+            margin-bottom: 6px;
+            font-size: 0.875rem;
+        }
+
+        .help {
+            color: var(--secondary-color);
+        }
+
+        ::slotted([slot='help']) {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            line-height: 1.65;
+        }
     `
 
     @property({ type: Boolean, reflect: true })
@@ -50,6 +79,9 @@ export class TextInputElement extends LitElement {
 
     @property({ type: String })
     placeholder = ''
+
+    @property({ type: String })
+    label = ''
 
     @property({ type: String })
     type: 'text' | 'password' = 'text'
@@ -93,16 +125,29 @@ export class TextInputElement extends LitElement {
         this.dispatchEvent(new InputChangeEvent(value))
     }
 
+    private renderHeading() {
+        if (!this.label) return nothing
+
+        return html`<div class="heading">
+            <label for="input">${this.label}</label>
+            <slot name="action"></slot>
+        </div>`
+    }
+
     render() {
-        return html`<input
-            type=${this.type}
-            placeholder=${this.placeholder}
-            .value=${this.value}
-            ?disabled=${this.disabled}
-            @input=${this.handleInput}
-            @keydown=${this.handleKeydown}
-            @keyup=${this.handleKeyup}
-            ?autofocus=${this.autofocus}
-        />`
+        return html`${this.renderHeading()}
+            <input
+                id="input"
+                type=${this.type}
+                placeholder=${this.placeholder}
+                .value=${this.value}
+                ?disabled=${this.disabled}
+                aria-describedby="help"
+                @input=${this.handleInput}
+                @keydown=${this.handleKeydown}
+                @keyup=${this.handleKeyup}
+                ?autofocus=${this.autofocus}
+            />
+            <div class="help" id="help"><slot name="help"></slot></div>`
     }
 }

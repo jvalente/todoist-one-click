@@ -16,28 +16,28 @@ export class ApiKeyElement extends LitElement {
 
     render() {
         return html`<tc-section title="Enter your API token">
-            <tc-text>
-                Get started with Todoist One-Click by grabbing your API token
-                from Todoist
-                <tc-link
-                    href="https://app.todoist.com/app/settings/integrations/developer"
-                    >'Settings > Integrations > Developer'</tc-link
-                >.
-            </tc-text>
-            <tc-text
-                >Without it, the extension won't be able to add tasks to your
-                Todoist account.</tc-text
-            >
             <tc-text-input
+                label="API token"
                 type="password"
-                placeholder="Paste the API token here..."
+                placeholder="Paste your API token"
                 @change=${(event: InputChangeEvent) => {
                     this.apiKey = event.value
                 }}
                 @enterPress=${this.handleOnClick}
                 ?autofocus=${true}
                 ?disableSpace=${true}
-            ></tc-text-input>
+            >
+                <tc-link
+                    small
+                    slot="action"
+                    href="https://app.todoist.com/app/settings/integrations/developer"
+                    >Find your token</tc-link
+                >
+                <span slot="help">
+                    In Todoist, go to Settings → Integrations → Developer and
+                    copy your API token.
+                </span>
+            </tc-text-input>
             <tc-button @click=${this.handleOnClick}>Save</tc-button>
         </tc-section>`
     }
