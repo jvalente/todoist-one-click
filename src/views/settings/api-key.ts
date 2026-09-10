@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { setAPIKey } from '../../controllers/api-key'
-import type { InputChangeEvent } from '../common/system'
+import type { InputChangeEvent, TextInputElement } from '../common/system'
 
 import '../common/system'
 
@@ -46,6 +46,12 @@ export class ApiKeyElement extends LitElement {
         if (apiKey) setAPIKey(apiKey)
     }
 
+    private handleInputEnterPress(event: Event) {
+        this.handleOnClick()
+        const input = event.currentTarget as TextInputElement
+        input.value = ''
+    }
+
     render() {
         return html`<tc-section title="Connect Todoist">
             <tc-text-input
@@ -53,7 +59,7 @@ export class ApiKeyElement extends LitElement {
                 type="password"
                 placeholder="Paste your API token"
                 @change=${this.handleInputChange}
-                @enterPress=${this.handleOnClick}
+                @enterPress=${this.handleInputEnterPress}
                 ?autofocus=${true}
                 ?disableSpace=${true}
             >

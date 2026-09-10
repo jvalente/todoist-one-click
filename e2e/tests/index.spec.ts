@@ -107,30 +107,36 @@ test.describe('extension settings', () => {
         /**
          * Add a due date
          */
-        await expect(
-            page.getByText('Your tasks will have a today due date.'),
-        ).toBeVisible()
+        const dueDateSection = locateSection(page, 'Due date')
+        const dueDateInput = dueDateSection.getByRole('textbox', {
+            name: 'Due date',
+        })
+        const dueDateSwitch = dueDateSection.getByRole('switch', {
+            name: 'Add a due date',
+        })
+        await expect(dueDateSection.getByText('Currently: today')).toBeVisible()
 
-        await locateSection(page, 'Due date').locator('input').fill('tomorrow')
+        await dueDateInput.fill('tomorrow')
         await page.keyboard.press('Enter')
 
         await expect(
-            page.getByText('Your tasks will have a tomorrow due date.'),
+            dueDateSection.getByText('Currently: tomorrow'),
         ).toBeVisible()
 
         /*
          * Remove a due date
          */
-        await page.getByRole('link', { name: 'Clear due date' }).click()
+        await dueDateSwitch.uncheck()
 
         await expect(
-            page.getByText('The tasks you add will have no due date.'),
+            dueDateSection.getByText('No due date', { exact: true }),
         ).toBeVisible()
 
         /**
          * Setup due date and label again
          */
-        await locateSection(page, 'Due date').locator('input').fill('monday')
+        await dueDateSwitch.check()
+        await dueDateInput.fill('monday')
         await page.keyboard.press('Enter')
         await locateSection(page, 'Target labels')
             .locator('input')
@@ -264,7 +270,9 @@ test.describe('extension settings', () => {
 
         await page.keyboard.press('Enter')
 
-        await page.getByRole('button', { name: 'Save' }).click()
+        await locateSection(page, 'Advanced rules')
+            .getByRole('button', { name: 'Save', exact: true })
+            .click()
 
         await expect(
             page.getByText('url matches exactly: https://doist.com'),

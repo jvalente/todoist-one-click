@@ -93,8 +93,6 @@ export class TextInputElement extends LitElement {
     private handleKeyup(event: KeyboardEvent) {
         if (event.key === 'Enter' && !this.disableEnter) {
             this.dispatchEvent(new InputEnterPressEvent(this.value))
-            // TODO this should not be here. It should be handled by the parent component
-            this.value = ''
         }
     }
 

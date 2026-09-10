@@ -8,6 +8,7 @@ import type {
     InputChangeEvent,
     InputEnterPressEvent,
     SelectChangeEvent,
+    TextInputElement,
 } from '../../common/system'
 
 import '../../common/system'
@@ -75,6 +76,8 @@ export class AdvancedRuleFormElement extends LitElement {
         this.updateRule({
             dueDate: event.detail.value,
         })
+        const input = event.currentTarget as TextInputElement
+        input.value = ''
     }
 
     private saveRule() {
