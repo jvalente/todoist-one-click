@@ -25,7 +25,7 @@ export const errorCard = css`
     }
 
     :host > div > small:nth-child(2) > a {
-        color: var(--accent-color-0);
+        color: var(--link-color);
     }
 
     :host > div > small:nth-child(3) {

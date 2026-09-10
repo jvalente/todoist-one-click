@@ -18,7 +18,7 @@ export class TargetLabelPillElement extends LitElement {
             }
 
             svg > * {
-                fill: var(--accent-color-0);
+                fill: var(--link-color);
             }
         `,
     ]

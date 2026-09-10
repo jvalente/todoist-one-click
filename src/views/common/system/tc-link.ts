@@ -10,7 +10,7 @@ export class LinkElement extends LitElement {
         grid,
         css`
             a {
-                color: var(--accent-color-0);
+                color: var(--link-color);
             }
 
             :host([small]) a {
