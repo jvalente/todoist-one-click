@@ -39,6 +39,21 @@ export class InputEnterPressEvent extends CustomEvent<{ value: string }> {
 }
 
 /**
+ * DUE DATE
+ */
+export class DueDateChangeEvent extends CustomEvent<{ dueDate: string }> {
+    constructor(dueDate: string) {
+        super('change', {
+            detail: { dueDate },
+        })
+    }
+
+    get dueDate() {
+        return this.detail.dueDate
+    }
+}
+
+/**
  * SWITCH
  */
 export class SwitchChangeEvent extends CustomEvent<{ checked: boolean }> {

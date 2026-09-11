@@ -50,7 +50,7 @@ class RulesModel extends Model<Array<Rule>> {
         return (
             rule.matchMode === RuleMatchMode.Contains &&
             rule.query &&
-            url.includes(rule.query)
+            url.toLocaleLowerCase().includes(rule.query.toLocaleLowerCase())
         )
     }
 
@@ -98,6 +98,29 @@ class RulesModel extends Model<Array<Rule>> {
     deleteRule(ruleId: Rule['id']) {
         this.get().then((rules) => {
             this.set((rules || []).filter((rule) => rule.id !== ruleId))
+        })
+    }
+
+    moveRule(ruleId: Rule['id'], direction: -1 | 1) {
+        this.get().then((rules) => {
+            const index = rules?.findIndex((rule) => rule.id === ruleId) ?? -1
+            const targetIndex = index + direction
+
+            if (
+                index < 0 ||
+                !rules ||
+                targetIndex < 0 ||
+                targetIndex >= rules.length ||
+                rules[targetIndex].default
+            )
+                return
+
+            const updatedRules = [...rules]
+            ;[updatedRules[index], updatedRules[targetIndex]] = [
+                updatedRules[targetIndex],
+                updatedRules[index],
+            ]
+            this.set(updatedRules)
         })
     }
 }

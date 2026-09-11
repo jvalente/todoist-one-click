@@ -71,6 +71,9 @@ export class TargetLabelsListElement extends LitElement {
     @property({ type: Boolean, reflect: true })
     small = false
 
+    @property({ type: Boolean })
+    showAddHelp = true
+
     @property({ type: Array })
     labels?: Array<string> = []
 
@@ -102,7 +105,11 @@ export class TargetLabelsListElement extends LitElement {
                     @click=${this.handleAddLabel}
                     >Add</tc-button
                 >
-                <span slot="help">Press Enter to add.</span>
+                ${
+                    this.showAddHelp
+                        ? html`<span slot="help">Press Enter to add.</span>`
+                        : nothing
+                }
             </tc-text-input>
             <p class="status" role="status">${this.status}</p>`
     }

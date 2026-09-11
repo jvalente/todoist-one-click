@@ -1,6 +1,11 @@
-import { html, LitElement } from 'lit'
+import { html, LitElement, nothing } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import { addRule, deleteRule, updateRule } from '../../../controllers/rules'
+import {
+    addRule,
+    deleteRule,
+    moveRule,
+    updateRule,
+} from '../../../controllers/rules'
 import Projects from '../../../models/projects'
 import Rules from '../../../models/rules'
 import type { ProjectsState } from '../../../types/projects.types'
@@ -76,6 +81,12 @@ export class AdvancedRulesSectionElement extends LitElement {
         this.editingRuleId = undefined
     }
 
+    private handleMoveRule(
+        event: CustomEvent<{ ruleId: string; direction: -1 | 1 }>,
+    ) {
+        moveRule(event.detail.ruleId, event.detail.direction)
+    }
+
     private renderRuleForm() {
         const rule =
             this.rules?.find((rule) => rule.id === this.editingRuleId) ||
@@ -91,28 +102,45 @@ export class AdvancedRulesSectionElement extends LitElement {
     }
 
     private renderRulesList() {
-        return html`${
-            this.rules?.length
-                ? html`<tc-advanced-rules-list
-                      .rules=${this.rules}
-                      .projects=${this.projects}
-                      @editRule=${this.handleEditRule}
-                  ></tc-advanced-rules-list>`
-                : html`<div>
-                      <tc-text small secondary
-                          >Advanced rules allow adding tabs matching the given
-                          URL to the project, labels, and due dates other than
-                          the default ones. If 'Guess the Project' is enabled,
-                          the advanced rules will still take
-                          precedence."</tc-text
-                      >
-                  </div>`
+        if (!this.rules?.length) {
+            return html`<div class="empty-state">
+                <strong>No rules yet</strong>
+                <tc-text small secondary
+                    >Your default settings apply to every page.</tc-text
+                >
+            </div>`
         }
-            <div><tc-link @click=${this.handleAddRule}>Add rule</tc-link></div>`
+
+        return html`<tc-text small secondary
+                >The first matching rule wins. Order matters.</tc-text
+            >
+            <tc-advanced-rules-list
+                .rules=${this.rules}
+                .projects=${this.projects}
+                @editRule=${this.handleEditRule}
+                @moveRule=${this.handleMoveRule}
+            ></tc-advanced-rules-list>
+            <tc-text small secondary
+                >Matching rules use their own project, labels and due date. AI
+                project guessing is skipped.</tc-text
+            >`
     }
 
     render() {
-        return html`<tc-section title="Advanced rules">
+        return html`<tc-section
+            title="Advanced rules"
+            description="Set different task details for matching URLs."
+        >
+            ${
+                this.editingRuleId || this.addingRule
+                    ? nothing
+                    : html`<tc-button
+                          slot="action"
+                          small
+                          @click=${this.handleAddRule}
+                          >Add rule</tc-button
+                      >`
+            }
             ${
                 this.editingRuleId || this.addingRule
                     ? this.renderRuleForm()

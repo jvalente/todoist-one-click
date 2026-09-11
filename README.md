@@ -55,7 +55,7 @@ The settings page opens on first installation. You can reopen it from the extens
 
 No keyboard shortcut is assigned by default. Assign the **Add tab as task** command through your browser's extension shortcut settings.
 
-URL rules are checked in stored order, and the first match supplies the task settings. **Contains** is case-sensitive; **matches exactly** is case-insensitive. If nothing matches, the default rule applies. A matching rule supplies its own settings rather than inheriting missing fields from the default rule.
+URL rules are checked in stored order, and the first match supplies the task settings. Matching is case-insensitive. If nothing matches, the default rule applies. A matching rule supplies its own settings rather than inheriting missing fields from the default rule.
 
 When a task submission fails, the settings page opens with the failed task. Use **Retry** to submit it again using the current rules, or **Discard** to remove it from the failed-task list.
 

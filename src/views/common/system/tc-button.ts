@@ -101,7 +101,7 @@ export class ButtonElement extends LitElement {
             outline-offset: 1px;
         }
 
-        :host([icon]) ::slotted(svg) {
+        :host([icon]) ::slotted(*) {
             pointer-events: none;
         }
     `

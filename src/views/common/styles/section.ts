@@ -29,6 +29,17 @@ export const settingsSection = css`
         letter-spacing: -0.7px;
     }
 
+    .heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    ::slotted([slot='action']) {
+        flex-shrink: 0;
+    }
+
     header p {
         margin: 10px 0 0;
         color: var(--secondary-color);
@@ -36,11 +47,11 @@ export const settingsSection = css`
         line-height: 1.65;
     }
 
-    ::slotted(*) {
+    ::slotted(:not([slot])) {
         margin: 0 0 20px;
     }
 
-    ::slotted(:last-child) {
+    ::slotted(:not([slot]):last-child) {
         margin-bottom: 0;
     }
 `

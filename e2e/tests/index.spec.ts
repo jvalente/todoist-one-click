@@ -146,7 +146,7 @@ test.describe('extension settings', () => {
         /**
          * Add a test task (failure)
          */
-        await page.getByRole('link', { name: 'Add test task' }).click()
+        await page.getByRole('button', { name: 'Add test task' }).click()
         await expect(locateSection(page, 'Connect Todoist')).toBeVisible()
 
         await locateSection(page, 'Connect Todoist')
@@ -183,14 +183,14 @@ test.describe('extension settings', () => {
             )
         })
 
-        page.getByRole('link', { name: 'Add test task' }).click()
+        page.getByRole('button', { name: 'Add test task' }).click()
 
         await addTaskAPIRequest
 
         /**
          * Clear all data
          */
-        await page.getByRole('link', { name: 'Clear all local data' }).click()
+        await page.getByRole('button', { name: 'Clear local data' }).click()
         await expect(locateSection(page, 'Connect Todoist')).toBeVisible()
     })
 
@@ -222,13 +222,13 @@ test.describe('extension settings', () => {
             .fill('correctApiToken')
         await page.getByRole('button', { name: 'Save token' }).click()
 
-        await page.getByRole('link', { name: 'Add rule' }).click()
+        await page.getByRole('button', { name: 'Add rule' }).click()
 
         /**
          * Do not show confirm dialog if there are no changes to the form
          */
         await page.getByRole('link', { name: 'Cancel' }).click()
-        await page.getByRole('link', { name: 'Add rule' }).click()
+        await page.getByRole('button', { name: 'Add rule' }).click()
 
         /**
          * Shows confirm dialog if there are changes to the form
@@ -249,7 +249,7 @@ test.describe('extension settings', () => {
          * Add a rule
          */
         await page
-            .getByRole('textbox', { name: 'url' })
+            .getByRole('textbox', { name: 'URL or text' })
             .fill('https://doist.com')
 
         await locateSection(page, 'Advanced rules')
@@ -265,17 +265,17 @@ test.describe('extension settings', () => {
         await page.keyboard.press('Enter')
 
         await locateSection(page, 'Advanced rules')
-            .getByRole('textbox', { name: 'due date...' })
+            .getByRole('textbox', { name: 'Due date' })
             .fill('tomorrow')
 
         await page.keyboard.press('Enter')
 
         await locateSection(page, 'Advanced rules')
-            .getByRole('button', { name: 'Save', exact: true })
+            .getByRole('button', { name: 'Save rule' })
             .click()
 
         await expect(
-            page.getByText('url matches exactly: https://doist.com'),
+            page.getByRole('heading', { name: 'https://doist.com' }),
         ).toBeVisible()
 
         await page.route('**/api/v1/tasks', async (route) => {
@@ -298,17 +298,19 @@ test.describe('extension settings', () => {
             )
         })
 
-        page.getByRole('link', { name: 'Add test task' }).click()
+        page.getByRole('button', { name: 'Add test task' }).click()
 
         await addTaskAPIRequest
 
         /**
          * Do not show confirm dialog if there are no changes to the form
          */
-        await page.getByRole('link', { name: 'Edit' }).click()
+        await page.getByRole('button', { name: 'Edit' }).click()
 
         await expect(
-            locateSection(page, 'Advanced rules').getByText('If the url'),
+            locateSection(page, 'Advanced rules').getByText('When', {
+                exact: true,
+            }),
         ).toBeVisible()
 
         await page.getByRole('link', { name: 'Cancel' }).click()
@@ -320,7 +322,7 @@ test.describe('extension settings', () => {
         /**
          * Shows confirm dialog if there are changes to the form
          */
-        await page.getByRole('link', { name: 'Edit' }).click()
+        await page.getByRole('button', { name: 'Edit' }).click()
 
         await locateSection(page, 'Advanced rules')
             .getByRole('button', { name: 'Remove advanced-rule-label' })
@@ -340,7 +342,7 @@ test.describe('extension settings', () => {
             .click()
 
         await locateSection(page, 'Advanced rules')
-            .getByRole('link', { name: 'Delete' })
+            .getByRole('link', { name: 'Delete rule' })
             .click()
 
         await page
@@ -349,6 +351,27 @@ test.describe('extension settings', () => {
             .click()
 
         await expect(page.getByText('exact: doist.com')).not.toBeVisible()
+
+        for (const url of ['https://first.example', 'https://second.example']) {
+            await page.getByRole('button', { name: 'Add rule' }).click()
+            await page.getByRole('textbox', { name: 'URL or text' }).fill(url)
+            await page.getByRole('button', { name: 'Save rule' }).click()
+        }
+
+        const rulesList = locateSection(page, 'Advanced rules').getByRole(
+            'list',
+            { name: 'Rules in priority order' },
+        )
+        await expect(rulesList.getByRole('heading')).toHaveText([
+            'https://first.example',
+            'https://second.example',
+        ])
+
+        await page.getByRole('button', { name: 'Move rule 2 up' }).click()
+        await expect(rulesList.getByRole('heading')).toHaveText([
+            'https://second.example',
+            'https://first.example',
+        ])
     })
 })
 

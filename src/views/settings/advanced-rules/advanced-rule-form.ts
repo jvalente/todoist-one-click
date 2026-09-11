@@ -1,14 +1,12 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { RuleMatchMode } from '../../../types/rules.types'
-import { grid } from '../../common/styles/grid'
 import type { ProjectsState } from '../../../types/projects.types'
 import type { Rule } from '../../../types/rules.types'
 import type {
+    DueDateChangeEvent,
     InputChangeEvent,
-    InputEnterPressEvent,
     SelectChangeEvent,
-    TextInputElement,
 } from '../../common/system'
 
 import '../../common/system'
@@ -18,21 +16,59 @@ import { matchModeDescription } from './constants'
 
 @customElement('tc-advanced-rule-form')
 export class AdvancedRuleFormElement extends LitElement {
-    static styles = [
-        grid,
-        css`
-            tc-text {
-                white-space: nowrap;
-            }
-            tc-text-input {
-                flex-grow: 1;
-            }
+    static styles = css`
+        fieldset {
+            min-width: 0;
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
 
-            tc-project-select {
-                width: 100%;
-            }
-        `,
-    ]
+        legend {
+            padding: 0;
+            margin-bottom: 16px;
+            font-size: 0.9375rem;
+            font-weight: 650;
+        }
+
+        fieldset + fieldset {
+            margin-top: 28px;
+        }
+
+        tc-text-input + tc-text-input,
+        tc-select + tc-text-input,
+        tc-project-select,
+        tc-target-labels-list,
+        tc-due-date-control {
+            display: block;
+            margin-top: 20px;
+        }
+
+        .note {
+            margin: 24px 0 0;
+            color: var(--secondary-color);
+            font-size: 0.75rem;
+            line-height: 1.65;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--section-border-color);
+        }
+
+        .save-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-left: auto;
+        }
+    `
 
     @property({ type: Array })
     projects: ProjectsState['data'] = { results: [] }
@@ -72,12 +108,10 @@ export class AdvancedRuleFormElement extends LitElement {
         })
     }
 
-    private updateDueDate(event: InputEnterPressEvent) {
+    private updateDueDate(event: DueDateChangeEvent) {
         this.updateRule({
-            dueDate: event.detail.value,
+            dueDate: event.dueDate,
         })
-        const input = event.currentTarget as TextInputElement
-        input.value = ''
     }
 
     private saveRule() {
@@ -104,12 +138,10 @@ export class AdvancedRuleFormElement extends LitElement {
     }
 
     private renderFormActions() {
-        return html`
-            <div class="row spaceBetween">
-                <div class="row">
-                    <tc-button small @click=${this.saveRule}>Save</tc-button>
+        return html`<div class="actions">
+                <div class="save-actions">
+                    <tc-button @click=${this.saveRule}>Save rule</tc-button>
                     <tc-link
-                        small
                         .confirmDialog=${
                             hasChanges(this.defaultRule, this.rule)
                                 ? {
@@ -124,79 +156,72 @@ export class AdvancedRuleFormElement extends LitElement {
                 </div>
                 ${
                     this.rule.id
-                        ? html` <tc-link
-                          small
-                          .confirmDialog=${{
-                              message: `Delete the rule for ${this.query}?`,
-                          }}
-                          @click=${this.deleteRule}
-                          >Delete</tc-link
-                      >`
+                        ? html`<tc-link
+                              .confirmDialog=${{
+                                  message: `Delete the rule for ${this.query}?`,
+                              }}
+                              @click=${this.deleteRule}
+                              >Delete rule</tc-link
+                          >`
                         : nothing
                 }
-            </div>
-        `
+            </div>`
     }
 
     render() {
         if (!this.rule) return nothing
 
-        return html`
-            <div class="stack">
-                <div class="row">
-                    <tc-text small>If the url</tc-text>
+        return html`<div>
+                <fieldset>
+                    <legend>When</legend>
                     <tc-select
-                        small
+                        label="The URL"
                         .options=${matchModeSelectOptions()}
                         .selectedValue=${this.rule.matchMode as string}
                         @change=${(matchMode: SelectChangeEvent<any>) =>
                             this.updateRule({
                                 matchMode: matchMode.selectedValue,
                             })}
-                    ></tc-select>
+                    >
+                        <span slot="help">${this.matchHelp}</span>
+                    </tc-select>
                     <tc-text-input
-                        small
+                        label="URL or text"
                         .value=${this.query}
                         ?disableEnter=${true}
-                        placeholder="url (required)"
+                        placeholder="e.g. github.com/"
                         @change=${this.updateQuery}
                     ></tc-text-input>
-                </div>
-                <div class="row">
-                    <tc-text small>then add to project:</tc-text>
+                </fieldset>
+                <fieldset>
+                    <legend>Create the task with</legend>
                     <tc-project-select
-                        small
+                        label="Project"
                         .rule=${this.rule}
                         .projects=${this.projects}
                         @change=${this.updateProject}
                     ></tc-project-select>
-                </div>
-                <div>
-                    <tc-text small>add labels:</tc-text>
-                </div>
-                <div>
                     <tc-target-labels-list
-                        small
+                        .showAddHelp=${false}
                         .labels=${this.rule.labels}
                         @change=${this.updateLabels}
                     ></tc-target-labels-list>
-                </div>
-                <div>
-                    <tc-text small
-                        >and due date:
-                        <code>${this.rule.dueDate || 'no date'}</code>.</tc-text
-                    >
-                </div>
-                <div>
-                    <tc-text-input
-                        small
-                        placeholder=${getInputPlaceholder(this.rule.dueDate)}
-                        @enterPress=${this.updateDueDate}
-                    ></tc-text-input>
-                </div>
+                    <tc-due-date-control
+                        .dueDate=${this.rule.dueDate || ''}
+                        @change=${this.updateDueDate}
+                    ></tc-due-date-control>
+                </fieldset>
+                <p class="note">
+                    These settings replace your defaults for matching pages.
+                </p>
                 ${this.renderFormActions()}
-            </div>
-        `
+            </div>`
+    }
+
+    private get matchHelp() {
+        return this.rule.matchMode === RuleMatchMode.Contains
+            ? 'Matches part of the URL. Letter case does not matter.'
+            : 'Matches the whole URL. Letter case does not matter.'
     }
 }
 
@@ -211,10 +236,4 @@ function matchModeSelectOptions() {
 
 function hasChanges(defaultRule: Partial<Rule>, rule: Partial<Rule>) {
     return JSON.stringify(defaultRule) !== JSON.stringify(rule)
-}
-
-function getInputPlaceholder(value?: string) {
-    return `Type and press Enter to ${
-        value ? 'change/delete the' : 'set a'
-    } due date...`
 }

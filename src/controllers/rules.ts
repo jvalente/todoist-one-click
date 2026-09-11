@@ -19,3 +19,7 @@ export function deleteRule(ruleId: Rule['id']) {
     // validate cannot delete default
     Rules.deleteRule(ruleId)
 }
+
+export function moveRule(ruleId: Rule['id'], direction: -1 | 1) {
+    Rules.moveRule(ruleId, direction)
+}

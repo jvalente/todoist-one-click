@@ -15,7 +15,10 @@ export class SectionElement extends LitElement {
     render() {
         return html`<section>
             <header>
-                <h2>${this.title}</h2>
+                <div class="heading">
+                    <h2>${this.title}</h2>
+                    <slot name="action"></slot>
+                </div>
                 ${this.description ? html`<p>${this.description}</p>` : nothing}
             </header>
             <slot></slot>

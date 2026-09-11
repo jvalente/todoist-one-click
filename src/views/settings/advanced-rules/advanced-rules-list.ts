@@ -10,9 +10,12 @@ import './advanced-rule'
 @customElement('tc-advanced-rules-list')
 export class AdvancedRulesListElement extends LitElement {
     static styles = css`
-        tc-advanced-rule {
-            display: block;
-            margin-bottom: 10px;
+        ol {
+            display: grid;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
     `
 
@@ -25,14 +28,23 @@ export class AdvancedRulesListElement extends LitElement {
     render() {
         if (!this.rules?.length) return nothing
 
-        return html`${repeat(
-            this.rules,
-            (rule) => rule.id,
-            (rule) =>
-                html`<tc-advanced-rule
+        const rules = this.rules
+
+        return html`<ol aria-label="Rules in priority order">
+            ${repeat(
+                rules,
+                (rule) => rule.id,
+                (rule, index) =>
+                    html`<li>
+                    <tc-advanced-rule
                     .rule=${rule}
                     .projects=${this.projects}
-                ></tc-advanced-rule>`,
-        )}`
+                    .position=${index}
+                    ?isFirst=${index === 0}
+                    ?isLast=${index === rules.length - 1}
+                    ></tc-advanced-rule>
+                </li>`,
+            )}
+        </ol>`
     }
 }

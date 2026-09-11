@@ -59,7 +59,7 @@ test('due dates save explicitly and the switch persists no due date', async ({
     await expect(input).toHaveValue('tomorrow')
 
     const datedTask = page.waitForRequest('**/api/v1/tasks')
-    await page.getByRole('link', { name: 'Add test task' }).click()
+    await page.getByRole('button', { name: 'Add test task' }).click()
     expect((await datedTask).postDataJSON()).toHaveProperty(
         'due_string',
         'tomorrow',
@@ -74,6 +74,6 @@ test('due dates save explicitly and the switch persists no due date', async ({
     await expect(input).not.toBeVisible()
 
     const undatedTask = page.waitForRequest('**/api/v1/tasks')
-    await page.getByRole('link', { name: 'Add test task' }).click()
+    await page.getByRole('button', { name: 'Add test task' }).click()
     expect((await undatedTask).postDataJSON()).not.toHaveProperty('due_string')
 })
