@@ -11,11 +11,18 @@ export class SettingsElement extends LitElement {
     @state()
     apiKey?: string
 
+    private unsubscribe?: () => void
+
     connectedCallback() {
         super.connectedCallback()
 
-        TodoistAPIKey.attach(this.onApiKeyUpdate)
+        this.unsubscribe = TodoistAPIKey.attach(this.onApiKeyUpdate)
         TodoistAPIKey.get().then(this.onApiKeyUpdate)
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        this.unsubscribe?.()
     }
 
     private onApiKeyUpdate = (apiKey?: string) => {

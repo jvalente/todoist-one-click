@@ -18,11 +18,18 @@ export class SettingsDataElement extends LitElement {
     @state()
     private defaultRule?: Rule
 
+    private unsubscribe?: () => void
+
     connectedCallback() {
         super.connectedCallback()
 
-        Rules.attach(this.onRulesUpdate)
+        this.unsubscribe = Rules.attach(this.onRulesUpdate)
         Rules.hydrate()
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        this.unsubscribe?.()
     }
 
     private onRulesUpdate = ({ data }: RulesState) => {

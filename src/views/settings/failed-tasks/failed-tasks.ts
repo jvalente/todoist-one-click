@@ -22,11 +22,18 @@ export class FailedTasksElement extends LitElement {
     @state()
     failedTasks?: any
 
+    private unsubscribe?: () => void
+
     connectedCallback() {
         super.connectedCallback()
 
-        FailedTasks.attach(this.onFailedTasksUpdate)
+        this.unsubscribe = FailedTasks.attach(this.onFailedTasksUpdate)
         FailedTasks.hydrate()
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        this.unsubscribe?.()
     }
 
     private onFailedTasksUpdate = ({ data }: any) => {

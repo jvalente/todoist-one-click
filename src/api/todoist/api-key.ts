@@ -25,6 +25,7 @@ export const TodoistAPIKey = {
     get,
     set,
     remove,
-    attach: (observer: Parameters<typeof apiKeyObservable.attach>[0]) =>
-        apiKeyObservable.attach(observer),
+    attach: (observer: Parameters<typeof apiKeyObservable.attach>[0]) => {
+        return apiKeyObservable.attach(observer)
+    },
 }

@@ -1,17 +1,11 @@
 type Observer<T> = (data: T) => void
 
 export class Subject<T> {
-    observers: Observer<T>[] = []
+    private observers = new Set<Observer<T>>()
 
-    attach(observer: Observer<T>) {
-        this.observers.push(observer)
-    }
-
-    detach(observer: Observer<T>) {
-        const index = this.observers.indexOf(observer)
-        if (index > -1) {
-            this.observers.splice(index, 1)
-        }
+    attach(observer: Observer<T>): () => void {
+        this.observers.add(observer)
+        return () => this.observers.delete(observer)
     }
 
     notify(data: T) {

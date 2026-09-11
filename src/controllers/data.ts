@@ -1,8 +1,7 @@
 import { Storage } from '../api/extension'
 import { deleteAPIKey } from './api-key'
 
-export function clearAllData() {
-    deleteAPIKey()
-
+export async function clearAllData() {
+    await deleteAPIKey()
     Storage.reset()
 }

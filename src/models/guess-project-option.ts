@@ -25,6 +25,7 @@ export const GuessProjectOption = {
     get,
     set,
     remove,
-    attach: (observer: Parameters<typeof guessProjectObservable.attach>[0]) =>
-        guessProjectObservable.attach(observer),
+    attach: (observer: Parameters<typeof guessProjectObservable.attach>[0]) => {
+        return guessProjectObservable.attach(observer)
+    },
 }

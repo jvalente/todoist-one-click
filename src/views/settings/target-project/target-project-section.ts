@@ -37,19 +37,28 @@ export class ProjectSectionElement extends LitElement {
     @state()
     private guessProjectEnabled = false
 
+    private unsubscribers: Array<() => void> = []
+
     connectedCallback() {
         super.connectedCallback()
 
-        Projects.attach(this.onProjectsUpdate)
+        this.unsubscribers.push(Projects.attach(this.onProjectsUpdate))
         Projects.hydrate()
 
-        // TODO: find DRY solution
-        GuessProjectOption.attach((checked) => {
-            this.guessProjectEnabled = checked === true
-        })
+        this.unsubscribers.push(
+            GuessProjectOption.attach((checked) => {
+                this.guessProjectEnabled = checked === true
+            }),
+        )
         GuessProjectOption.get().then((checked) => {
             this.guessProjectEnabled = checked === true
         })
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        for (const unsubscribe of this.unsubscribers) unsubscribe()
+        this.unsubscribers = []
     }
 
     private onProjectsUpdate = ({

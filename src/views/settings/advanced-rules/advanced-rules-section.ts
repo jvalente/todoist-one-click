@@ -31,14 +31,22 @@ export class AdvancedRulesSectionElement extends LitElement {
     @state()
     private addingRule = false
 
+    private unsubscribers: Array<() => void> = []
+
     connectedCallback() {
         super.connectedCallback()
 
-        Rules.attach(this.onRulesUpdate)
+        this.unsubscribers.push(Rules.attach(this.onRulesUpdate))
         Rules.hydrate()
 
-        Projects.attach(this.onProjectsUpdate)
+        this.unsubscribers.push(Projects.attach(this.onProjectsUpdate))
         Projects.hydrate()
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        for (const unsubscribe of this.unsubscribers) unsubscribe()
+        this.unsubscribers = []
     }
 
     private onProjectsUpdate = ({ data }: ProjectsState) => {
