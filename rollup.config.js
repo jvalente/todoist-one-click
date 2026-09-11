@@ -1,4 +1,5 @@
 // rollup.config.js
+import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
@@ -34,6 +35,7 @@ export default {
             ],
         }),
         makePackage(),
+        makeSourcePackage(),
     ],
 }
 
@@ -76,7 +78,7 @@ function makePackage() {
                 const output = fs.createWriteStream(path)
 
                 output.on('finish', () => {
-                    printPackageSize(path)
+                    printPackageSize(path, devBrowser)
                     resolve()
                 })
 
@@ -94,10 +96,52 @@ function makePackage() {
     }
 }
 
-function printPackageSize(path) {
+/**
+ * Bundle git-tracked source files into a zip for Firefox add-on review
+ */
+function makeSourcePackage() {
+    return {
+        name: 'make-source-package',
+        writeBundle() {
+            if (build === 'development' || devBrowser !== 'firefox') return
+            if (!fs.existsSync(PACKAGE_DIR)) fs.mkdirSync(PACKAGE_DIR)
+
+            return new Promise((resolve) => {
+                const path = `${PACKAGE_DIR}/tdoneclick-source-${version}.zip`
+                const output = fs.createWriteStream(path)
+
+                output.on('finish', () => {
+                    printPackageSize(path, 'source')
+                    resolve()
+                })
+
+                const archive = archiver('zip', { zlib: { level: 9 } })
+                // biome-ignore lint/suspicious/noConsole: dev tools
+                archive.on('warning', console.log)
+                // biome-ignore lint/suspicious/noConsole: dev tools
+                archive.on('error', console.log)
+
+                archive.pipe(output)
+
+                const files = execSync('git ls-files', { encoding: 'utf-8' })
+                    .trim()
+                    .split('\n')
+
+                for (const file of files) {
+                    archive.file(file, { name: file })
+                }
+
+                archive.finalize()
+            })
+        },
+    }
+}
+
+function printPackageSize(path, label) {
+    const name = label || devBrowser
     // biome-ignore lint/suspicious/noConsole: dev tools
     console.log(
-        `\x1b[33m\x1b[1m\x1b[4m${devBrowser} package: ${Math.round(
+        `\x1b[33m\x1b[1m\x1b[4m${name} package: ${Math.round(
             fs.statSync(path).size / 1024,
         )}KB\x1b[0m`,
     )
